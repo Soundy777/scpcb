@@ -293,7 +293,9 @@ Global CanSave% = True
 
 AppTitle "SCP - Containment Breach v"+VersionNumber
 
-PlayStartupVideos()
+; Disabled startup videos while iterating
+;; ReEnable these when we've finished cleaning everything up
+;PlayStartupVideos()
 
 ;---------------------------------------------------------------------------------------------------------------------
 

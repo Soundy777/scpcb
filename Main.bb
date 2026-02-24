@@ -1,100 +1,11 @@
-Const VersionNumber$ = "1.3.12"
-;Only change this if the version given isn't working with the current build version - ENDSHN
-Const CompatibleNumber$ = "1.3.12"
+Include "src/core/Boot.bb"
 
-InitErrorMsgs(11, True)
-SetErrorMsg(0, "An error occured in SCP - Containment Breach v" + VersionNumber)
-SetErrorMsg(1, "Please send us the generated minidump along with a screenshot of this window!")
-SetErrorMsg(2, "---------------------------------------------------")
-SetErrorMsg(3, "OS: " + SystemProperty("os") + " " + (32 + (GetEnv("ProgramFiles(X86)") <> 0) * 32) + " Bit (Build: " + SystemProperty("osbuild") + ")")
-SetErrorMsg(4, "CPU: " + Trim(SystemProperty("cpuname")) + " (Arch: " + SystemProperty("cpuarch") + ", " + GetEnv("NUMBER_OF_PROCESSORS") + " Threads)")
+BootGame()
 
-SetErrorMsg(8, "Caught exception: " + "_CaughtError_")
-
-Function CatchErrors(location$)
-	SetErrorMsg(9, location)
-End Function
-
-Function RuntimeErrorExt%(Message$)
-	SetErrorMsg(8, "Caught exception: " + Message)
-	MemoryAccessViolation()
-End Function
-
-Include "StrictLoads.bb"
-Include "KeyName.bb"
-
-Global DataDir$ = InitDataDir()
-Global OptionFile$ = InitOptionsFile()
-Global ModsFile$ = DataDir + "\mods.ini"
-Const OptionDefaultFile$ = "defaults.ini"
-
-Function InitDataDir$()
-	Local dir$ = GetEnv("AppData") + "\Undertow Games"
-	If FileType(dir) <> 2 Then CreateDir(dir)
-	dir = dir + "\SCP - Containment Breach"
-	If FileType(dir) <> 2 Then CreateDir(dir)
-	Return dir
-End Function
-
-Function InitOptionsFile$()
-	Local file$ = DataDir + "\options.ini"
-	If FileType(file) <> 1 Lor HasCLIFlag("defaults") Lor HasCLIFlag("default") Then
-		Local f% = WriteFile(file)
-		CloseFile(f)
-	EndIf
-	Return file
-End Function
-
-Function GetOptionString$(section$, key$)
-	Local opt$ = GetINIString(OptionFile, section, key)
-	If opt = "" Then Return GetINIString(OptionDefaultFile, section, key)
-	Return opt
-End Function
-
-Function GetOptionInt%(section$, key$)
-	Return ParseINIInt(GetOptionString(section, key))
-End Function
-
-Function GetOptionFloat#(section$, key$)
-	Return Float(GetOptionString(section, key))
-End Function
-
-Function HasCLIFlag%(name$)
-	name = "-" + name
-	Local cmd$ = CommandLine()
-	Local pos% = Instr(cmd, " " + name + " ")
-	If pos <> 0 Then Return True
-	pos = Instr(cmd, name + " ")
-	If pos = 1 Then Return True
-	pos = Instr(cmd, " " + name)
-	If pos = Len(cmd) - Len(name) Then Return True
-	Return cmd = name
-End Function
-
-Function GetCLIInt%(name$, def%=0)
-	Local txt$ = GetCLIString(name)
-	If txt <> "" Then Return Int(txt)
-	return def
-End Function
-
-Function GetCLIString$(name$, def$="")
-	name = "-" + name + " "
-	Local cmd$ = CommandLine()
-	Local begin% = Instr(cmd, " " + name)
-	If begin = 0 Then
-		begin = Instr(cmd, name)
-		If begin <> 1 Return def
-	Else
-		begin = begin + 1
-	EndIf
-	begin = begin + Len(name)
-	Local end% = Instr(cmd, " ", begin)
-	If end = 0 Then end = Len(cmd) + 1
-	Return Trim(Mid(cmd, begin, end - begin))
-End Function
+Global OptionFile$ = gOptionsFile
+Global ModsFile$ = gModsFile
 
 Include "Blitz_File_FileName.bb"
-
 Include "DevilParticleSystem.bb"
 
 Global SteamActive% = GetOptionInt("general", "enable steam") And (Not HasCLIFlag("nosteam"))
@@ -135,8 +46,6 @@ Global DebugResourcePacks% = GetOptionInt("debug", "resource pack strict load")
 Global UseNumericSeeds% = GetOptionInt("general", "numeric seeds")
 
 Dim ArrowIMG(4)
-
-;[Block]
 
 Global LauncherWidth%= Min(GetOptionInt("launcher", "launcher width"), 1024)
 Global LauncherHeight% = Min(GetOptionInt("launcher", "launcher height"), 768)

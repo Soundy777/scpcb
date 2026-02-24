@@ -5,7 +5,6 @@ BootGame()
 Global OptionFile$ = Paths_OptionsFile
 Global ModsFile$ = Paths_ModsFile
 
-Include "Blitz_File_FileName.bb"
 Include "DevilParticleSystem.bb"
 
 Global SteamActive% = GetOptionInt("general", "enable steam") And (Not HasCLIFlag("nosteam"))

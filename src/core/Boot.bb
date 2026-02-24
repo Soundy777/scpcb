@@ -1,7 +1,9 @@
 Include "src/core/BuildInfo.bb"
 
+Include "src/utils/IniParser.bb"
+Include "src/utils/Blitz_File_FileName.bb"
+
 Include "StrictLoads.bb"
-Include "src/util/IniParser.bb"
 Include "KeyName.bb"
 
 Include "src/core/ErrorHandling.bb"

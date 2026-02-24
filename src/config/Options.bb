@@ -62,10 +62,6 @@ Function LoadOptions()
     DebugLog "ToDo:: Load in the options from file"
 End Function
 
-Function ParseBool%(value$)
-    Return Lower(value$) = "true" Or value$ = "1"
-End Function
-
 Function GetOptionString$(section$, key$)
 	Local opt$ = GetINIString(gOptionsFile, section, key)
 	If opt = "" Then Return GetINIString(OPTION_DEFAULT_FILE, section, key)

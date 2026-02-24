@@ -1,6 +1,7 @@
 Include "src/core/BuildInfo.bb"
 
 Include "StrictLoads.bb"
+Include "src/util/IniParser.bb"
 Include "KeyName.bb"
 
 Include "src/core/ErrorHandling.bb"
@@ -17,7 +18,7 @@ Function BootGame()
     InitCLI()
 
     InitPaths()
-    
+
     LoadOptions()
 
     DebugLog "Bootup Sequence Complete"

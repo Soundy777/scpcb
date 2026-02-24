@@ -9,6 +9,8 @@ include "src/core/CLI.bb"
 include "src/core/Paths.bb"
 Include "src/config/Options.bb"
 
+Include "src/console/ConsoleCore.bb"
+
 Function BootGame()
 
     DebugLog "Starting Bootup Sequence"

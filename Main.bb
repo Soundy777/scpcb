@@ -2,8 +2,8 @@ Include "src/core/Boot.bb"
 
 BootGame()
 
-Global OptionFile$ = gOptionsFile
-Global ModsFile$ = gModsFile
+Global OptionFile$ = Paths_OptionsFile
+Global ModsFile$ = Paths_ModsFile
 
 Include "Blitz_File_FileName.bb"
 Include "DevilParticleSystem.bb"

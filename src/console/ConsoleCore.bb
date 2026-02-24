@@ -1,4 +1,7 @@
-;----------------------------------------------  Console -----------------------------------------------------
+; =========================
+; ConsoleCore.bb
+; =========================
+
 
 Global ConsoleOpen%, ConsoleInput$
 Global ConsoleScroll#,ConsoleScrollDragging%

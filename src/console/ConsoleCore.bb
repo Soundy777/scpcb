@@ -1,19 +1,89 @@
-; =========================
+; ===========================================================================
 ; ConsoleCore.bb
-; =========================
+; ===========================================================================
 
+Include "src/console/ConsoleCommands.bb"
 
-Global ConsoleOpen%, ConsoleInput$
-Global ConsoleScroll#,ConsoleScrollDragging%
-Global ConsoleMouseMem%
-Global ConsoleReissue.ConsoleMsg = Null
-Global ConsoleR% = 0,ConsoleG% = 255,ConsoleB% = 255
+; ===========================================================================
 
 Type ConsoleMsg
 	Field txt$
 	Field isCommand%
 	Field r%,g%,b%
 End Type
+
+Type ConsoleCommand
+    Field Name$
+    Field CommandID#
+	Field ShortDescription$
+	Field LongDescription$
+End Type
+
+Global Console_IsOpen%, ConsoleInput$
+Global ConsoleScroll#,ConsoleScrollDragging%
+Global ConsoleMouseMem%
+Global ConsoleReissue.ConsoleMsg = Null
+Global ConsoleR% = 0,ConsoleG% = 255,ConsoleB% = 255
+
+Global CanOpenConsole%
+
+; ---------------------------------------------------------------------------
+
+Function InitConsole()
+	Console_IsOpen = False
+	CanOpenConsole = Options\CanOpenConsole
+
+	InitConsoleCommands()
+
+	CreateConsoleMsg("Console enabled. Type 'help' for a list of commands.")
+End Function
+
+; ---------------------------------------------------------------------------
+
+Function RegisterConsoleCommand(name$, commandID#, shortDescription$, longDescription$)
+
+    c.ConsoleCommand = New ConsoleCommand
+    c\Name = Lower(name)
+    c\CommandID = commandID
+    c\ShortDescription = shortDescription
+    c\LongDescription = longDescription
+
+End Function
+
+; ---------------------------------------------------------------------------
+
+Function ExecuteConsoleCommand(input$)
+
+    If input$ = "" Then Return
+
+    CreateConsoleMsg("> " + input$)
+
+    Local cmd$ = Lower(input$)
+    Local spacePos% = Instr(cmd$, " ")
+    Local args$ = ""
+
+    If spacePos > 0 Then
+        args = Mid(input$, spacePos + 1)
+        cmd = Left(cmd$, spacePos - 1)
+    EndIf
+
+	Local commandID% = 0
+    For c.ConsoleCommand = Each ConsoleCommand
+		If Lower(c\Name) = Lower(cmd$) Then
+			commandID = c\CommandID
+			Exit
+		EndIf
+	Next
+
+	If commandID = 0 Then
+    	CreateConsoleMsg("Unknown command: " + cmd$)
+	Else
+		Console_DispatchCommand(commandID, args)
+	End If
+
+End Function
+
+; ---------------------------------------------------------------------------
 
 Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1,isCommand%=False)
 	Local c.ConsoleMsg = New ConsoleMsg
@@ -31,17 +101,17 @@ Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1,isCommand%=False)
 	If (c\b<0) Then c\b = ConsoleB
 End Function
 
-CreateConsoleMsg("Console enabled. Type 'help' for a list of commands.")
+; ---------------------------------------------------------------------------
 
 Function UpdateConsole()
 	Local e.Events
 	
 	If CanOpenConsole = False Then
-		ConsoleOpen = False
+		Console_IsOpen = False
 		Return
 	EndIf
 	
-	If ConsoleOpen Then
+	If Console_IsOpen Then
 		Local cm.ConsoleMsg
 		
 		SetFont ConsoleFont

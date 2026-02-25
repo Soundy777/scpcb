@@ -1,7 +1,7 @@
 Include "src/core/BuildInfo.bb"
 
-Include "src/utils/IniParser.bb"
 Include "src/utils/Blitz_File_FileName.bb"
+Include "src/utils/IniParser.bb"
 
 Include "StrictLoads.bb"
 Include "KeyName.bb"
@@ -24,6 +24,8 @@ Function BootGame()
     InitPaths()
 
     LoadOptions()
+
+    InitConsole()
 
     DebugLog "Bootup Sequence Complete"
 

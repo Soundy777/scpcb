@@ -7431,7 +7431,7 @@ Function ChangeNPCTextureID(n.NPCs,textureid%)
 	If (n=Null) Then
 		CreateConsoleMsg("Tried to change the texture of an invalid NPC")
 		If ConsoleOpening Then
-			ConsoleOpen = True
+			Console_IsOpen = True
 		EndIf
 		Return
 	EndIf

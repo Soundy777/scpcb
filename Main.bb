@@ -38,7 +38,7 @@ Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 Global EnableSFXRelease% = GetOptionInt("audio", "sfx release")
 Global EnableSFXRelease_Prev% = EnableSFXRelease%
 
-Global CanOpenConsole% = GetOptionInt("console", "enabled")
+
 
 Global DebugResourcePacks% = GetOptionInt("debug", "resource pack strict load")
 
@@ -2062,9 +2062,9 @@ While IsRunning
 		
 		If KeyHit(KEY_CONSOLE) Then
 			If CanOpenConsole
-				ConsoleOpen = (Not ConsoleOpen)
+				Console_IsOpen = (Not Console_IsOpen)
 				If SteamActive Then
-					If ConsoleOpen Then
+					If Console_IsOpen Then
 						Steam_OpenOnScreenKeyboard(0, GraphicWidth / 2, GraphicHeight / 2, GraphicWidth / 2, GraphicHeight / 2)
 					Else
 						Steam_CloseOnScreenKeyboard()
@@ -2785,7 +2785,7 @@ Function UpdateMenuState()
 End Function
 
 Function IsAnyMenuOpen()
-	Return MenuOpen Lor ConsoleOpen Lor InvOpen Lor OtherOpen<>Null Lor (SelectedItem <> Null And SelectedItem\Inventory <> Null) Lor Using294
+	Return MenuOpen Lor Console_IsOpen Lor InvOpen Lor OtherOpen<>Null Lor (SelectedItem <> Null And SelectedItem\Inventory <> Null) Lor Using294
 End Function
 
 Function IsPaused()
@@ -7696,7 +7696,7 @@ Function NullGame(playbuttonsfx%=True)
 	RefinedItems = 0
 	
 	ConsoleInput = ""
-	ConsoleOpen = False
+	Console_IsOpen = False
 	
 	EyeIrritation = 0
 	EyeStuck = 0

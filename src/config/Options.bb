@@ -59,7 +59,10 @@ End Type
 Global Options.GameOptions
 
 Function LoadOptions()
-    DebugLog "ToDo:: Load in the options from file"
+    Options = New GameOptions
+
+    ;; ToDo:: load all options here
+    Options\CanOpenConsole = GetOptionInt("console", "enabled")
 End Function
 
 Function GetOptionString$(section$, key$)

@@ -2,16 +2,22 @@
 ; ConsoleCommands.bb
 ; ===========================================================================
 
+; Core Commands
 Const CMD_HELP = 1
 Const CMD_CLEAR = 2
-Const CMD_MAV = 3
+Const CMD_EXIT = 3
+
+Const CMD_MAV = 99
 
 ; ---------------------------------------------------------------------------
 
 Function InitConsoleCommands()
 
+    ; Core Commands
     RegisterConsoleCommand("help", CMD_HELP, "Lists commands", "Lists all available console commands with a short description of each.")
     RegisterConsoleCommand("clear", CMD_CLEAR, "Clears console", "Clears the console output.")
+    RegisterConsoleCommand("exit", CMD_EXIT, "Exits the game", "Exits the game.")
+
     RegisterConsoleCommand("mav", CMD_MAV, "Forces a MAV Crash", "Causes the game to crash via a memory access violation. Useful for testing crash handling and reporting.")
 
 End Function
@@ -24,13 +30,15 @@ Function Console_DispatchCommand(commandID%, args$)
             Cmd_Help(args)
         Case CMD_CLEAR
             Cmd_Clear(args)
-        Case CMD_MAV
-            Cmd_MAV(args)
+        Case CMD_EXIT
+            Cmd_Exit(args)
     End Select
 End Function
 
 ; ===========================================================================
 ; Commands
+; ===========================================================================
+; Core Functions
 ; ===========================================================================
 
 Function Cmd_Help(args$)
@@ -75,7 +83,15 @@ Function Cmd_Clear(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
+Function Cmd_Exit(args$)
+
+End
+
+End Function
+
+; ===========================================================================
+; Debug Functions
+; ===========================================================================
 
 Function Cmd_DebugMode(args$)
 
@@ -101,13 +117,30 @@ Function Cmd_DebugMode(args$)
 
 End Function
 
+Function Cmd_DebugHUD(args$)
+
+    Select args$
+        Case "on", "1", "true"
+            DebugHUD = True
+        Case "off", "0", "false"
+            DebugHUD = False
+        Default
+            DebugHUD = Not DebugHUD
+    End Select
+    
+    If DebugHUD Then
+        CreateConsoleMsg("Debug Mode On")
+    Else
+        CreateConsoleMsg("Debug Mode Off")
+    EndIf
+
+End Function
+
 Function Cmd_MAV(args$)
 
     RuntimeErrorExt("Violation Access Memory")
 
 End Function
-
-; ---------------------------------------------------------------------------
 
 Function Cmd_Status(args$)
 
@@ -143,9 +176,7 @@ Function Cmd_Status(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
-
-Function Cmd_CameraPick(args$)
+Function Cmd_Inspect(args$)
 
     ConsoleR = 0 : ConsoleG = 255 : ConsoleB = 0
     c = CameraPick(Camera,GraphicWidth/2, GraphicHeight/2)
@@ -167,61 +198,112 @@ Function Cmd_CameraPick(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
+Function Cmd_Wireframe(args$)
+
+    Select args$
+        Case "on", "1", "true"
+            WireFrame 1
+            WireframeState=1					
+        Case "off", "0", "false"
+            WireFrame 0
+            WireframeState=0
+        Default
+            WireframeState = 1 - WireframeState
+            WireFrame WireframeState
+    End Select
+
+    if WireframeState = 1 Then
+        CreateConsoleMsg("Wireframe mode enabled.")
+    Else
+        CreateConsoleMsg("Wireframe mode disabled.")
+    EndIf
+
+End Function
+
+Function Cmd_FPS(args$)
+
+    ShowFPS = Not ShowFPS
+    CreateConsoleMsg("ShowFPS: "+Str(ShowFPS))
+
+End Function
+
+Function Cmd_NoClip(args$)
+					
+    Select args$
+        Case "on", "1", "true"
+            NoClip = True
+            Playable = True
+        Case "off", "0", "false"
+            NoClip = False	
+            RotateEntity Collider, 0, EntityYaw(Collider), 0
+        Default
+            NoClip = Not NoClip
+            If NoClip = False Then		
+                RotateEntity Collider, 0, EntityYaw(Collider), 0
+            Else
+                Playable = True
+            EndIf
+    End Select
+    
+    If NoClip Then
+        CreateConsoleMsg("NOCLIP ON")
+    Else
+        CreateConsoleMsg("NOCLIP OFF")
+    EndIf
+    
+    DropSpeed = 0
+
+End Function
+
+Function Cmd_NoClipSpeed(args$)
+
+    NoClipSpeed = Float(args$)
+
+End Function
+
+; ===========================================================================
+; Player Functions
+; ===========================================================================
 
 Function Cmd_FOV(args$)
 
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))				
-    FOV = Int(StrTemp)
+    FOV = Int(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
+Function Cmd_CameraFog(args$)
+
+    CameraFogNear = Float(Left(args, Len(args) - Instr(args, " ")))
+    CameraFogFar = Float(Right(args, Len(args) - Instr(args, " ")))
+    CreateConsoleMsg("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
+
+End Function
+
+Function Cmd_Gamma(args$)
+
+    ScreenGamma = Int(args$)
+    CreateConsoleMsg("Gamma set to " + ScreenGamma)
+
+End Function
 
 Function Cmd_HideDistance(args$)
 
-    HideDistance = Float(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    CreateConsoleMsg("Hidedistance set to "+HideDistance)
+    HideDistance = Float(args$)
+    CreateConsoleMsg("Hidedistance set to " + HideDistance)
 
 End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_Ending(args$)
-
-    SelectedEnding = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    KillTimer = -0.1
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_NoclipSpeed(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))	
-    NoClipSpeed = Float(StrTemp)
-
-End Function
-
-; ---------------------------------------------------------------------------
 
 Function Cmd_Injure(args$)
 
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))				
-    Injuries = Float(StrTemp)
+    Injuries = Float(args$)
 
 End Function
-
-; ---------------------------------------------------------------------------
 
 Function Cmd_Infect(args$)
 
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))		
-    Infect = Float(StrTemp)
+    Infect = Float(args$)
 
 End Function
-
-; ---------------------------------------------------------------------------
 
 Function Cmd_Heal(args$)
 
@@ -231,12 +313,30 @@ Function Cmd_Heal(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
+Function Cmd_Kill(args$)
+
+    KillTimer = -1
+    DeathMSG = I_Loc\DeathMessage_Suicide[Rand(4)]
+
+End Function
+
+Function Cmd_TeleportXYZ(args$)
+
+    teleXPos# = Float(Piece$(args$,1," "))
+    teleYPos# = Float(Piece$(args$,2," "))
+    teleZPos# = Float(Piece$(args$,3," "))
+    PositionEntity Collider,teleXPos#,teleYPos#,teleZPos#
+    PositionEntity Camera,teleXPos#,teleYPos#,teleZPos#
+    ResetEntity Collider
+    ResetEntity Camera
+    CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+EntityX(Collider)+"|"+EntityY(Collider)+"|"+EntityZ(Collider))
+
+End Function
 
 Function Cmd_TeleportToRoom(args$)
 
-    Local roomName$ = Piece(ConsoleInput, 2, " ")
-    Local roomIndex% = Int(Piece(ConsoleInput, 3, " "))
+    Local roomName$ = Piece(args$, 1, " ")
+    Local roomIndex% = Int(Piece(args$, 2, " "))
 
     Select roomName
         Case "895", "scp-895", "room895"
@@ -285,205 +385,6 @@ Function Cmd_ListRooms(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
-
-Function Cmd_SpawnItem(args$)
-
-    Local itt.ItemTemplates = FindItemTemplate(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    If itt = Null Then
-        CreateConsoleMsg("Item not found.",255,150,0)
-    Else
-        CreateConsoleMsg(itt\displayname + " spawned.")
-        it.Items = CreateItem(itt\name, EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
-        EntityType(it\collider, HIT_ITEM)
-
-        If itt\name = "snavulti" Lor itt\name = "fineradio" Lor itt\name = "veryfineradio" Then
-            it\state = 101
-        EndIf
-    End If
-
-End Function
-
-Function Cmd_ListItems(args$)
-
-    CreateConsoleMsg("Listing items:")
-    For itt.ItemTemplates = Each ItemTemplates
-        CreateConsoleMsg("- " + itt\displayname + "(" + itt\name + ")")
-    Next
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_Wireframe(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    If StrTemp = "on" Then
-        WireFrame 1
-        WireframeState=1
-    ElseIf StrTemp = "off" Then
-        WireFrame 0
-        WireframeState=0
-    Else
-        WireframeState = 1 - WireframeState
-        WireFrame WireframeState
-    EndIf
-
-    if WireframeState = 1 Then
-        CreateConsoleMsg("Wireframe mode enabled.")
-    Else
-        CreateConsoleMsg("Wireframe mode disabled.")
-    EndIf
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_173State(args$)
-
-    CreateConsoleMsg("SCP-173")
-    CreateConsoleMsg("Position: " + EntityX(Curr173\obj) + ", " + EntityY(Curr173\obj) + ", " + EntityZ(Curr173\obj))
-    CreateConsoleMsg("Idle: " + Curr173\Idle)
-    CreateConsoleMsg("State: " + Curr173\State)
-
-End Function
-
-Function Cmd_Set173Speed(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    Curr173\Speed = Float(StrTemp)
-    CreateConsoleMsg("173's speed set to " + StrTemp)
-
-End Function
-
-Function Cmd_Teleport173(args$)
-
-    PositionEntity Curr173\Collider,EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider)
-    ResetEntity Curr173\Collider
-
-End Function
-
-Function Cmd_173_Halloween(args$)
-
-    HalloweenTex = Not HalloweenTex
-    If HalloweenTex Then
-        Local tex = LoadTexture_Strict("GFX\npcs\173h.pt", 1)
-        EntityTexture Curr173\obj, tex, 0, 0
-        FreeTexture tex
-        CreateConsoleMsg("173 JACK-O-LANTERN ON")
-    Else
-        Local tex2 = LoadTexture_Strict("GFX\npcs\173texture.jpg", 1)
-        EntityTexture Curr173\obj, tex2, 0, 0
-        FreeTexture tex2
-        CreateConsoleMsg("173 JACK-O-LANTERN OFF")
-    EndIf
-
-End Function
-
-Function Cmd_Disable173(args$)
-
-    Curr173\Idle = 3 ;This phenominal comment is brought to you by PolyFox. His absolute wisdom in this fatigue of knowledge brought about a new era of 173 state checks.
-    HideEntity Curr173\obj
-    HideEntity Curr173\Collider
-
-End Function
-
-Function Cmd_Enable173(args$)
-
-    Curr173\Idle = False
-    ShowEntity Curr173\obj
-    ShowEntity Curr173\Collider
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_106State(args$)
-
-    CreateConsoleMsg("SCP-106")
-    CreateConsoleMsg("Position: " + EntityX(Curr106\obj) + ", " + EntityY(Curr106\obj) + ", " + EntityZ(Curr106\obj))
-    CreateConsoleMsg("Idle: " + Curr106\Idle)
-    CreateConsoleMsg("State: " + Curr106\State)
-
-End Function
-
-Function Cmd_Set106Speed(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    Curr106\Speed = Float(StrTemp)
-    CreateConsoleMsg("106's speed set to " + StrTemp)
-
-End Function
-
-Function Cmd_Teleport106(args$)
-
-    Curr106\State = 0
-    Curr106\Idle = False
-
-End Function
-
-Function Cmd_Disable106(args$)
-
-    Curr106\Idle = True
-    Curr106\State = 200000
-    Contained106 = True
-
-End Function
-
-Function Cmd_Enable106(args$)
-
-    Curr106\Idle = False
-    Contained106 = False
-    ShowEntity Curr106\Collider
-    ShowEntity Curr106\obj
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_096State(args$)
-
-    For n.NPCs = Each NPCs
-        If n\NPCtype = NPCtype096 Then
-            CreateConsoleMsg("SCP-096")
-            CreateConsoleMsg("Position: " + EntityX(n\obj) + ", " + EntityY(n\obj) + ", " + EntityZ(n\obj))
-            CreateConsoleMsg("Idle: " + n\Idle)
-            CreateConsoleMsg("State: " + n\State)
-            Exit
-        EndIf
-    Next
-    CreateConsoleMsg("SCP-096 has not spawned.")
-
-End Function
-
-Function Cmd_Reset096(args$)
-
-    For n.NPCs = Each NPCs
-        If n\NPCtype = NPCtype096 Then
-            n\State = 0
-            If n\SoundChn<>0
-                StopStream_Strict(n\SoundChn) : n\SoundChn=0 : n\SoundChn_isStream = False
-            EndIf
-            If n\SoundChn2<>0
-                StopStream_Strict(n\SoundChn2) : n\SoundChn2=0 : n\SoundChn2_isStream = False
-            EndIf
-            Exit
-        EndIf
-    Next
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_427_State(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))				
-    I_427\Timer = Float(StrTemp)*70.0
-
-End Function
-
-; ---------------------------------------------------------------------------
-
 Function Cmd_Sanic(args$)
 
     SuperMan = Not SuperMan
@@ -494,47 +395,6 @@ Function Cmd_Sanic(args$)
     EndIf
 
 End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_Spawn420(args$)
-
-    For i = 1 To 20
-        If Rand(2)=1 Then
-            it.Items = CreateItem("scp420j", EntityX(Collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(Camera,True), EntityZ(Collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
-        Else
-            it.Items = CreateItem("joint", EntityX(Collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(Camera,True), EntityZ(Collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
-        EndIf
-        EntityType (it\collider, HIT_ITEM)
-    Next
-    PlaySound_Strict LoadTempSound("SFX\Music\420J.ogg")
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_Godmode(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					
-    Select StrTemp
-        Case "on", "1", "true"
-            GodMode = True						
-        Case "off", "0", "false"
-            GodMode = False
-        Default
-            GodMode = Not GodMode
-    End Select
-
-    If GodMode Then
-        CreateConsoleMsg("GODMODE ON")
-    Else
-        CreateConsoleMsg("GODMODE OFF")	
-    EndIf
-
-End Function
-
-; ---------------------------------------------------------------------------
 
 Function Cmd_Revive(args$)
 
@@ -565,139 +425,9 @@ Function Cmd_Revive(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
-
-Function Cmd_NoClip(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					
-    Select StrTemp
-        Case "on", "1", "true"
-            NoClip = True
-            Playable = True
-        Case "off", "0", "false"
-            NoClip = False	
-            RotateEntity Collider, 0, EntityYaw(Collider), 0
-        Default
-            NoClip = Not NoClip
-            If NoClip = False Then		
-                RotateEntity Collider, 0, EntityYaw(Collider), 0
-            Else
-                Playable = True
-            EndIf
-    End Select
-    
-    If NoClip Then
-        CreateConsoleMsg("NOCLIP ON")
-    Else
-        CreateConsoleMsg("NOCLIP OFF")
-    EndIf
-    
-    DropSpeed = 0
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_ShowFPS(args$)
-
-    ShowFPS = Not ShowFPS
-    CreateConsoleMsg("ShowFPS: "+Str(ShowFPS))
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_DebugHUD(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    Select StrTemp
-        Case "on", "1", "true"
-            DebugHUD = True
-        Case "off", "0", "false"
-            DebugHUD = False
-        Default
-            DebugHUD = Not DebugHUD
-    End Select
-    
-    If DebugHUD Then
-        CreateConsoleMsg("Debug Mode On")
-    Else
-        CreateConsoleMsg("Debug Mode Off")
-    EndIf
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_StopSounds(args$)
-
-    KillSounds()
-					
-    For e.Events = Each Events
-        If e\EventName = "alarm" Then 
-            If e\room\NPC[0] <> Null Then RemoveNPC(e\room\NPC[0])
-            If e\room\NPC[1] <> Null Then RemoveNPC(e\room\NPC[1])
-            If e\room\NPC[2] <> Null Then RemoveNPC(e\room\NPC[2])
-            
-            FreeEntity e\room\Objects[0] : e\room\Objects[0]=0
-            FreeEntity e\room\Objects[1] : e\room\Objects[1]=0
-            PositionEntity Curr173\Collider, 0,0,0
-            ResetEntity Curr173\Collider
-            ShowEntity Curr173\obj
-            RemoveEvent(e)
-            Exit
-        EndIf
-    Next
-    CreateConsoleMsg("Stopped all sounds.")
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_CameraFog(args$)
-
-    args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    CameraFogNear = Float(Left(args, Len(args) - Instr(args, " ")))
-    CameraFogFar = Float(Right(args, Len(args) - Instr(args, " ")))
-    CreateConsoleMsg("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_Gamma(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    ScreenGamma = Int(StrTemp)
-    CreateConsoleMsg("Gamma set to " + ScreenGamma)
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_Spawn(args$)
-
-    args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    StrTemp$ = Piece$(args$, 1)
-    StrTemp2$ = Piece$(args$, 2)
-    
-    ;Hacky fix for when the user doesn't input a second parameter.
-    If (StrTemp <> StrTemp2) Then
-        Console_SpawnNPC(StrTemp, StrTemp2)
-    Else
-        Console_SpawnNPC(StrTemp)
-    EndIf
-
-End Function
-
-; ---------------------------------------------------------------------------
-
 Function Cmd_InfStam(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
-    Select StrTemp
+    Select args$
         Case "on", "1", "true"
             InfiniteStamina% = True						
         Case "off", "0", "false"
@@ -714,7 +444,138 @@ Function Cmd_InfStam(args$)
 
 End Function
 
+Function Cmd_Godmode(args$)
+					
+    Select args$
+        Case "on", "1", "true"
+            GodMode = True						
+        Case "off", "0", "false"
+            GodMode = False
+        Default
+            GodMode = Not GodMode
+    End Select
+
+    If GodMode Then
+        CreateConsoleMsg("GODMODE ON")
+    Else
+        CreateConsoleMsg("GODMODE OFF")	
+    EndIf
+
+End Function
+
+Function Cmd_NoTarget(args$)
+					
+    Select args
+        Case "on", "1", "true"
+            NoTarget% = True						
+        Case "off", "0", "false"
+            NoTarget% = False	
+        Default
+            NoTarget% = Not NoTarget%
+    End Select
+    
+    If NoTarget% = False Then
+        CreateConsoleMsg("NOTARGET OFF")
+    Else
+        CreateConsoleMsg("NOTARGET ON")	
+    EndIf
+
+End Function
+
+Function Cmd_SetBlinkEffect(args$)
+
+    BlinkEffect = Float(Left(args, Len(args) - Instr(args, " ")))
+    BlinkEffectTimer = Float(Right(args, Len(args) - Instr(args, " ")))
+    CreateConsoleMsg("Set BlinkEffect to: " + BlinkEffect + "and BlinkEffect timer: " + BlinkEffectTimer)
+
+End Function
+
+; ===========================================================================
+; Item Functions
+; ===========================================================================
+
+Function Cmd_SpawnItem(args$)
+
+    Local itt.ItemTemplates = FindItemTemplate(args$)
+    If itt = Null Then
+        CreateConsoleMsg("Item not found.",255,150,0)
+    Else
+        CreateConsoleMsg(itt\displayname + " spawned.")
+        it.Items = CreateItem(itt\name, EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+        EntityType(it\collider, HIT_ITEM)
+
+        If itt\name = "snavulti" Lor itt\name = "fineradio" Lor itt\name = "veryfineradio" Then
+            it\state = 101
+        EndIf
+    End If
+
+End Function
+
+Function Cmd_ListItems(args$)
+
+    CreateConsoleMsg("Listing items:")
+    For itt.ItemTemplates = Each ItemTemplates
+        CreateConsoleMsg("- " + itt\displayname + "(" + itt\name + ")")
+    Next
+
+End Function
+
 ; ---------------------------------------------------------------------------
+
+Function Cmd_Spawn420(args$)
+
+    For i = 1 To 20
+        If Rand(2)=1 Then
+            it.Items = CreateItem("scp420j", EntityX(Collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(Camera,True), EntityZ(Collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
+        Else
+            it.Items = CreateItem("joint", EntityX(Collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(Camera,True), EntityZ(Collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
+        EndIf
+        EntityType (it\collider, HIT_ITEM)
+    Next
+    PlaySound_Strict LoadTempSound("SFX\Music\420J.ogg")
+
+End Function
+
+Function Cmd_SpawnRadio(args$)
+
+    it.Items = CreateItem("fineradio", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+    EntityType(it\collider, HIT_ITEM)
+    it\state = 101
+
+End Function
+
+Function Cmd_SpawnNVG(args$)
+
+    it.Items = CreateItem("nvgoggles", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+    EntityType(it\collider, HIT_ITEM)
+    it\state = 1000
+
+End Function
+
+Function Cmd_SpawnPumpkin(args$)
+
+    CreateConsoleMsg("What pumpkin?")
+
+End Function
+
+Function Cmd_SpawnNav(args$)
+
+    it.Items = CreateItem("snavulti", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+    EntityType(it\collider, HIT_ITEM)
+    it\state = 101
+
+End Function
+
+; ===========================================================================
+; Gameplay Functions
+; ===========================================================================
+
+Function Cmd_Ending(args$)
+
+    SelectedEnding = args$
+    KillTimer = -0.1
+
+End Function
 
 Function Cmd_ToggleWarheadLever(args$)
 
@@ -727,13 +588,9 @@ Function Cmd_ToggleWarheadLever(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
-
 Function Cmd_UnlockExits(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
-    Select StrTemp
+    Select args$
         Case "a"
             For e.Events = Each Events
                 If e\EventName = "gateaentrance" Then
@@ -769,134 +626,8 @@ Function Cmd_UnlockExits(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
-
-Function Cmd_Kill(args$)
-
-    KillTimer = -1
-    DeathMSG = I_Loc\DeathMessage_Suicide[Rand(4)]
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_PlayMusic(args$)
-
-    ; I think this might be broken since the FMod library streaming was added. -Mark
-    If Instr(ConsoleInput, " ")<>0 Then
-        StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    Else
-        StrTemp$ = ""
-    EndIf
-    
-    If StrTemp$ <> ""
-        PlayCustomMusic% = True
-        If CustomMusic <> 0 Then FreeSound_Strict CustomMusic : CustomMusic = 0
-        If MusicCHN <> 0 Then StopChannel MusicCHN
-        CustomMusic = LoadSound_Strict("SFX\Music\Custom\"+StrTemp$)
-        If CustomMusic = 0
-            PlayCustomMusic% = False
-        EndIf
-    Else
-        PlayCustomMusic% = False
-        If CustomMusic <> 0 Then FreeSound_Strict CustomMusic : CustomMusic = 0
-        If MusicCHN <> 0 Then StopChannel MusicCHN
-    EndIf
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_TP(args$)
-
-    For n.NPCs = Each NPCs
-        If n\NPCtype = NPCtypeMTF
-            If n\MTFLeader = Null
-                PositionEntity Collider,EntityX(n\Collider),EntityY(n\Collider)+5,EntityZ(n\Collider)
-                ResetEntity Collider
-                Exit
-            EndIf
-        EndIf
-    Next
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_Tele(args$)
-
-    args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    StrTemp$ = Piece$(args$,1," ")
-    StrTemp2$ = Piece$(args$,2," ")
-    StrTemp3$ = Piece$(args$,3," ")
-    PositionEntity Collider,Float(StrTemp$),Float(StrTemp2$),Float(StrTemp3$)
-    PositionEntity Camera,Float(StrTemp$),Float(StrTemp2$),Float(StrTemp3$)
-    ResetEntity Collider
-    ResetEntity Camera
-    CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+EntityX(Collider)+"|"+EntityY(Collider)+"|"+EntityZ(Collider))
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_NoTarget(args$)
-
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					
-    Select StrTemp
-        Case "on", "1", "true"
-            NoTarget% = True						
-        Case "off", "0", "false"
-            NoTarget% = False	
-        Default
-            NoTarget% = Not NoTarget%
-    End Select
-    
-    If NoTarget% = False Then
-        CreateConsoleMsg("NOTARGET OFF")
-    Else
-        CreateConsoleMsg("NOTARGET ON")	
-    EndIf
-
-End Function
-
-; ---------------------------------------------------------------------------
-
-Function Cmd_SpawnRadio(args$)
-
-    it.Items = CreateItem("fineradio", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
-    EntityType(it\collider, HIT_ITEM)
-    it\state = 101
-
-End Function
-
-Function Cmd_SpawnNVG(args$)
-
-    it.Items = CreateItem("nvgoggles", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
-    EntityType(it\collider, HIT_ITEM)
-    it\state = 1000
-
-End Function
-
-Function Cmd_SpawnPumpkin(args$)
-
-    CreateConsoleMsg("What pumpkin?")
-
-End Function
-
-Function Cmd_SpawnNav(args$)
-
-    it.Items = CreateItem("snavulti", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
-    EntityType(it\collider, HIT_ITEM)
-    it\state = 101
-
-End Function
-
-; ---------------------------------------------------------------------------
-
 Function Cmd_SetEventState(args$)
 
-    args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
     StrTemp$ = Piece$(args$,1," ")
     StrTemp2$ = Piece$(args$,2," ")
     StrTemp3$ = Piece$(args$,3," ")
@@ -927,64 +658,337 @@ Function Cmd_SetEventState(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
-
-Function Cmd_SpawnParticles(args$)
-
-    If Instr(ConsoleInput, " ")<>0 Then
-        StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    Else
-        StrTemp$ = ""
-    EndIf
-    
-    If Int(StrTemp) >= 0 And Int(StrTemp) <= 2 ;<--- This is the maximum ID of particles by Devil Particle system, will be increased after time - ENDSHN
-        SetEmitter(Collider,ParticleEffect[Int(StrTemp)])
-        CreateConsoleMsg("Spawned particle emitter with ID "+Int(StrTemp)+" at player's position.")
-    Else
-        CreateConsoleMsg("Particle emitter with ID "+Int(StrTemp)+" not found.",255,150,0)
-    EndIf
-
-End Function
-
-; ---------------------------------------------------------------------------
-
 Function Cmd_GiveAchievement(args$)
-
-    If Instr(ConsoleInput, " ")<>0 Then
-        StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    Else
-        StrTemp$ = ""
-    EndIf
     
-    If Int(StrTemp)>=0 And Int(StrTemp)<MAXACHIEVEMENTS
+    If Int(args$)>=0 And Int(args$)<MAXACHIEVEMENTS
         ;; ToDo:: Fix this -- we can't called achievements as its not yet loaded as the console now loads before achievements.bb is included
         ;; We cannot move achievements higher up as there is a global variable naming conflict higher up in main.bb
         ;Achievements(Int(StrTemp))=True
         ;CreateConsoleMsg("Achievemt "+AchievementStrings(Int(StrTemp))+" unlocked.")
     Else
-        CreateConsoleMsg("Achievement with ID "+Int(StrTemp)+" doesn't exist.",255,150,0)
+        CreateConsoleMsg("Achievement with ID "+Int(args$)+" doesn't exist.",255,150,0)
+    EndIf
+
+End Function
+
+; ===========================================================================
+; Utility Functions
+; ===========================================================================
+
+Function Cmd_StopSounds(args$)
+
+    KillSounds()
+					
+    For e.Events = Each Events
+        If e\EventName = "alarm" Then 
+            If e\room\NPC[0] <> Null Then RemoveNPC(e\room\NPC[0])
+            If e\room\NPC[1] <> Null Then RemoveNPC(e\room\NPC[1])
+            If e\room\NPC[2] <> Null Then RemoveNPC(e\room\NPC[2])
+            
+            FreeEntity e\room\Objects[0] : e\room\Objects[0]=0
+            FreeEntity e\room\Objects[1] : e\room\Objects[1]=0
+            PositionEntity Curr173\Collider, 0,0,0
+            ResetEntity Curr173\Collider
+            ShowEntity Curr173\obj
+            RemoveEvent(e)
+            Exit
+        EndIf
+    Next
+    CreateConsoleMsg("Stopped all sounds.")
+
+End Function
+
+Function Cmd_SpawnParticles(args$)
+    
+    Local particleIDToSpawn% = Int(args$)
+
+    If particleIDToSpawn >= 0 And particleIDToSpawn <= 2 ;<--- This is the maximum ID of particles by Devil Particle system, will be increased after time - ENDSHN
+        SetEmitter(Collider,ParticleEffect[particleIDToSpawn])
+        CreateConsoleMsg("Spawned particle emitter with ID " + particleIDToSpawn + " at player's position.")
+    Else
+        CreateConsoleMsg("Particle emitter with ID " + particleIDToSpawn + " not found.",255,150,0)
+    EndIf
+
+End Function
+
+Function Cmd_PlayMusic(args$)
+    
+    If args$ <> ""
+        PlayCustomMusic% = True
+        If CustomMusic <> 0 Then FreeSound_Strict CustomMusic : CustomMusic = 0
+        If MusicCHN <> 0 Then StopChannel MusicCHN
+        CustomMusic = LoadSound_Strict("SFX\Music\Custom\"+args$)
+        If CustomMusic = 0
+            PlayCustomMusic% = False
+        EndIf
+    Else
+        PlayCustomMusic% = False
+        If CustomMusic <> 0 Then FreeSound_Strict CustomMusic : CustomMusic = 0
+        If MusicCHN <> 0 Then StopChannel MusicCHN
+    EndIf
+
+End Function
+
+; ===========================================================================
+; NPC Functions
+; ===========================================================================
+
+Function Cmd_SpawnNPC(args$)
+	Local n.NPCs
+	Local consoleMSG$
+
+    Local npcToSpawn$ = Piece$(args$, 1)
+    Local npcRequestedState$ = ""
+    if (Piece$(args$, 2) <> "") Then npcRequestedState = Piece$(args$, 2)
+	
+	Select npcToSpawn$ 
+		Case "008", "008zombie"
+			n.NPCs = CreateNPC(NPCtype008, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			n\State = 1
+			consoleMSG = "SCP-008 infected human spawned."
+			
+		Case "049", "scp049", "scp-049"
+			n.NPCs = CreateNPC(NPCtype049, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			n\State = 1
+			consoleMSG = "SCP-049 spawned."
+			
+		Case "049-2", "0492", "scp-049-2", "scp049-2", "049zombie"
+			n.NPCs = CreateNPC(NPCtypeZombie, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			n\State = 1
+			consoleMSG = "SCP-049-2 spawned."
+			
+		Case "066", "scp066", "scp-066"
+			n.NPCs = CreateNPC(NPCtype066, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "SCP-066 spawned."
+			
+		Case "096", "scp096", "scp-096"
+			n.NPCs = CreateNPC(NPCtype096, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			n\State = 5
+			If (Curr096 = Null) Then Curr096 = n
+			consoleMSG = "SCP-096 spawned."
+			
+		Case "106", "scp106", "scp-106", "larry"
+			n.NPCs = CreateNPC(NPCtypeOldMan, EntityX(Collider), EntityY(Collider) - 0.5, EntityZ(Collider))
+			n\State = -1
+			consoleMSG = "SCP-106 spawned."
+			
+		Case "173", "scp173", "scp-173", "statue"
+			n.NPCs = CreateNPC(NPCtype173, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			Curr173 = n
+			If (Curr173\Idle = 3) Then Curr173\Idle = False
+			consoleMSG = "SCP-173 spawned."
+		Case "372", "scp372", "scp-372"
+			n.NPCs = CreateNPC(NPCtype372, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "SCP-372 spawned."
+			
+		Case "513-1", "5131", "scp513-1", "scp-513-1"
+			n.NPCs = CreateNPC(NPCtype5131, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "SCP-513-1 spawned."
+			
+		Case "860-2", "8602", "scp860-2", "scp-860-2"
+			CreateConsoleMsg("SCP-860-2 cannot be spawned with the console. Sorry!", 255, 0, 0)
+			
+		Case "939", "scp939", "scp-939"
+			CreateConsoleMsg("SCP-939 instances cannot be spawned with the console. Sorry!", 255, 0, 0)
+
+		Case "966", "scp966", "scp-966"
+			n.NPCs = CreateNPC(NPCtype966, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "SCP-966 instance spawned."
+			
+		Case "1048a", "1048-a", "scp1048-a", "scp-1048-a", "scp1048a", "scp-1048a"
+			n.NPCs = CreateNPC(NPCtype1048a, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "SCP-1048-A spawned."
+			
+		Case "1499-1", "14991", "scp-1499-1", "scp1499-1"
+			n.NPCs = CreateNPC(NPCtype1499, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "SCP-1499-1 instance spawned."
+			
+		Case "class-d", "classd", "d"
+			n.NPCs = CreateNPC(NPCtypeD, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "D-Class spawned."
+			
+		Case "guard"
+			n.NPCs = CreateNPC(NPCtypeGuard, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "Guard spawned."
+			
+		Case "mtf"
+			n.NPCs = CreateNPC(NPCtypeMTF, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "MTF unit spawned."
+			
+		Case "apache", "helicopter"
+			n.NPCs = CreateNPC(NPCtypeApache, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "Apache spawned."
+			
+		Case "tentacle"
+			n.NPCs = CreateNPC(NPCtypeTentacle, EntityX(Collider), EntityY(Collider), EntityZ(Collider))
+			consoleMSG = "SCP-035 tentacle spawned."
+			
+		Case "clerk"
+			n.NPCs = CreateNPC(NPCtypeClerk, EntityX(Collider), EntityY(Collider) + 0.2, EntityZ(Collider))
+			consoleMSG = "Clerk spawned."
+			
+		Default 
+			CreateConsoleMsg("NPC type not found.", 255, 0, 0) : Return
+	End Select
+	
+	If n <> Null
+		If npcRequestedState <> "" Then 
+            n\State = Float(npcRequestedState) 
+            consoleMSG = consoleMSG + " (State = " + n\State + ")"
+        EndIf
+	EndIf
+	
+	CreateConsoleMsg(consoleMSG)
+	
+End Function
+
+; ---------------------------------------------------------------------------
+
+Function Cmd_173_State(args$)
+
+    CreateConsoleMsg("SCP-173")
+    CreateConsoleMsg("Position: " + EntityX(Curr173\obj) + ", " + EntityY(Curr173\obj) + ", " + EntityZ(Curr173\obj))
+    CreateConsoleMsg("Idle: " + Curr173\Idle)
+    CreateConsoleMsg("State: " + Curr173\State)
+
+End Function
+
+Function Cmd_173_Enable(args$)
+
+    Curr173\Idle = False
+    ShowEntity Curr173\obj
+    ShowEntity Curr173\Collider
+
+End Function
+
+Function Cmd_173_Disable(args$)
+
+    Curr173\Idle = 3 ;This phenominal comment is brought to you by PolyFox. His absolute wisdom in this fatigue of knowledge brought about a new era of 173 state checks.
+    HideEntity Curr173\obj
+    HideEntity Curr173\Collider
+
+End Function
+
+Function Cmd_173_SetSpeed(args$)
+
+    Curr173\Speed = Float(args$)
+    CreateConsoleMsg("173's speed set to " + args$)
+
+End Function
+
+Function Cmd_173_Teleport(args$)
+
+    PositionEntity Curr173\Collider,EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider)
+    ResetEntity Curr173\Collider
+
+End Function
+
+Function Cmd_173_Halloween(args$)
+
+    HalloweenTex = Not HalloweenTex
+    If HalloweenTex Then
+        Local tex = LoadTexture_Strict("GFX\npcs\173h.pt", 1)
+        EntityTexture Curr173\obj, tex, 0, 0
+        FreeTexture tex
+        CreateConsoleMsg("173 JACK-O-LANTERN ON")
+    Else
+        Local tex2 = LoadTexture_Strict("GFX\npcs\173texture.jpg", 1)
+        EntityTexture Curr173\obj, tex2, 0, 0
+        FreeTexture tex2
+        CreateConsoleMsg("173 JACK-O-LANTERN OFF")
     EndIf
 
 End Function
 
 ; ---------------------------------------------------------------------------
 
-Function Cmd_SetBlinkEffect(args$)
+Function Cmd_106_State(args$)
 
-    args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-    BlinkEffect = Float(Left(args, Len(args) - Instr(args, " ")))
-    BlinkEffectTimer = Float(Right(args, Len(args) - Instr(args, " ")))
-    CreateConsoleMsg("Set BlinkEffect to: " + BlinkEffect + "and BlinkEffect timer: " + BlinkEffectTimer)
+    CreateConsoleMsg("SCP-106")
+    CreateConsoleMsg("Position: " + EntityX(Curr106\obj) + ", " + EntityY(Curr106\obj) + ", " + EntityZ(Curr106\obj))
+    CreateConsoleMsg("Idle: " + Curr106\Idle)
+    CreateConsoleMsg("State: " + Curr106\State)
+
+End Function
+
+Function Cmd_106_Enable(args$)
+
+    Curr106\Idle = False
+    Contained106 = False
+    ShowEntity Curr106\Collider
+    ShowEntity Curr106\obj
+
+End Function
+
+Function Cmd_106_Disable(args$)
+
+    Curr106\Idle = True
+    Curr106\State = 200000
+    Contained106 = True
+
+End Function
+
+Function Cmd_106_SetSpeed(args$)
+
+    Curr106\Speed = Float(args$)
+    CreateConsoleMsg("106's speed set to " + args$)
+
+End Function
+
+Function Cmd_106_Teleport(args$)
+
+    Curr106\State = 0
+    Curr106\Idle = False
 
 End Function
 
 ; ---------------------------------------------------------------------------
 
-Function Cmd_Omni(args$)
+Function Cmd_096_State(args$)
 
-    StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+    For n.NPCs = Each NPCs
+        If n\NPCtype = NPCtype096 Then
+            CreateConsoleMsg("SCP-096")
+            CreateConsoleMsg("Position: " + EntityX(n\obj) + ", " + EntityY(n\obj) + ", " + EntityZ(n\obj))
+            CreateConsoleMsg("Idle: " + n\Idle)
+            CreateConsoleMsg("State: " + n\State)
+            return
+        EndIf
+    Next
+    CreateConsoleMsg("SCP-096 has not spawned.")
+
+End Function
+
+Function Cmd_096_Reset(args$)
+
+    For n.NPCs = Each NPCs
+        If n\NPCtype = NPCtype096 Then
+            n\State = 0
+            If n\SoundChn<>0
+                StopStream_Strict(n\SoundChn) : n\SoundChn=0 : n\SoundChn_isStream = False
+            EndIf
+            If n\SoundChn2<>0
+                StopStream_Strict(n\SoundChn2) : n\SoundChn2=0 : n\SoundChn2_isStream = False
+            EndIf
+            return
+        EndIf
+    Next
+
+End Function
+
+; ---------------------------------------------------------------------------
+
+Function Cmd_427_State(args$)
+
+    I_427\Timer = Float(args$)*70.0
+
+End Function
+
+; ---------------------------------------------------------------------------
+
+Function Cmd_914_Omni(args$)
 					
-    Select StrTemp
+    Select args$
         Case "on", "1", "true"
             GuaranteedOmni% = True						
         Case "off", "0", "false"
@@ -1001,7 +1005,23 @@ Function Cmd_Omni(args$)
 
 End Function
 
-; ---------------------------------------------------------------------------
+; ===========================================================================
+; Joke Functions
+; ===========================================================================
+
+Function Cmd_TP(args$)
+
+    For n.NPCs = Each NPCs
+        If n\NPCtype = NPCtypeMTF
+            If n\MTFLeader = Null
+                PositionEntity Collider,EntityX(n\Collider),EntityY(n\Collider)+5,EntityZ(n\Collider)
+                ResetEntity Collider
+                Exit
+            EndIf
+        EndIf
+    Next
+
+End Function
 
 Function Cmd_Jorge(args$)
 

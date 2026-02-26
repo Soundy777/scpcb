@@ -1,6 +1,8 @@
 ; ===========================================================================
 ; ConsoleCore.bb
 ; ===========================================================================
+;; ToDo:: Implement Alias functionality for commands (i.e. "god" for "godmode", "tp" for "teleport", etc.)
+; ===========================================================================
 
 Include "src/console/ConsoleCommands.bb"
 
@@ -79,7 +81,7 @@ Function ExecuteConsoleCommand(input$)
     	CreateConsoleMsg("Unknown command: " + cmd$)
 		CreateConsoleMsg("Type 'help' for a list of available commands.")
 	Else
-		Console_DispatchCommand(commandID, args)
+		Console_DispatchCommand(commandID, Lower(args$))
 	End If
 
 End Function

@@ -126,34 +126,48 @@ Type ConsoleLayout
 	Field Width%
 	Field Height%
 	Field ContentHeight%
+	Field ScrollbarX%
+	Field ScrollbarY%
 	Field ScrollbarHeight%
+	Field ScrollbarWidth%
 End Type
 
 Const CONSOLE_HEIGHT_PX = 300
 Const CONSOLE_PADDING_PX = 30
 Const CONSOLE_LINE_HEIGHT_PX = 20
-Const CONSOLE_MIN_SCROLLBAR_HEIGHT_PX = 10
 const CONSOLE_MOUSESCROLL_SPEED = 15
+
+Const CONSOLE_SCROLLBAR_MINHEIGHT_PX = 10
+Const CONSOLE_SCROLLBAR_WIDTH_PX = 20
 
 Function Console_CalculateLayout.ConsoleLayout()
 
 	Local l.ConsoleLayout = New ConsoleLayout
 	
+	; Calculate console dimensions & position
 	l\X = 0
 	l\Y = GraphicHeight - CONSOLE_HEIGHT_PX*MenuScale
 	l\Width = GraphicWidth
 	l\Height = (CONSOLE_HEIGHT_PX - CONSOLE_PADDING_PX)*MenuScale
 
-	; calculate content height
-	Local count%
+	; Compute total number of console messages
+	Local numConsoleMessages%
 	For cm.ConsoleMsg = Each ConsoleMsg
-		count = count + 1
+		numConsoleMessages = numConsoleMessages + 1
 	Next
 	
-	l\ContentHeight = count * (CONSOLE_LINE_HEIGHT_PX*MenuScale)
+	; Calculate content height
+	l\ContentHeight = numConsoleMessages * (CONSOLE_LINE_HEIGHT_PX*MenuScale)
 
-	If count > 0 Then
-		l\ScrollbarHeight = Max(l\Height * (Float(l\Height)/l\ContentHeight), CONSOLE_MIN_SCROLLBAR_HEIGHT_PX)
+	; Calculate scroll bar dimensions & position
+	;; ToDo:: extract 23 into a constant & work out why its 3 more than the width value? 
+	l\ScrollbarX = layout\X + layout\Width - 23 * MenuScale
+    l\ScrollbarY = Int(layout\Y + layout\Height - layout\ScrollbarHeight + (Console\Scroll * layout\ScrollbarHeight / layout\Height))
+
+	l\ScrollbarWidth = CONSOLE_SCROLLBAR_WIDTH_PX * MenuScale
+
+	If numConsoleMessages > 0 Then
+		l\ScrollbarHeight = Max(l\Height * (Float(l\Height)/l\ContentHeight), CONSOLE_SCROLLBAR_MINHEIGHT_PX)
 	Else
 		l\ScrollbarHeight = l\Height
 	EndIf
@@ -198,16 +212,12 @@ End Function
 
 Function Console_HandleScrollbarDrag(layout.ConsoleLayout)
 
-	;Local scrollbarX = layout\Width - 20*MenuScale
-	;Local scrollbarY = layout\Y
-
-	Local scrollbarX = layout\X + layout\Width - 23 * MenuScale
-    Local scrollbarY# = layout\Y + layout\Height - layout\ScrollbarHeight + (Console\Scroll * layout\ScrollbarHeight / layout\Height)
+	;; ToDO:: use the layout versions of scrollbar x,y,width,height
 
 	Local scrollbarHeight = layout\ScrollbarHeight
 
 	If MouseHit1 Then
-		isHighlighted% = MouseOn(scrollbarX,scrollbarY,20*MenuScale,layout\ScrollbarHeight)
+		isHighlighted% = MouseOn(scrollbarX,scrollbarY,layout\ScrollbarWidth,layout\ScrollbarHeight)
 		If isHighlighted Then
 			Console\ScrollDragging = True
 			Console\ScrollGrabOffset = ScaledMouseY()
@@ -238,14 +248,12 @@ End Function
 ; ---------------------------------------------------------------------------
 
 Function UpdateConsole()
-	Local e.Events ; This is old code - remove it once complete
 	
 	If Not Options\CanOpenConsole Then Return
 	;If Not Console\IsOpen Then Return
 	If Not Console_IsOpen Then Return ; ToDo:: remove this
 
 	Local layout.ConsoleLayout = Console_CalculateLayout()
-
 	Console_TrimMessages(1000)
 
 	; Console_UpdateInput()
@@ -256,6 +264,7 @@ Function UpdateConsole()
 	;Console_Render(layout)
 
 	; Refactor Line --------------------------------
+	Local e.Events ; This is old code - remove it once complete
 	
 	Local cm.ConsoleMsg
 	

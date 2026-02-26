@@ -30,6 +30,8 @@ End Function
 
 Function Console_RenderScrollbar(layout.ConsoleLayout)
 
+	;; ToDo:: use the layout versions of scrollbar x,y,width & height
+
 	Local scrollbarX = layout\X + layout\Width - 23 * MenuScale
     Local scrollbarY# = layout\Y + layout\Height - layout\ScrollbarHeight + (Console\Scroll * layout\ScrollbarHeight / layout\Height)
 

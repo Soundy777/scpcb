@@ -4,8 +4,8 @@ BootGame()
 
 ;; ToDo:: Replace instances of these old path globals with the new Paths_ variants
 ;; ToDo:: rename the Paths_ variants to just Path_
-Global OptionFile$ = Paths_OptionsFile
-Global ModsFile$ = Paths_ModsFile
+Global OptionFile$ = PATH_FILE_OPTIONS
+Global ModsFile$ = PATH_FILE_MODS
 
 ;; ToDo:: find a more logical place to include this - perhaps in a dedicated modules loader? (ask chat)
 Include "DevilParticleSystem.bb"

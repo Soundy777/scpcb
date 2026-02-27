@@ -66,8 +66,8 @@ Function LoadOptions()
 End Function
 
 Function GetOptionString$(section$, key$)
-	Local opt$ = GetINIString(Paths_OptionsFile, section, key)
-	If opt = "" Then Return GetINIString(OPTION_DEFAULT_FILE, section, key)
+	Local opt$ = GetINIString(PATH_FILE_OPTIONS, section, key)
+	If opt = "" Then Return GetINIString(PATH_FILE_OPTIONS_DEFAULT, section, key)
 	Return opt
 End Function
 

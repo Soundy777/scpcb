@@ -1,14 +1,13 @@
-Global Paths_DataDir$
-Global Paths_OptionsFile$
-Global Paths_ModsFile$
-
-Const OPTION_DEFAULT_FILE$ = "defaults.ini"
+Global PATH_DIR_DATA$
+Global PATH_FILE_OPTIONS$
+Const PATH_FILE_OPTIONS_DEFAULT$ = "defaults.ini"
+Global PATH_FILE_MODS$
 
 Function InitPaths()
 
-    Paths_DataDir = ResolveDataDir()
-    Paths_OptionsFile = ResolveOptionsFile()
-    Paths_ModsFile = Paths_DataDir + "\mods.ini"
+    PATH_DIR_DATA = ResolveDataDir()
+    PATH_FILE_OPTIONS = ResolveOptionsFile()
+    PATH_FILE_MODS = PATH_DIR_DATA + "\mods.ini"
 
 End Function
 
@@ -26,7 +25,7 @@ End Function
 
 Function ResolveOptionsFile$()
 
-    Local file$ = Paths_DataDir + "\options.ini"
+    Local file$ = PATH_DIR_DATA + "\options.ini"
 
 	If FileType(file) <> 1 Lor HasCLIFlag("defaults") Lor HasCLIFlag("default") Then
 		Local f% = WriteFile(file)

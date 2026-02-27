@@ -1,15 +1,15 @@
-Global gCommandLine$
+Global CachedCommandLine$
 
 Function InitCLI()
 
-    gCommandLine = CommandLine()
+    CachedCommandLine = CommandLine()
     
 End Function
 
 Function HasCLIFlag%(name$)
 
     name = "-" + name
-    Local cmd$ = gCommandLine
+    Local cmd$ = CachedCommandLine
     Local pos% = Instr(cmd, " " + name + " ")
     If pos <> 0 Then Return True
     pos = Instr(cmd, name + " ")
@@ -31,7 +31,7 @@ End Function
 Function GetCLIString$(name$, def$="")
 
 	name = "-" + name + " "
-	Local cmd$ = gCommandLine
+	Local cmd$ = CachedCommandLine
 	Local begin% = Instr(cmd, " " + name)
 	If begin = 0 Then
 		begin = Instr(cmd, name)

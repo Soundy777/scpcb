@@ -2,14 +2,16 @@
 ; ConsoleCore.bb
 ; ===========================================================================
 ;; ToDo:: Implement Alias functionality for commands (i.e. "god" for "godmode", "tp" for "teleport", etc.)
-;; ToDo:: Find a better way to implement menu scaling in a way where we can do it all at once instead of adhoc throughout
-;; ToDo:: Additionally, test that the console actually properly applies menu scale to all of its UI Elements
+;; ToDo:: MenuScale:: Find a better way to implement menu scaling in a way where we can do it all at once instead of adhoc throughout
+;; ToDo:: MenuScale:: Additionally, test that the console actually properly applies menu scale to all of its UI Elements
+;; ToDo:: MenuScale:: consider applying menu scaling at the UI component level instead of ever at the higher order "Screen" level
 ;; ToDo:: The InputBox logic inside of the renderer handles layout, input, rendering and data - refactor that out but when we overhaul the UI Widgets
+;; ToDo:: build a reusable TextArea UI Component which manages the scroll bar & scrolling logic itself - dramatically reducing the consoles code
 ;; ToDo:: Consider overhauling some of the naming conventions used here for various functions and variables (especially Console_UpdateSubmission)
 ;; ToDo:: move ConsoleR/G/B into the ConsoleState Type (this is used to globally override the color for one tick)
 ;; ToDo:: refactor ConsoleOpen such that its usage throughout the codebase is replaced with ConsoleOpen()/Close()/Toggle() 
 ;; ToDo:: addtionally, remove checks for ConsoleOpen throughout the codebase with IsConsoleOpen() calls
-;; ToDo:: consider splitting out the update logic from this to make this purely high level orcestration
+;; ToDo:: consider splitting out the update logic from this to make this purely high level orcestration (ConsoleCore/ConsoleLogic/ConsoleRenderer)
 ;; ToDo:: During the second iteration pass, overhaul commands to use service layers instead of directly manipulating state
 ; ===========================================================================
 Include "src/console/ConsoleHistory.bb"

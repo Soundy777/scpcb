@@ -7,7 +7,7 @@ Include "StrictLoads.bb"
 Include "KeyName.bb"
 
 Include "src/core/ErrorHandling.bb"
-include "src/core/CLI.bb"
+include "src/core/CLIParser.bb"
 include "src/core/Paths.bb"
 Include "src/config/Options.bb"
 

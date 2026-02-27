@@ -2,6 +2,15 @@
 ; ConsoleCore.bb
 ; ===========================================================================
 ;; ToDo:: Implement Alias functionality for commands (i.e. "god" for "godmode", "tp" for "teleport", etc.)
+;; ToDo:: Find a better way to implement menu scaling in a way where we can do it all at once instead of adhoc throughout
+;; ToDo:: Additionally, test that the console actually properly applies menu scale to all of its UI Elements
+;; ToDo:: The InputBox logic inside of the renderer handles layout, input, rendering and data - refactor that out but when we overhaul the UI Widgets
+;; ToDo:: Consider overhauling some of the naming conventions used here for various functions and variables (especially Console_UpdateSubmission)
+;; ToDo:: move ConsoleR/G/B into the ConsoleState Type (this is used to globally override the color for one tick)
+;; ToDo:: refactor ConsoleOpen such that its usage throughout the codebase is replaced with ConsoleOpen()/Close()/Toggle() 
+;; ToDo:: addtionally, remove checks for ConsoleOpen throughout the codebase with IsConsoleOpen() calls
+;; ToDo:: consider splitting out the update logic from this to make this purely high level orcestration
+;; ToDo:: During the second iteration pass, overhaul commands to use service layers instead of directly manipulating state
 ; ===========================================================================
 Include "src/console/ConsoleHistory.bb"
 Include "src/console/ConsoleRenderer.bb"
@@ -31,28 +40,40 @@ End Type
 
 ; ---------------------------------------------------------------------------
 
+Global ConsoleOpen%
+Global ConsoleEnabled%
+
 Global Console.ConsoleState = New ConsoleState
 
-; ---------------------------------------------------------------------------
-
-; ToDo:: Remove these when we're finished refactoring
-Global Console_IsOpen%, ConsoleInput$
-Global ConsoleScroll#,ConsoleScrollDragging%
-Global ConsoleMouseMem%
-Global ConsoleReissue.ConsoleMsg = Null
-Global ConsoleR% = 0,ConsoleG% = 255,ConsoleB% = 255
-
-Global CanOpenConsole%
+Global ConsoleR% = 255, ConsoleG% = 255, ConsoleB% = 255
 
 ; ---------------------------------------------------------------------------
 
 Function InitConsole()
-	Console_IsOpen = False
-	CanOpenConsole = Options\CanOpenConsole
+	ConsoleOpen = False
+	ConsoleEnabled = Options\ConsoleEnabled
 
 	InitConsoleCommands()
 
-	CreateConsoleMsg("Console enabled. Type 'help' for a list of commands.")
+	CreateConsoleMsg("Console enabled. Type 'help' for a list of commands.", 0, 255, 255)
+End Function
+
+; ---------------------------------------------------------------------------
+
+Function OpenConsole()
+	Console\IsOpen = True
+End Function
+
+Function CloseConsole()
+	Console\IsOpen = False
+End Function
+
+Function ToggleConsole()
+	Console\IsOpen = Not Console\IsOpen
+End Function
+
+Function IsConsoleOpen%()
+	return Console\IsOpen
 End Function
 
 ; ---------------------------------------------------------------------------
@@ -73,10 +94,14 @@ End Type
 Const CONSOLE_HEIGHT_PX = 300
 Const CONSOLE_PADDING_PX = 30
 Const CONSOLE_LINE_HEIGHT_PX = 20
+const CONSOLE_LINE_LEFTPADDING_PX = 20
 const CONSOLE_MOUSESCROLL_SPEED = 15
 
 Const CONSOLE_SCROLLBAR_MINHEIGHT_PX = 10
 Const CONSOLE_SCROLLBAR_WIDTH_PX = 20
+Const CONSOLE_SCROLLBAR_PADDINGRIGHT_PX = 6
+Const CONSOLE_SCROLLBAR_PADDINGTOP_PX = 8
+Const CONSOLE_SCROLLBAR_PADDINGBOTTOM_PX = 6
 
 Const CONSOLE_INPUTBOX_HEIGHT = 30
 
@@ -91,7 +116,7 @@ Function Console_CalculateLayout.ConsoleLayout()
 	l\Height = (CONSOLE_HEIGHT_PX - CONSOLE_PADDING_PX)*MenuScale
 
 	; Compute total number of console messages
-	Local numConsoleMessages%
+	Local numConsoleMessages% = 0
 	For cm.ConsoleMsg = Each ConsoleMsg
 		numConsoleMessages = numConsoleMessages + 1
 	Next
@@ -99,18 +124,37 @@ Function Console_CalculateLayout.ConsoleLayout()
 	; Calculate content height
 	l\ContentHeight = numConsoleMessages * (CONSOLE_LINE_HEIGHT_PX*MenuScale)
 
+	; Zero out scroll if no messages are present
+	If numConsoleMessages = 0 Then Console\Scroll = 0
+
 	; Calculate scroll bar dimensions & position
 	l\ScrollbarWidth = CONSOLE_SCROLLBAR_WIDTH_PX * MenuScale
 
-	If numConsoleMessages > 0 Then
+	If numConsoleMessages > 0 And l\ContentHeight > l\Height Then
 		l\ScrollbarHeight = Max(l\Height * (Float(l\Height)/l\ContentHeight), CONSOLE_SCROLLBAR_MINHEIGHT_PX)
 	Else
-		l\ScrollbarHeight = l\Height
+		l\ScrollbarHeight = l\Height - (CONSOLE_SCROLLBAR_PADDINGTOP_PX + CONSOLE_SCROLLBAR_PADDINGBOTTOM_PX)
 	EndIf
 
-	;; ToDo:: extract 23 into a constant & work out why its 3 more than the width value? 
-	l\ScrollbarX = Int(l\X + l\Width - 23 * MenuScale)
-    l\ScrollbarY = Int(l\Y + l\Height - l\ScrollbarHeight + (Console\Scroll * l\ScrollbarHeight / l\Height))
+	l\ScrollbarX = Int(l\X + l\Width - CONSOLE_SCROLLBAR_WIDTH_PX - CONSOLE_SCROLLBAR_PADDINGRIGHT_PX)
+    
+	; Calculate the y position of the scrollbar account for both scrolling and vertical padding
+	Local minScroll# = l\Height - l\ContentHeight
+	If minScroll > 0 Then minScroll = 0
+
+	Local scrollRange# = -minScroll
+	Local scrollRatio# = 0
+	If scrollRange > 0 Then
+		scrollRatio = 1 + (Console\Scroll / scrollRange)
+	EndIf
+	If scrollRatio < 0 Then scrollRatio = 0
+	If scrollRatio > 1 Then scrollRatio = 1
+
+	Local trackTop# = l\Y + CONSOLE_SCROLLBAR_PADDINGTOP_PX
+	Local trackBottom# = l\Y + l\Height - CONSOLE_SCROLLBAR_PADDINGBOTTOM_PX - l\ScrollbarHeight
+	Local trackRange# = trackBottom - trackTop
+
+	l\ScrollbarY = Int(trackTop + scrollRatio * trackRange)
 	
 	; Calculate the inputbox height
 	l\InputBoxHeight = Int(CONSOLE_INPUTBOX_HEIGHT * MenuScale)
@@ -177,10 +221,17 @@ End Function
 
 Function Console_ClampScroll(layout.ConsoleLayout)
 
+	If layout\ContentHeight <= layout\Height Then
+        Console\Scroll = 0
+        Return
+    EndIf
+
 	If Console\Scroll > 0 Then Console\Scroll = 0
 
-	Local minScroll# = -layout\ContentHeight + layout\Height
-	If Console\Scroll < minScroll Then Console\Scroll = minScroll
+	Local minScroll# = layout\Height - layout\ContentHeight
+    If Console\Scroll < minScroll Then
+        Console\Scroll = minScroll
+    EndIf
 
 End Function
 
@@ -227,7 +278,7 @@ End Function
 
 Function Console_Submit(text$)
 
-	CreateConsoleMsg("> " + text, 255,255,255)
+	CreateConsoleMsg("> " + text, 255,255,0)
 	Console_AddHistory(text)
 
 	ExecuteConsoleCommand(text)
@@ -236,7 +287,7 @@ Function Console_Submit(text$)
 
 End Function
 
-Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1
+Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1)
 	Local c.ConsoleMsg = New ConsoleMsg
 	Insert c Before First ConsoleMsg
 	
@@ -285,7 +336,7 @@ Function ExecuteConsoleCommand(input$)
 	Next
 
 	If commandID = 0 Then
-    	CreateConsoleMsg("Unknown command: " + cmd$)
+    	CreateConsoleMsg("Unknown command: " + cmd$, 255, 0 , 0)
 		CreateConsoleMsg("Type 'help' for a list of available commands.")
 	Else
 		Console_DispatchCommand(commandID, Lower(args$))
@@ -297,11 +348,11 @@ End Function
 
 Function UpdateConsole()
 	
-	If Not Options\CanOpenConsole Then Return
+	If Not Options\ConsoleEnabled Then Return
 
-	;; ToDo:: replace Console_IsOpen global with our type field Console\IsOpen
+	;; ToDo:: use Console\IsOpen when we've integrated the functions to control opening & closing of the console
 	;If Not Console\IsOpen Then Return
-	If Not Console_IsOpen Then Return
+	If Not ConsoleOpen Then Return
 
 	Console_TrimMessages(1000)
 
@@ -312,5 +363,6 @@ Function UpdateConsole()
 	Console_UpdateSubmission()
 
 	Console_Render(layout)
+	
 End Function
 ;---------------------------------------------------------------------------------------------------

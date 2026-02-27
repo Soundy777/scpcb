@@ -33,7 +33,7 @@ Type GameOptions
     Field IntroEnabled%
 
     ; Console
-    Field CanOpenConsole%
+    Field ConsoleEnabled%
     Field ConsoleAutoOpen%
 
     ; Audio
@@ -62,7 +62,7 @@ Function LoadOptions()
     Options = New GameOptions
 
     ;; ToDo:: load all options here
-    Options\CanOpenConsole = GetOptionInt("console", "enabled")
+    Options\ConsoleEnabled = GetOptionInt("console", "enabled")
 End Function
 
 Function GetOptionString$(section$, key$)

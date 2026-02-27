@@ -383,9 +383,6 @@ Function Cmd_Clear(args$)
         Delete cm
     Wend
 
-    ; Introduce an invisible console message to prevent the console from being completely empty, which can cause some rendering issues.
-    CreateConsoleMsg("")
-
 End Function
 
 Function Cmd_Exit(args$)

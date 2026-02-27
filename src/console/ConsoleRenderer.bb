@@ -4,12 +4,13 @@
 
 Function Console_Render(layout.ConsoleLayout)
 
+	;; ToDo:: clean up the font here when we refactor the fonts system
 	SetFont ConsoleFont
 	ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
-	Color 255,255,255
 
     Console_RenderBackground(layout)
 	Console_RenderMessages(layout)
+	Console_Render_Scrollbar_Background(layout)
 	Console_RenderScrollbar(layout)
 	Console_RenderInputBox(layout)
 
@@ -23,28 +24,35 @@ End Function
 ; ---------------------------------------------------------------------------
 
 Function Console_RenderBackground(layout.ConsoleLayout)
+
     DrawFrame layout\X, layout\Y, layout\Width, layout\Height + CONSOLE_PADDING_PX * MenuScale
+
 End Function
 
 Function Console_RenderMessages(layout.ConsoleLayout)
 
-	Local y# = layout\Y + layout\Height - 25 * MenuScale - Console\Scroll
+	Local consoleTop# = layout\Y + 5 * MenuScale
+	Local consoleBottom# = layout\Y + layout\Height - 20 * MenuScale
+	Local y# = consoleBottom# - Console\Scroll
 
 	For cm.ConsoleMsg = Each ConsoleMsg
-		If (y >= layout\y And y < layout\y + layout\Height - 20 * MenuScale) Then
+		If (y > consoleTop# And y <= consoleBottom#) Then
 			Color cm\r, cm\g, cm\b
-			Text layout\X + 20*MenuScale, y + 5*MenuScale, cm\txt
+			Text layout\X + CONSOLE_LINE_LEFTPADDING_PX * MenuScale, y, cm\txt
 		EndIf
-		y = y - 15*MenuScale
+		y = y - CONSOLE_LINE_HEIGHT_PX * MenuScale
 	Next
 
 End Function
 
-Function Console_RenderScrollbar(layout.ConsoleLayout)
+Function Console_Render_Scrollbar_Background(layout.ConsoleLayout)
 
-	;; ToDo:: use the layout versions of scrollbar x,y,width & height
-	;Local scrollbarX = layout\X + layout\Width - 23 * MenuScale
-    ;Local scrollbarY# = layout\Y + layout\Height - layout\ScrollbarHeight + (Console\Scroll * layout\ScrollbarHeight / layout\Height)
+	Color 60,60,60
+	Rect layout\ScrollbarX - 3, layout\Y + 5, layout\ScrollbarWidth + 6, layout\Height - 5
+
+End Function
+
+Function Console_RenderScrollbar(layout.ConsoleLayout)
 
     isHighlighted% = MouseOn(layout\ScrollbarX, layout\ScrollbarY, layout\ScrollbarWidth, layout\ScrollbarHeight)
 	If isHighlighted Then 

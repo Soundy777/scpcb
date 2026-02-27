@@ -2,11 +2,15 @@ Include "src/core/Boot.bb"
 
 BootGame()
 
+;; ToDo:: Replace instances of these old path globals with the new Paths_ variants
+;; ToDo:: rename the Paths_ variants to just Path_
 Global OptionFile$ = Paths_OptionsFile
 Global ModsFile$ = Paths_ModsFile
 
+;; ToDo:: find a more logical place to include this - perhaps in a dedicated modules loader? (ask chat)
 Include "DevilParticleSystem.bb"
 
+;; ToDo:: split steam & discord off into "intergrations"
 Global SteamActive% = GetOptionInt("general", "enable steam") And (Not HasCLIFlag("nosteam"))
 If SteamActive Then
 	If Steam_RestartAppIfNecessary(2178380) Then Return
@@ -2061,10 +2065,10 @@ While IsRunning
 		EndIf
 		
 		If KeyHit(KEY_CONSOLE) Then
-			If CanOpenConsole
-				Console_IsOpen = (Not Console_IsOpen)
+			If ConsoleEnabled
+				ConsoleOpen = (Not ConsoleOpen)
 				If SteamActive Then
-					If Console_IsOpen Then
+					If ConsoleOpen Then
 						Steam_OpenOnScreenKeyboard(0, GraphicWidth / 2, GraphicHeight / 2, GraphicWidth / 2, GraphicHeight / 2)
 					Else
 						Steam_CloseOnScreenKeyboard()
@@ -2785,7 +2789,7 @@ Function UpdateMenuState()
 End Function
 
 Function IsAnyMenuOpen()
-	Return MenuOpen Lor Console_IsOpen Lor InvOpen Lor OtherOpen<>Null Lor (SelectedItem <> Null And SelectedItem\Inventory <> Null) Lor Using294
+	Return MenuOpen Lor ConsoleOpen Lor InvOpen Lor OtherOpen<>Null Lor (SelectedItem <> Null And SelectedItem\Inventory <> Null) Lor Using294
 End Function
 
 Function IsPaused()
@@ -6424,7 +6428,7 @@ Function DrawMenu()
 					
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Console)
-					CanOpenConsole = DrawTick(x +270 * MenuScale, y + MenuScale, CanOpenConsole)
+					ConsoleEnabled = DrawTick(x +270 * MenuScale, y + MenuScale, ConsoleEnabled)
 					If MouseOn(x+270*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"consoleenable")
 					EndIf
@@ -7695,8 +7699,7 @@ Function NullGame(playbuttonsfx%=True)
 	Next
 	RefinedItems = 0
 	
-	ConsoleInput = ""
-	Console_IsOpen = False
+	ConsoleOpen = False
 	
 	EyeIrritation = 0
 	EyeStuck = 0
@@ -9730,7 +9733,7 @@ Function SaveOptionsINI()
 	PutINIValue(OptionFile, "general", "achievement popup enabled", AchvMSGenabled%)
 	PutINIValue(OptionFile, "launcher", "launcher enabled", LauncherEnabled%)
 	PutINIValue(OptionFile, "graphics", "texture details", TextureDetails%)
-	PutINIValue(OptionFile, "console", "enabled", CanOpenConsole%)
+	PutINIValue(OptionFile, "console", "enabled", ConsoleEnabled%)
 	PutINIValue(OptionFile, "console", "auto opening", ConsoleOpening%)
 	PutINIValue(OptionFile, "general", "speed run mode", SpeedRunMode%)
 	PutINIValue(OptionFile, "general", "numeric seeds", UseNumericSeeds%)

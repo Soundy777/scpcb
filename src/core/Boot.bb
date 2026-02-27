@@ -1,15 +1,17 @@
 Include "src/core/BuildInfo.bb"
+
 Include "src/infastructure/FileSystem.bb"
+Include "src/infastructure/IniParser.bb"
+include "src/infastructure/CLIParser.bb"
+Include "src/infastructure/Blitz_File_FileName.bb"
+Include "src/infastructure/ErrorHandling.bb"
+
 include "src/core/AppPaths.bb"
 
-Include "src/utils/Blitz_File_FileName.bb"
-Include "src/utils/IniParser.bb"
+Include "StrictLoads.bb"    ;; ToDo:: this will become part of our resource management system
+Include "KeyName.bb"        ;; ToDo:: this will become part of our input management system
 
-Include "StrictLoads.bb"
-Include "KeyName.bb"
-
-Include "src/core/ErrorHandling.bb"
-include "src/core/CLIParser.bb"
+;; ToDo:: this will be reworked into our config management system
 Include "src/config/Options.bb"
 
 Include "src/console/ConsoleCore.bb"

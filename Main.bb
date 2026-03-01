@@ -4,6 +4,8 @@
 
 Include "src/engine/core/Engine.bb"
 
+AppTitle "SCP - Containment Breach v" + GAME_VERSION
+
 Engine_Init()
 ;Engine_Run()
 ;Engine_Shutdown()
@@ -28,18 +30,6 @@ Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 Global WireframeState
 ;; ToDo End
-
-Global BorderlessWindowed% = GetOptionInt("graphics", "borderless windowed")
-Global RealGraphicWidth%,RealGraphicHeight%
-Global AspectRatioRatio#
-
-ApplyWindowModeCLIOverrides()
-
-Function ApplyWindowModeCLIOverrides()
-	If HasCLIFlag("noborder") Lor HasCLIFlag("borderless") Then BorderlessWindowed = True : Return
-	If HasCLIFlag("fullscreen") Lor HasCLIFlag("full") Then BorderlessWindowed = False : Config\Graphics\Fullscreen = True : Return
-	If HasCLIFlag("window") Lor HasCLIFlag("windowed") Lor HasCLIFlag("sw") Lor HasCLIFlag("startwindowed") Then BorderlessWindowed = False : Config\Graphics\Fullscreen = False
-End Function
 
 Global EnableRoomLights% = GetOptionInt("graphics", "room lights enabled")
 
@@ -84,8 +74,11 @@ EndIf
 SetGfxDriver(Config\Graphics\SelectedGFXDriver)
 Global GFXDriverName$ = GFXDriverName(Config\Graphics\SelectedGFXDriver)
 
+Global RealGraphicWidth%,RealGraphicHeight%
+Global AspectRatioRatio#
+
 ;New "fake fullscreen" - ENDSHN Psst, it's called borderless windowed mode --Love Mark,
-If BorderlessWindowed
+If Config\Graphics\BorderlessWindowed
 	DebugLog "Using Faked Config\Graphics\Fullscreen"
 	Graphics3DExt DesktopWidth(), DesktopHeight(), 0, 4
 	
@@ -93,8 +86,6 @@ If BorderlessWindowed
 	RealGraphicHeight = DesktopHeight()
 	
 	AspectRatioRatio = (Float(Config\Graphics\ScreenWidth)/Float(Config\Graphics\ScreenHeight))/(Float(RealGraphicWidth)/Float(RealGraphicHeight))
-	
-	Config\Graphics\Fullscreen = False
 Else
 	AspectRatioRatio = 1.0
 	RealGraphicWidth = Config\Graphics\ScreenWidth
@@ -160,7 +151,7 @@ Global GameSaved%
 
 Global CanSave% = True
 
-AppTitle "SCP - Containment Breach v"+VersionNumber
+
 
 ; Disabled startup videos while iterating
 ;; ReEnable these when we've finished cleaning everything up
@@ -2099,7 +2090,7 @@ While IsRunning
 		;UpdateSaveMSG()
 	End If
 	
-	If BorderlessWindowed Then
+	If Config\Graphics\BorderlessWindowed Then
 		If (RealGraphicWidth<>Config\Graphics\ScreenWidth) Or (RealGraphicHeight<>Config\Graphics\ScreenHeight) Then
 			SetBuffer TextureBuffer(fresize_texture)
 			ClsColor 0,0,0 : Cls

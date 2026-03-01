@@ -1681,13 +1681,13 @@ Function UpdateLauncher()
 		Next
 		
 		Config\Graphics\Fullscreen = DrawTick(40 + 430 - 15, 260 - 55 + 5 - 8, Config\Graphics\Fullscreen)
-		If Config\Graphics\Fullscreen Then BorderlessWindowed = False
-		BorderlessWindowed = DrawTick(40 + 430 - 15, 260 - 55 + 35, BorderlessWindowed)
-		If BorderlessWindowed Then Config\Graphics\Fullscreen = False
+		If Config\Graphics\Fullscreen Then Config\Graphics\BorderlessWindowed = False
+		Config\Graphics\BorderlessWindowed = DrawTick(40 + 430 - 15, 260 - 55 + 35, Config\Graphics\BorderlessWindowed)
+		If Config\Graphics\BorderlessWindowed Then Config\Graphics\Fullscreen = False
 
 		lock% = False
 
-		If BorderlessWindowed Or (Not Config\Graphics\Fullscreen) Then lock% = True
+		If Config\Graphics\BorderlessWindowed Or (Not Config\Graphics\Fullscreen) Then lock% = True
 		Bit16Mode = DrawTick(40 + 430 - 15, 260 - 55 + 65 + 8, Bit16Mode,lock%)
 		Config\Launcher\LauncherEnabled = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, Config\Launcher\LauncherEnabled)
 
@@ -1695,7 +1695,7 @@ Function UpdateLauncher()
 		Color 255, 255, 255
 		RowText(I_Loc\Launcher_Fullscreen, 40 + 430 + 15, 262 - 55 + 35 - 6, 150, 50)
 
-		If BorderlessWindowed Or (Not Config\Graphics\Fullscreen)
+		If Config\Graphics\BorderlessWindowed Or (Not Config\Graphics\Fullscreen)
  		   Color 255, 0, 0
  		   Bit16Mode = False
 		Else
@@ -1748,7 +1748,7 @@ Function UpdateLauncher()
 	Else
 		PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", "false")
 	EndIf
-	If BorderlessWindowed Then
+	If Config\Graphics\BorderlessWindowed Then
 		PutINIValue(Paths\OptionsFile, "graphics", "borderless windowed", "true")
 	Else
 		PutINIValue(Paths\OptionsFile, "graphics", "borderless windowed", "false")
@@ -2074,7 +2074,7 @@ Function DrawLoading(percent%, shortloading=False)
 			FlushMouse()
 		EndIf
 		
-		If BorderlessWindowed Then
+		If Config\Graphics\BorderlessWindowed Then
 			If (RealGraphicWidth<>Config\Graphics\ScreenWidth) Or (RealGraphicHeight<>Config\Graphics\ScreenHeight) Then
 				SetBuffer TextureBuffer(fresize_texture)
 				ClsColor 0,0,0 : Cls

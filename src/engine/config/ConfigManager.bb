@@ -22,10 +22,6 @@ Include "src/engine/config/sources/OptionsParser.bb"
 Global Config.GameConfig
 
 ; ---------------------------------------------------------------------------
-; Temp Globals (to eventually refactor)
-; ---------------------------------------------------------------------------
-
-; ---------------------------------------------------------------------------
 ; Public API
 ; ---------------------------------------------------------------------------
 
@@ -56,16 +52,41 @@ End Function
 ; Settings resolution logic
 ; ---------------------------------------------------------------------------
 
+Type Aliases
+    Field list$[10] ; Define max capacity here
+End Type
+
 Function Config_ResolveIntSetting%(section$, key$)
 
     value = GetOptionInt(section, key)
 
     Local cliValue% = GetCLIInt(key, -1)
-
     If cliValue <> -1 Then value = cliValue
 
     Return value
 
+End Function
+
+Function Config_ResolveIntSetting%(section$, key$, a.Aliases)
+    Local value% = GetOptionInt(section$, key$)
+
+    ; 1. Check primary CLI key first
+    Local cliValue% = GetCLIInt(key$, -1)
+    If cliValue <> -1 Then Return cliValue
+
+    ; 2. Iterate through aliases until an empty slot is found
+    If a <> Null Then
+        Local i%
+        For i = 0 To 9 ; Matches the array size defined in the Type
+            ; Exit loop early if we hit an empty alias
+            If a\list$[i] = "" Then Exit 
+            
+            cliValue = GetCLIInt(a\list$[i], -1)
+            If cliValue <> -1 Then Return cliValue
+        Next
+    EndIf
+
+    Return value
 End Function
 
 Function Config_ResolveFloatSetting#(section$, key$)

@@ -32,8 +32,21 @@ Function GraphicsConfig_Load.GraphicsConfig()
     If config\ScreenWidth <= 0 Then config\ScreenWidth = DesktopWidth()
     If config\ScreenHeight <= 0 Then config\ScreenHeight = DesktopHeight()
 
-    config\Fullscreen = Config_ResolveIntSetting("graphics", "fullscreen")
-    ; BorderlessWindowed
+    Local alias_fullscreen.Aliases = New Aliases : alias_fullscreen\list[0] = "full"
+    config\Fullscreen = Config_ResolveIntSetting("graphics", "fullscreen", alias_fullscreen)
+    Local alias_borderlesswindowed.Aliases = New Aliases : alias_borderlesswindowed\list[0] = "noborder" : alias_borderlesswindowed\list[1] = "borderless"
+    config\BorderlessWindowed = Config_ResolveIntSetting("graphics", "borderless windowed", alias_borderlesswindowed)
+
+    If config\Fullscreen Then
+        config\BorderlessWindowed = False
+    End If
+
+    ; Override in the event the user wishes to run the game in windowed mode
+    If HasCLIFlag("window") Lor HasCLIFlag("windowed") Lor HasCLIFlag("sw") Lor HasCLIFlag("startwindowed") Then
+        config\Fullscreen = False
+        config\BorderlessWindowed = False
+    End If
+
     config\SelectedGFXDriver = Min(Max(Config_ResolveIntSetting("graphics", "gfx driver"), 1), CountGfxDrivers())
     ; ScreenGamma
     config\ShowFPS = Config_ResolveIntSetting("graphics", "show FPS")

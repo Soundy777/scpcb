@@ -13,9 +13,6 @@ Engine_Init()
 ; Everything below needs sorting out <3
 ; ===========================================================================
 
-Global OptionFile$ = Paths\OptionsFile	;; ToDo:: remove this entirely when we've fully setup the new config system
-Global ModsFile$ = Paths\ModsFile		;; ToDo:: move this down to the mods section when we get to that point
-
 ;; ToDo:: Restarting & UpdateLoop Flags - migrate this when engine is ready
 Global IsRestart% = False
 .Start
@@ -9706,42 +9703,42 @@ End Function
 ;Save options to .ini.
 Function SaveOptionsINI()
 	
-	PutINIValue(OptionFile, "controls", "mouse sensitivity", MouseSens)
-	PutINIValue(OptionFile, "controls", "invert mouse y", InvertMouse)
-	PutINIValue(OptionFile, "graphics", "HUD enabled", HUDenabled)
-	PutINIValue(OptionFile, "graphics", "screengamma", ScreenGamma)
-	PutINIValue(OptionFile, "graphics", "antialias", Opt_AntiAlias)
-	PutINIValue(OptionFile, "graphics", "vsync", Vsync)
-	PutINIValue(OptionFile, "graphics", "show FPS", ShowFPS)
-	PutINIValue(OptionFile, "graphics", "framelimit", Framelimit%)
-	PutINIValue(OptionFile, "general", "achievement popup enabled", AchvMSGenabled%)
-	PutINIValue(OptionFile, "launcher", "launcher enabled", LauncherEnabled%)
-	PutINIValue(OptionFile, "graphics", "texture details", TextureDetails%)
-	PutINIValue(OptionFile, "console", "enabled", ConsoleEnabled%)
-	PutINIValue(OptionFile, "console", "auto opening", ConsoleOpening%)
-	PutINIValue(OptionFile, "general", "speed run mode", SpeedRunMode%)
-	PutINIValue(OptionFile, "general", "numeric seeds", UseNumericSeeds%)
-	PutINIValue(OptionFile, "graphics", "enable vram", EnableVRam)
-	PutINIValue(OptionFile, "controls", "mouse smoothing", MouseSmooth)
-	PutINIValue(OptionFile, "graphics", "hud offset", HUDOffsetScale)
-	PutINIValue(OptionFile, "graphics", "fov", FOV)
+	PutINIValue(Paths\OptionsFile, "controls", "mouse sensitivity", MouseSens)
+	PutINIValue(Paths\OptionsFile, "controls", "invert mouse y", InvertMouse)
+	PutINIValue(Paths\OptionsFile, "graphics", "HUD enabled", HUDenabled)
+	PutINIValue(Paths\OptionsFile, "graphics", "screengamma", ScreenGamma)
+	PutINIValue(Paths\OptionsFile, "graphics", "antialias", Opt_AntiAlias)
+	PutINIValue(Paths\OptionsFile, "graphics", "vsync", Vsync)
+	PutINIValue(Paths\OptionsFile, "graphics", "show FPS", ShowFPS)
+	PutINIValue(Paths\OptionsFile, "graphics", "framelimit", Framelimit%)
+	PutINIValue(Paths\OptionsFile, "general", "achievement popup enabled", AchvMSGenabled%)
+	PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", LauncherEnabled%)
+	PutINIValue(Paths\OptionsFile, "graphics", "texture details", TextureDetails%)
+	PutINIValue(Paths\OptionsFile, "console", "enabled", ConsoleEnabled%)
+	PutINIValue(Paths\OptionsFile, "console", "auto opening", ConsoleOpening%)
+	PutINIValue(Paths\OptionsFile, "general", "speed run mode", SpeedRunMode%)
+	PutINIValue(Paths\OptionsFile, "general", "numeric seeds", UseNumericSeeds%)
+	PutINIValue(Paths\OptionsFile, "graphics", "enable vram", EnableVRam)
+	PutINIValue(Paths\OptionsFile, "controls", "mouse smoothing", MouseSmooth)
+	PutINIValue(Paths\OptionsFile, "graphics", "hud offset", HUDOffsetScale)
+	PutINIValue(Paths\OptionsFile, "graphics", "fov", FOV)
 	
-	PutINIValue(OptionFile, "audio", "music volume", MusicVolume)
-	PutINIValue(OptionFile, "audio", "sound volume", PrevSFXVolume)
-	PutINIValue(OptionFile, "audio", "sfx release", Config\Audio\EnableSFXRelease)
-	PutINIValue(OptionFile, "audio", "enable user tracks", EnableUserTracks%)
-	PutINIValue(OptionFile, "audio", "user track setting", UserTrackMode%)
+	PutINIValue(Paths\OptionsFile, "audio", "music volume", MusicVolume)
+	PutINIValue(Paths\OptionsFile, "audio", "sound volume", PrevSFXVolume)
+	PutINIValue(Paths\OptionsFile, "audio", "sfx release", Config\Audio\EnableSFXRelease)
+	PutINIValue(Paths\OptionsFile, "audio", "enable user tracks", EnableUserTracks%)
+	PutINIValue(Paths\OptionsFile, "audio", "user track setting", UserTrackMode%)
 	
-	PutINIValue(OptionFile, "binds", "Right key", KEY_RIGHT)
-	PutINIValue(OptionFile, "binds", "Left key", KEY_LEFT)
-	PutINIValue(OptionFile, "binds", "Up key", KEY_UP)
-	PutINIValue(OptionFile, "binds", "Down key", KEY_DOWN)
-	PutINIValue(OptionFile, "binds", "Blink key", KEY_BLINK)
-	PutINIValue(OptionFile, "binds", "Sprint key", KEY_SPRINT)
-	PutINIValue(OptionFile, "binds", "Inventory key", KEY_INV)
-	PutINIValue(OptionFile, "binds", "Crouch key", KEY_CROUCH)
-	PutINIValue(OptionFile, "binds", "Save key", KEY_SAVE)
-	PutINIValue(OptionFile, "binds", "Console key", KEY_CONSOLE)
+	PutINIValue(Paths\OptionsFile, "binds", "Right key", KEY_RIGHT)
+	PutINIValue(Paths\OptionsFile, "binds", "Left key", KEY_LEFT)
+	PutINIValue(Paths\OptionsFile, "binds", "Up key", KEY_UP)
+	PutINIValue(Paths\OptionsFile, "binds", "Down key", KEY_DOWN)
+	PutINIValue(Paths\OptionsFile, "binds", "Blink key", KEY_BLINK)
+	PutINIValue(Paths\OptionsFile, "binds", "Sprint key", KEY_SPRINT)
+	PutINIValue(Paths\OptionsFile, "binds", "Inventory key", KEY_INV)
+	PutINIValue(Paths\OptionsFile, "binds", "Crouch key", KEY_CROUCH)
+	PutINIValue(Paths\OptionsFile, "binds", "Save key", KEY_SAVE)
+	PutINIValue(Paths\OptionsFile, "binds", "Console key", KEY_CONSOLE)
 	
 End Function
 

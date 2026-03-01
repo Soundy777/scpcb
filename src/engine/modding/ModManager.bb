@@ -107,8 +107,8 @@ Function ReloadMods()
         Next
     EndIf
 
-    If FileType(ModsFile) = 1 Then
-        Local mods% = OpenFile(ModsFile)
+    If FileType(Paths\ModsFile) = 1 Then
+        Local mods% = OpenFile(Paths\ModsFile)
         Local firstSorted.Mods = First Mods
         While Not Eof(mods)
             l$ = Trim(ReadLine(mods))
@@ -134,7 +134,7 @@ Function ReloadMods()
 End Function
 
 Function SerializeMods()
-    Local f% = WriteFile(ModsFile)
+    Local f% = WriteFile(Paths\ModsFile)
     For m.Mods = Each Mods
         WriteLine(f, m\Id + "=" + Str(m\IsActive))
     Next

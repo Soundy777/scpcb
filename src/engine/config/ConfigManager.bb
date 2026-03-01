@@ -42,6 +42,7 @@ Function Config_Load.GameConfig()
     config\Audio = AudioConfig_Load()
     config\Console = ConsoleConfig_Load()
 
+    config\Debug = DebugConfig_Load()
     config\Gameplay = GameplayConfig_Load()
 
     Return config

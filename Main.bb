@@ -22,8 +22,6 @@ Global ShouldRestart% = False
 
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 
-Global DebugResourcePacks% = GetOptionInt("debug", "resource pack strict load")
-
 Global UseNumericSeeds% = GetOptionInt("general", "numeric seeds")
 
 Dim ArrowIMG(4)

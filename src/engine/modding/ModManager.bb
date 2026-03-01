@@ -183,7 +183,7 @@ Function LoadModdedTextureNonStrict%(file$, flags%)
 				tmp = LoadTexture(modPath, flags)
 				If tmp <> 0 Then
 					Return tmp
-				Else If DebugResourcePacks Then
+				Else If Config\Debug\DebugResourcePacks Then
 					RuntimeErrorExt("Failed to load texture " + Chr(34) + modPath + Chr(34) + ".")
 				EndIf
 			EndIf
@@ -211,7 +211,7 @@ Function LoadModdedMeshNonStrict%(File$, parent%=0)
 				tmp = LoadMesh(modPath, parent)
 				If tmp <> 0 Then
 					Return tmp
-				Else If DebugResourcePacks Then
+				Else If Config\Debug\DebugResourcePacks Then
 					RuntimeErrorExt("Failed to load 3D Mesh " + Chr(34) + modPath + Chr(34) + ".")
 				EndIf
 			EndIf

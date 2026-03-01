@@ -47,12 +47,13 @@ Select TextureDetails%
 	Case 4
 		TextureFloat# = -0.8
 End Select
+
 Global ConsoleOpening% = GetOptionInt("console", "auto opening")
 Global SFXVolume# = GetOptionFloat("audio", "sound volume")
-
 Global Bit16Mode = GetOptionInt("graphics", "16bit")
-
 Global HUDScaleFactor# = GetOptionFloat("graphics", "hud scale factor")
+
+; LOCALIZATION START ---------------------------------------------------------------------
 
 Const StringsFile$ = "Data\strings.ini"
 Include "Localization.bb"
@@ -66,20 +67,22 @@ For m.ActiveMods = Each ActiveMods
 Next
 LoadLocalization(I_Loc, StringsFile)
 
+; LOCALIZATION END ---------------------------------------------------------------------
+
+; LAUNCHER START ---------------------------------------------------------------------
+
 ; Exclusive fullscreen ONLY supports the reported resolutions
 If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Config\Graphics\Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Bit16Mode)) Then
 	UpdateLauncher()
 EndIf
 
+;LAUNCHER END ---------------------------------------------------------------------
+
 SetGfxDriver(Config\Graphics\SelectedGFXDriver)
 Global GFXDriverName$ = GFXDriverName(Config\Graphics\SelectedGFXDriver)
-
 Global RealGraphicWidth%,RealGraphicHeight%
 Global AspectRatioRatio#
-
-;New "fake fullscreen" - ENDSHN Psst, it's called borderless windowed mode --Love Mark,
 If Config\Graphics\BorderlessWindowed
-	DebugLog "Using Faked Config\Graphics\Fullscreen"
 	Graphics3DExt DesktopWidth(), DesktopHeight(), 0, 4
 	
 	RealGraphicWidth = DesktopWidth()
@@ -99,7 +102,6 @@ EndIf
 
 Global MenuScale# = CalculateMenuScale()
 Global HUDScale# = Max(MenuScale * HUDScaleFactor, 1)
-
 Function CalculateMenuScale#()
 	Local short% = Min(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight)
 	If short > 1024 Then Return short / 1024.0
@@ -107,29 +109,21 @@ Function CalculateMenuScale#()
 	Return short / 840.0
 End Function
 
-SetBuffer(BackBuffer())
+SetBuffer(BackBuffer()) ;; ToDo:: move this into our upcoming Graphics.bb Init
 
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
 Local CheckFPS%, ElapsedLoops%, FPS%
-
 Global Framelimit% = GetOptionInt("graphics", "framelimit")
 Global Vsync% = GetOptionInt("graphics", "vsync")
-
 Global Opt_AntiAlias = GetOptionInt("graphics", "antialias")
-
 Global CurrFrameLimit# = (Framelimit%-19)/100.0
-
 Global ScreenGamma# = GetOptionFloat("graphics", "screengamma")
-;If Config\Graphics\Fullscreen Then UpdateScreenGamma()
-
 Global FOV% = GetOptionInt("graphics", "fov")
 Const DEFAULT_FOV% = 59
 
 Global HUDStartX%, HUDEndX%, HUDStartY%, HUDEndY%
 Global HUDOffsetScale# = GetOptionFloat("graphics", "hud offset")
-
 UpdateHUDOffsets()
-
 Function UpdateHUDOffsets()
 	If Config\Graphics\ScreenWidth > Config\Graphics\ScreenHeight Then
 		HUDStartY = 0 : HUDEndY = Config\Graphics\ScreenHeight
@@ -143,16 +137,13 @@ Function UpdateHUDOffsets()
 End Function
 
 Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
-SeedRnd MilliSecs()
 
-;[End block]
+SeedRnd MilliSecs() ;; ToDo:: figure out where to move this? Perhaps engine_init
 
 Global GameSaved%
-
 Global CanSave% = True
 
-
-
+; Move this to a new Startup system within src/engine/
 ; Disabled startup videos while iterating
 ;; ReEnable these when we've finished cleaning everything up
 ;PlayStartupVideos()

@@ -1274,7 +1274,7 @@ Function UpdateMainMenu()
 									End Select
 									DrawButton(x + 370 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, strr, False, False, True)
 								Else
-									Local buttonsInactive% = UpdateModErrorCode <> 0 Or ModUIState <> 0 Or UpdatingMod <> Null Or (Not SteamActive)
+									Local buttonsInactive% = UpdateModErrorCode <> 0 Or ModUIState <> 0 Or UpdatingMod <> Null Or (Not Flags\SteamActive)
 									If m\SteamWorkshopId = "" Then
 										If DrawButton(x + 370 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, I_Loc\Mods_Upload, False, False, buttonsInactive) Then
 											ModUIState = 1
@@ -2145,7 +2145,7 @@ Function InputBox$(x%, y%, width%, height%, Txt$, ID% = 0, virtualKeyboardMode=0
 		MouseOnBox = True
 		If MouseHit1 Then
 			SelectedInputBox = ID
-			If SteamActive And virtualKeyboardMode >= 0 Then Steam_OpenOnScreenKeyboard(virtualKeyboardMode, x, y, width, height)
+			If Flags\SteamActive And virtualKeyboardMode >= 0 Then Steam_OpenOnScreenKeyboard(virtualKeyboardMode, x, y, width, height)
 			FlushKeys
 		EndIf
 	EndIf
@@ -2155,7 +2155,7 @@ Function InputBox$(x%, y%, width%, height%, Txt$, ID% = 0, virtualKeyboardMode=0
 	
 	If (Not MouseOnBox) And MouseHit1 And SelectedInputBox = ID Then
 		SelectedInputBox = 0
-		If SteamActive And virtualKeyboardMode >= 0 Then Steam_CloseOnScreenKeyboard()
+		If Flags\SteamActive And virtualKeyboardMode >= 0 Then Steam_CloseOnScreenKeyboard()
 	EndIf
 	
 	Text(x + width / 2, y + height / 2, Txt, True, True)

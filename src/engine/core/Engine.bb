@@ -32,8 +32,8 @@ Function Engine_Init()
     Config_Init()
     Config = Config_Load()
 
-    Flags\SteamActive = Config\Gameplay\EnableSteam And (Not HasCLIFlag("nosteam"))
-    SteamIntegration_Init(Flags\SteamActive)
+    Flags\SteamActive = SteamIntegration_Init()
+    Flags\DiscordActive = DiscordIntegration_Init()
 
     ;; ToDo:: init RenderSystem
     ;; ToDo:: init AudioSystem

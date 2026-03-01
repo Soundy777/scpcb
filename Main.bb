@@ -16,13 +16,6 @@ Engine_Init()
 Global OptionFile$ = Paths\OptionsFile	;; ToDo:: remove this entirely when we've fully setup the new config system
 Global ModsFile$ = Paths\ModsFile		;; ToDo:: move this down to the mods section when we get to that point
 
-Global DiscordLastStatus%, DiscordCooldown%
-Global DiscordActive% = GetOptionInt("general", "enable discord rich presence") And (Not HasCLIFlag("nodiscord"))
-If DiscordActive Then
-	DiscordActive = (BlitzcordCreateCore("1465275739342377014") = 0)
-	If DiscordActive Then BlitzcordSetLargeImage("logo")
-EndIf
-
 Global IsRestart% = False
 .Start
 Global IsRunning% = True
@@ -2064,7 +2057,7 @@ While IsRunning
 		If KeyHit(KEY_CONSOLE) Then
 			If ConsoleEnabled
 				ConsoleOpen = (Not ConsoleOpen)
-				If SteamActive Then
+				If Flags\SteamActive Then
 					If ConsoleOpen Then
 						Steam_OpenOnScreenKeyboard(0, GraphicWidth / 2, GraphicHeight / 2, GraphicWidth / 2, GraphicHeight / 2)
 					Else
@@ -2185,8 +2178,8 @@ While IsRunning
 	
 	CatchErrors("Main loop / uncaught")
 
-	If SteamActive Then Steam_Update()
-	If DiscordActive Then
+	If Flags\SteamActive Then Steam_Update()
+	If Flags\DiscordActive Then
 		If MilliSecs() > DiscordCooldown Then
 			If MainMenuOpen Then
 				If DiscordLastStatus <> -1 Then
@@ -2252,8 +2245,8 @@ If ShouldRestart Then
 	Goto Start
 EndIf
 
-If SteamActive Then Steam_Shutdown()
-If DiscordActive Then BlitzcordClearActivity()
+If Flags\SteamActive Then Steam_Shutdown()
+If Flags\DiscordActive Then BlitzcordClearActivity()
 
 Function Restart()
 	Cls
@@ -6054,7 +6047,7 @@ Function DrawMenu()
 	CatchErrors("Uncaught (DrawMenu)")
 	
 	Local x%, y%, width%, height%
-	Local steamOverlayActive = SteamActive And Steam_GetOverlayState()
+	Local steamOverlayActive = Flags\SteamActive And Steam_GetOverlayState()
 	If api_GetFocus() = 0 Lor steamOverlayActive Then ;Game is out of focus -> pause the game
 		If (Not Using294) Then
 			MenuOpen = True

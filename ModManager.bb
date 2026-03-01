@@ -83,7 +83,7 @@ Function ReloadMods()
     Forever
     CloseDir(d)
 
-    If SteamActive
+    If Flags\SteamActive
         Steam_LoadSubscribedItems()
         Local itemCount% = Steam_GetSubscribedItemCount()
         For i = 0 To itemCount-1
@@ -137,7 +137,7 @@ Function UpdateActiveMods()
     Delete Each ActiveMods
     Local mm.ActiveMods
     Local locale$ = GetCLIString("locale", GetOptionString("general", "locale"))
-    If locale = "" And SteamActive Then locale = Steam_GetGameLanguage()
+    If locale = "" And Flags\SteamActive Then locale = Steam_GetGameLanguage()
     If locale <> "" And FileType(LOCALIZATIONS_DIR + locale) = 2 Then
         mm = New ActiveMods
         mm\Path = LOCALIZATIONS_DIR + locale + "\"

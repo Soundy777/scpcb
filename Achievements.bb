@@ -77,7 +77,7 @@ Function GiveAchievement(achvname%, showMessage%=True)
 			CreateAchievementMsg(achvname,AchievementStrings(achvname))
 		EndIf
 		; The "Fair Play" achievement cannot be found on Steam because every achievement there requires the console to not be used.
-		If SteamActive And (Not UsedConsole) And achvname<>AchvConsole Then
+		If Flags\SteamActive And (Not UsedConsole) And achvname<>AchvConsole Then
 			Steam_Achieve("Achv" + AchvNames[achvname])
 		End If
 	EndIf

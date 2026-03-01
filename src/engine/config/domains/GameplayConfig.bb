@@ -16,6 +16,7 @@ Function GameplayConfig_Load.GameplayConfig()
     Local config.GameplayConfig = New GameplayConfig
 
     config\EnableSteam = Config_ResolveIntSetting("general", "enable steam")
+    config\EnableDiscord = Config_ResolveIntSetting("general", "enable discord rich presence")
 
     return config
 

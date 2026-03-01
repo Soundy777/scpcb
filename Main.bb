@@ -16,16 +16,12 @@ Engine_Init()
 Global OptionFile$ = Paths\OptionsFile	;; ToDo:: remove this entirely when we've fully setup the new config system
 Global ModsFile$ = Paths\ModsFile		;; ToDo:: move this down to the mods section when we get to that point
 
-; BLOCK - App/Loop Data
-;; ToDo:: engineer a more elegant restarting process
+;; ToDo:: Restarting & UpdateLoop Flags - migrate this when engine is ready
 Global IsRestart% = False
 .Start
 Global IsRunning% = True
 Global ShouldRestart% = False
-;; BLOCK - App/Loop Data
-
-Global Font1%, Font2%, Font3%, Font4%, Font5%
-Global ConsoleFont%
+;; ToDo End
 
 Global MenuWhite%, MenuBlack%
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
@@ -209,6 +205,8 @@ InitLoadingScreens()
 ;don't match their "internal name" (i.e. their display name in applications
 ;like Word and such). As a workaround, I moved the files and renamed them so they
 ;can load without FastText.
+Global Font1%, Font2%, Font3%, Font4%, Font5%
+Global ConsoleFont%
 Font1% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * MenuScale))
 Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * MenuScale))
 Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale))

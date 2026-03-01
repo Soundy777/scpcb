@@ -1,21 +1,20 @@
-Include "src/core/Boot.bb"
+; ===========================================================================
+; Eventually this will be move to game.bb & consist of simply those 3 lines
+; ===========================================================================
 
-BootGame()
+Include "src/engine/core/Engine.bb"
 
-;; ToDo:: this will eventually be removed when all options have migrated over to our new config system
-Global OptionFile$ = Paths\OptionsFile
+Engine_Init()
+;Engine_Run()
+;Engine_Shutdown()
 
+; ===========================================================================
+; Refactor Line
+; Everything below needs sorting out <3
+; ===========================================================================
+
+Global OptionFile$ = Paths\OptionsFile	;; ToDo:: remove this entirely when we've fully setup the new config system
 Global ModsFile$ = Paths\ModsFile		;; ToDo:: move this down to the mods section when we get to that point
-
-;; ToDo:: find a more logical place to include this - perhaps in a dedicated modules loader? (ask chat)
-Include "DevilParticleSystem.bb"
-
-;; ToDo:: split steam & discord off into "intergrations"
-Global SteamActive% = GetOptionInt("general", "enable steam") And (Not HasCLIFlag("nosteam"))
-If SteamActive Then
-	If Steam_RestartAppIfNecessary(2178380) Then Return
-	If Steam_Init() <> 0 Then RuntimeErrorExt("Steam failed to initialize")
-EndIf
 
 Global DiscordLastStatus%, DiscordCooldown%
 Global DiscordActive% = GetOptionInt("general", "enable discord rich presence") And (Not HasCLIFlag("nodiscord"))
@@ -41,8 +40,6 @@ Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 
 Global EnableSFXRelease% = GetOptionInt("audio", "sfx release")
 Global EnableSFXRelease_Prev% = EnableSFXRelease%
-
-
 
 Global DebugResourcePacks% = GetOptionInt("debug", "resource pack strict load")
 

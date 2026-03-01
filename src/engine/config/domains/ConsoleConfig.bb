@@ -6,7 +6,7 @@ End Type
 Function ConsoleConfig_Load.ConsoleConfig()
     Local config.ConsoleConfig = New ConsoleConfig
 
-    config\ConsoleEnabled = ResolveIntSetting("console", "enabled")
+    config\ConsoleEnabled = Config_ResolveIntSetting("console", "enabled")
 
     return config
 End Function

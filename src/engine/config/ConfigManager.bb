@@ -3,19 +3,19 @@
 ; ===========================================================================
 ; Handles saving, loading & providing game configuration data
 ; ===========================================================================
-Include "src/config/GameConfig.bb"
+Include "src/engine/config/GameConfig.bb"
 
-Include "src/config/domains/AudioConfig.bb"
-Include "src/config/domains/ConsoleConfig.bb"
-Include "src/config/domains/ControlsConfig.bb"
-Include "src/config/domains/DebugConfig.bb"
-Include "src/config/domains/GameplayConfig.bb"
-Include "src/config/domains/GraphicsConfig.bb"
-Include "src/config/domains/Keybinds.bb"
-Include "src/config/domains/LauncherConfig.bb"
+Include "src/engine/config/domains/AudioConfig.bb"
+Include "src/engine/config/domains/ConsoleConfig.bb"
+Include "src/engine/config/domains/ControlsConfig.bb"
+Include "src/engine/config/domains/DebugConfig.bb"
+Include "src/engine/config/domains/GameplayConfig.bb"
+Include "src/engine/config/domains/GraphicsConfig.bb"
+Include "src/engine/config/domains/Keybinds.bb"
+Include "src/engine/config/domains/LauncherConfig.bb"
 
-Include "src/config/sources/CLIParser.bb"
-Include "src/config/sources/OptionsParser.bb"
+Include "src/engine/config/sources/CLIParser.bb"
+Include "src/engine/config/sources/OptionsParser.bb"
 ; ===========================================================================
 
 ;; ToDo:: eventually refactor this out to rely soley on a dependency injection pattern instead of a global
@@ -33,8 +33,6 @@ Function Config_Init()
 
     Config_ResolveOptionsFile()
 
-    Config = Config_Load()
-
 End Function
 
 Function Config_Load.GameConfig()
@@ -44,6 +42,8 @@ Function Config_Load.GameConfig()
     config\Audio = AudioConfig_Load()
     config\Console = ConsoleConfig_Load()
 
+    config\Gameplay = GameplayConfig_Load()
+
     Return config
 
 End Function
@@ -52,7 +52,7 @@ End Function
 ; Settings resolution logic
 ; ---------------------------------------------------------------------------
 
-Function ResolveIntSetting%(section$, key$)
+Function Config_ResolveIntSetting%(section$, key$)
 
     value = GetOptionInt(section, key)
 
@@ -64,7 +64,7 @@ Function ResolveIntSetting%(section$, key$)
 
 End Function
 
-Function ResolveFloatSetting#(section$, key$)
+Function Config_ResolveFloatSetting#(section$, key$)
 
     Return GetOptionFloat(section, key)
 

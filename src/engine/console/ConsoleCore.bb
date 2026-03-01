@@ -14,9 +14,9 @@
 ;; ToDo:: consider splitting out the update logic from this to make this purely high level orcestration (ConsoleCore/ConsoleLogic/ConsoleRenderer)
 ;; ToDo:: During the second iteration pass, overhaul commands to use service layers instead of directly manipulating state
 ; ===========================================================================
-Include "src/console/ConsoleHistory.bb"
-Include "src/console/ConsoleRenderer.bb"
-Include "src/console/ConsoleCommands.bb"
+Include "src/engine/console/ConsoleHistory.bb"
+Include "src/engine/console/ConsoleRenderer.bb"
+Include "src/engine/console/ConsoleCommands.bb"
 ; ===========================================================================
 
 Type ConsoleMsg

@@ -10,3 +10,13 @@ Type GameplayConfig
     Field EnableDiscord%
     Field LoadingScreenCyclePerCharMS%
 End Type
+
+Function GameplayConfig_Load.GameplayConfig()
+
+    Local config.GameplayConfig = New GameplayConfig
+
+    config\EnableSteam = Config_ResolveIntSetting("general", "enable steam")
+
+    return config
+
+End Function

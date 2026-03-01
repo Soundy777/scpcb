@@ -26,10 +26,8 @@ Dim ArrowIMG(4)
 Global Depth% = 0
 Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
-;; ToDo End
-
 Global WireframeState
-Global HalloweenTex
+;; ToDo End
 
 Global BorderlessWindowed% = GetOptionInt("graphics", "borderless windowed")
 Global RealGraphicWidth%,RealGraphicHeight%

@@ -7,6 +7,8 @@ Const NPCtype860% = 14, NPCtype939% = 15, NPCtype066% = 16, NPCtypePdPlane% = 17
 Const NPCtype966% = 18, NPCtype1048a = 19, NPCtype1499% = 20, NPCtype008% = 21, NPCtypeClerk% = 22
 ;[End Block]
 
+Global HalloweenTex
+
 Type NPCs
 	Field obj%, obj2%, obj3%, obj4%, Collider%
 	Field NPCtype%, ID%

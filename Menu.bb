@@ -1,6 +1,7 @@
 Global MenuBack% = LoadImage_Strict("GFX\menu\back.jpg")
 Global MenuText% = LoadImage_Strict("GFX\menu\scptext.jpg")
 Global Menu173% = LoadImage_Strict("GFX\menu\173back.jpg")
+Global MenuWhite%, MenuBlack%
 MenuWhite = LoadImage_Strict("GFX\menu\menuwhite.jpg")
 MenuBlack = LoadImage_Strict("GFX\menu\menublack.jpg")
 MaskImage MenuBlack, 255,255,0
@@ -30,7 +31,6 @@ Global MenuStr$, MenuStrX%, MenuStrY%
 Global MainMenuTab%
 
 Global EnableSFXRelease_Prev% = Config\Audio\EnableSFXRelease%
-
 
 Global IntroEnabled% = GetOptionInt("general", "intro enabled")
 

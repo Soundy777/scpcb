@@ -20,7 +20,6 @@ Global IsRunning% = True
 Global ShouldRestart% = False
 ;; ToDo End
 
-Global MenuWhite%, MenuBlack%
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 
 Global DebugResourcePacks% = GetOptionInt("debug", "resource pack strict load")

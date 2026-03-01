@@ -24,12 +24,9 @@ Global ShouldRestart% = False
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 Dim ArrowIMG(4)
 Global Depth% = 0
-;; ToDo End
-
 Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
-
-Global ShowFPS = GetOptionInt("graphics", "show FPS")
+;; ToDo End
 
 Global WireframeState
 Global HalloweenTex
@@ -2090,7 +2087,7 @@ While IsRunning
 		End If
 		
 		Color 255, 255, 255
-		If ShowFPS Then SetFont ConsoleFont : Text 20, 20, Format(I_Loc\HUD_Fps, FPS) : SetFont Font1
+		If Config\Graphics\ShowFPS Then SetFont ConsoleFont : Text 20, 20, Format(I_Loc\HUD_Fps, FPS) : SetFont Font1
 		
 		If EndingTimer < 0 Then
 			If SelectedEnding <> "" Then DrawEnding()
@@ -6437,7 +6434,7 @@ Function DrawMenu()
 					
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Showfps)
-					ShowFPS% = DrawTick(x + 270 * MenuScale, y, ShowFPS%)
+					Config\Graphics\ShowFPS% = DrawTick(x + 270 * MenuScale, y, Config\Graphics\ShowFPS%)
 					If MouseOn(x+270*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"showfps")
 					EndIf
@@ -9692,7 +9689,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "graphics", "screengamma", ScreenGamma)
 	PutINIValue(Paths\OptionsFile, "graphics", "antialias", Opt_AntiAlias)
 	PutINIValue(Paths\OptionsFile, "graphics", "vsync", Vsync)
-	PutINIValue(Paths\OptionsFile, "graphics", "show FPS", ShowFPS)
+	PutINIValue(Paths\OptionsFile, "graphics", "show FPS", Config\Graphics\ShowFPS)
 	PutINIValue(Paths\OptionsFile, "graphics", "framelimit", Framelimit%)
 	PutINIValue(Paths\OptionsFile, "general", "achievement popup enabled", AchvMSGenabled%)
 	PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", Config\Launcher\LauncherEnabled%)

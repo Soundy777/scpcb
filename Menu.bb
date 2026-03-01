@@ -1019,7 +1019,7 @@ Function UpdateMainMenu()
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_Showfps)
-					ShowFPS% = DrawTick(x + 310 * MenuScale, y + MenuScale, ShowFPS%)
+					Config\Graphics\ShowFPS% = DrawTick(x + 310 * MenuScale, y + MenuScale, Config\Graphics\ShowFPS%)
 					If MouseOn(x+310*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"showfps")
 					EndIf

@@ -524,8 +524,8 @@ End Function
 
 Function Cmd_FPS(args$)
 
-    ShowFPS = Not ShowFPS
-    CreateConsoleMsg("ShowFPS: "+Str(ShowFPS))
+    Config\Graphics\ShowFPS = Not Config\Graphics\ShowFPS
+    CreateConsoleMsg("ShowFPS: "+Str(Config\Graphics\ShowFPS))
 
 End Function
 

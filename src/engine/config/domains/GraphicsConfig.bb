@@ -36,7 +36,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     ; BorderlessWindowed
     config\SelectedGFXDriver = Min(Max(Config_ResolveIntSetting("graphics", "gfx driver"), 1), CountGfxDrivers())
     ; ScreenGamma
-    ; ShowFPS
+    config\ShowFPS = Config_ResolveIntSetting("graphics", "show FPS")
     ; Framelimit
     ; Vsync
     ; BumpMapEnabled

@@ -171,7 +171,7 @@ Function UpdateMainMenu()
 		Local spacing% = height + 10 * MenuScale
 
 		If DrawButton(x, y, width, height, I_Loc\Menu_NewUpper) Then
-			HasNumericSeed = UseNumericSeeds
+			HasNumericSeed = Config\Gameplay\UseNumericSeeds
 			If HasNumericSeed Then
 				RandomSeedNumeric = MilliSecs()
 			Else
@@ -992,7 +992,7 @@ Function UpdateMainMenu()
 
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_Numericseeds)
-					UseNumericSeeds = DrawTick(x + 310 * MenuScale, y + MenuScale, UseNumericSeeds)
+					Config\Gameplay\UseNumericSeeds = DrawTick(x + 310 * MenuScale, y + MenuScale, Config\Gameplay\UseNumericSeeds)
 					If MouseOn(x+310*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"numericseeds")
 					EndIf

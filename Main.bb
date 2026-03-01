@@ -21,9 +21,6 @@ Global ShouldRestart% = False
 ;; ToDo End
 
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
-
-Global UseNumericSeeds% = GetOptionInt("general", "numeric seeds")
-
 Dim ArrowIMG(4)
 
 Global LauncherWidth%= Min(GetOptionInt("launcher", "launcher width"), 1024)
@@ -6424,7 +6421,7 @@ Function DrawMenu()
 
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Numericseeds)
-					UseNumericSeeds = DrawTick(x + 270 * MenuScale, y + MenuScale, UseNumericSeeds)
+					Config\Gameplay\UseNumericSeeds = DrawTick(x + 270 * MenuScale, y + MenuScale, Config\Gameplay\UseNumericSeeds)
 					If MouseOn(x+270*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"numericseeds")
 					EndIf
@@ -9714,7 +9711,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "console", "enabled", ConsoleEnabled%)
 	PutINIValue(Paths\OptionsFile, "console", "auto opening", ConsoleOpening%)
 	PutINIValue(Paths\OptionsFile, "general", "speed run mode", SpeedRunMode%)
-	PutINIValue(Paths\OptionsFile, "general", "numeric seeds", UseNumericSeeds%)
+	PutINIValue(Paths\OptionsFile, "general", "numeric seeds", Config\Gameplay\UseNumericSeeds%)
 	PutINIValue(Paths\OptionsFile, "graphics", "enable vram", EnableVRam)
 	PutINIValue(Paths\OptionsFile, "controls", "mouse smoothing", MouseSmooth)
 	PutINIValue(Paths\OptionsFile, "graphics", "hud offset", HUDOffsetScale)

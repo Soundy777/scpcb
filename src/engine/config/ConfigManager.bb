@@ -44,7 +44,7 @@ Function Config_Load.GameConfig()
     ; controls
     config\Debug = DebugConfig_Load()
     config\Gameplay = GameplayConfig_Load()
-    ; graphics
+    config\Graphics = GraphicsConfig_Load()
     ; keybinds
     config\Launcher = LauncherConfig_Load()
 

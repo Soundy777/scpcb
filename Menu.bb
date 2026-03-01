@@ -64,7 +64,7 @@ Global PagingFrameHeight%
 
 Function CalculatePagingVariables()
 	Local y = 286+70+10
-	Local availableHeight# = GraphicHeight - ((y + 55 + 30) * MenuScale)
+	Local availableHeight# = Config\Graphics\ScreenHeight - ((y + 55 + 30) * MenuScale)
 	EntriesPerPage% = Min(availableHeight / (100 * MenuScale), 6)
 	; height = 510 * MenuScale
 	PagingFrameHeight = EntriesPerPage * 80 * MenuScale + 30 * MenuScale
@@ -89,14 +89,14 @@ Function UpdateMainMenu()
 	Local x%, y%, width%, height%, temp%
 	
 	Color 0,0,0
-	Rect 0,0,GraphicWidth,GraphicHeight,True
+	Rect 0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight,True
 	
 	ShowPointer()
 	
 	DrawImage(MenuBack, 0, 0)
 	
 	If (MilliSecs() Mod MenuBlinkTimer(0)) >= Rand(MenuBlinkDuration(0)) Then
-		DrawImage(Menu173, GraphicWidth - ImageWidth(Menu173), GraphicHeight - ImageHeight(Menu173))
+		DrawImage(Menu173, Config\Graphics\ScreenWidth - ImageWidth(Menu173), Config\Graphics\ScreenHeight - ImageHeight(Menu173))
 	EndIf
 	
 	If Rand(300) = 1 Then
@@ -151,10 +151,10 @@ Function UpdateMainMenu()
 	
 	SetFont Font2
 	
-	DrawImage(MenuText, GraphicWidth / 2 - ImageWidth(MenuText) / 2, GraphicHeight - 20 * MenuScale - ImageHeight(MenuText))
+	DrawImage(MenuText, Config\Graphics\ScreenWidth / 2 - ImageWidth(MenuText) / 2, Config\Graphics\ScreenHeight - 20 * MenuScale - ImageHeight(MenuText))
 	
-	If GraphicWidth > 1240 * MenuScale Then
-		DrawTiledImageRect(MenuWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (GraphicWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
+	If Config\Graphics\ScreenWidth > 1240 * MenuScale Then
+		DrawTiledImageRect(MenuWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (Config\Graphics\ScreenWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
 	EndIf
 	
 	If (Not MouseDown1)
@@ -1393,7 +1393,7 @@ Function UpdateMainMenu()
 	If SpeedRunMode And (Not TimerStopped) Then
 		DrawTimer()
 		If MainMenuOpen Then
-			If DrawButton(GraphicWidth - 150 * MenuScale - 24, 60 * MenuScale + 24, 150 * MenuScale, 30 * MenuScale, I_Loc\HUD_SpeedrunStoptimer, False) Then
+			If DrawButton(Config\Graphics\ScreenWidth - 150 * MenuScale - 24, 60 * MenuScale + 24, 150 * MenuScale, 30 * MenuScale, I_Loc\HUD_SpeedrunStoptimer, False) Then
 				TimerStopped = True
 			EndIf
 		EndIf
@@ -1401,7 +1401,7 @@ Function UpdateMainMenu()
 
 	Color 255,255,255
 	SetFont ConsoleFont
-	Text 20,GraphicHeight-30,"v"+VersionNumber
+	Text 20,Config\Graphics\ScreenHeight-30,"v"+VersionNumber
 	
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 	
@@ -1509,13 +1509,13 @@ Function UpdateLauncher()
 	
 	SetBuffer BackBuffer()
 	
-	RealGraphicWidth = GraphicWidth
-	RealGraphicHeight = GraphicHeight
+	RealGraphicWidth = Config\Graphics\ScreenWidth
+	RealGraphicHeight = Config\Graphics\ScreenHeight
 
 	Local TotalGfxModes% = CountGfxModes3D()
 
-	Local selectedGdc% = GreatestCommonDivsior(GraphicWidth, GraphicHeight)
-	Local SelectedAspectRatioWidth% = GraphicWidth / selectedGdc, SelectedAspectRatioHeight% = GraphicHeight / selectedGdc
+	Local selectedGdc% = GreatestCommonDivsior(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight)
+	Local SelectedAspectRatioWidth% = Config\Graphics\ScreenWidth / selectedGdc, SelectedAspectRatioHeight% = Config\Graphics\ScreenHeight / selectedGdc
 	
 	Local SelectedGfxMode% = -1, AspectRatioCount%
 	Local SelectedAspectRatio% = -1
@@ -1564,7 +1564,7 @@ Function UpdateLauncher()
 				GfxModeWidthsByAspectRatio(ai, lai) = w : GfxModeHeightsByAspectRatio(ai, lai) = h
 				GfxModeCountPerAspectRatio(ai) = GfxModeCountPerAspectRatio(ai) + 1
 
-				If GraphicWidth = w And GraphicHeight = h Then SelectedGfxMode = lai : SelectedAspectRatio = ai
+				If Config\Graphics\ScreenWidth = w And Config\Graphics\ScreenHeight = h Then SelectedGfxMode = lai : SelectedAspectRatio = ai
 				If DesktopWidth() = w And DesktopHeight() = h Then nativeGfxMode = lai : nativeAspectRatio = ai
 			EndIf
 		EndIf
@@ -1725,10 +1725,10 @@ Function UpdateLauncher()
 		EndIf
 		
 		If DrawButton(Config\Launcher\LauncherWidth - 30 - 90, Config\Launcher\LauncherHeight - 50 - 55, 100, 30, I_Loc\Launcher_Launch, False, False) Then
-			GraphicWidth = gfxWidth
-			GraphicHeight = gfxHeight
-			RealGraphicWidth = GraphicWidth
-			RealGraphicHeight = GraphicHeight
+			Config\Graphics\ScreenWidth = gfxWidth
+			Config\Graphics\ScreenHeight = gfxHeight
+			RealGraphicWidth = Config\Graphics\ScreenWidth
+			RealGraphicHeight = Config\Graphics\ScreenHeight
 			Exit
 		EndIf
 		
@@ -1933,7 +1933,7 @@ Function DrawLoading(percent%, shortloading=False)
 	Repeat 
 		
 		;Color 0,0,0
-		;Rect 0,0,GraphicWidth,GraphicHeight,True
+		;Rect 0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight,True
 		;Color 255, 255, 255
 		ClsColor 0,0,0
 		Cls
@@ -1953,28 +1953,28 @@ Function DrawLoading(percent%, shortloading=False)
 		EndIf
 		
 		If (Not SelectedLoadingScreen\disablebackground) Then
-			DrawImage LoadingBack, GraphicWidth/2 - ImageWidth(LoadingBack)/2, GraphicHeight/2 - ImageHeight(LoadingBack)/2
+			DrawImage LoadingBack, Config\Graphics\ScreenWidth/2 - ImageWidth(LoadingBack)/2, Config\Graphics\ScreenHeight/2 - ImageHeight(LoadingBack)/2
 		EndIf	
 		
 		If SelectedLoadingScreen\alignx = 0 Then
-			x = GraphicWidth/2 - ImageWidth(SelectedLoadingScreen\img)/2 
+			x = Config\Graphics\ScreenWidth/2 - ImageWidth(SelectedLoadingScreen\img)/2 
 		ElseIf  SelectedLoadingScreen\alignx = 1
-			x = GraphicWidth - ImageWidth(SelectedLoadingScreen\img)
+			x = Config\Graphics\ScreenWidth - ImageWidth(SelectedLoadingScreen\img)
 		Else
 			x = 0
 		EndIf
 		
 		If SelectedLoadingScreen\aligny = 0 Then
-			y = GraphicHeight/2 - ImageHeight(SelectedLoadingScreen\img)/2 
+			y = Config\Graphics\ScreenHeight/2 - ImageHeight(SelectedLoadingScreen\img)/2 
 		ElseIf  SelectedLoadingScreen\aligny = 1
-			y = GraphicHeight - ImageHeight(SelectedLoadingScreen\img)
+			y = Config\Graphics\ScreenHeight - ImageHeight(SelectedLoadingScreen\img)
 		Else
 			y = 0
 		EndIf	
 		
 		DrawImage SelectedLoadingScreen\img, x, y
 		
-		DrawBar(BlinkMeterIMG, GraphicWidth / 2, GraphicHeight / 2 - 70 * MenuScale, 300 * HUDScale, percent / 100.0, True)
+		DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 - 70 * MenuScale, 300 * HUDScale, percent / 100.0, True)
 		
 		If SelectedLoadingScreen\title = "CWM" Then
 			
@@ -1994,7 +1994,7 @@ Function DrawLoading(percent%, shortloading=False)
 			For i = 0 To temp
 				strtemp$ = STRTEMP + RandomDefaultWidthChar(48,122,"?")
 			Next
-			Text(GraphicWidth / 2, GraphicHeight / 2 + 80*MenuScale, strtemp, True, True)
+			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80*MenuScale, strtemp, True, True)
 			
 			If percent = 0 Then 
 				If Rand(5)=1 Then
@@ -2040,20 +2040,20 @@ Function DrawLoading(percent%, shortloading=False)
 				strtemp$ = Replace(SelectedLoadingScreen\txt[0],Mid(SelectedLoadingScreen\txt[0],Rand(1,Len(strtemp)-1),1),RandomDefaultWidthChar(130,250,"?"))
 			Next		
 			SetFont Font1
-			RowText(strtemp, GraphicWidth / 2-200*MenuScale, GraphicHeight / 2 +120*MenuScale,400*MenuScale,300*MenuScale,True)		
+			RowText(strtemp, Config\Graphics\ScreenWidth / 2-200*MenuScale, Config\Graphics\ScreenHeight / 2 +120*MenuScale,400*MenuScale,300*MenuScale,True)		
 		Else
 			
 			Color 0,0,0
 			SetFont Font2
-			Text(GraphicWidth / 2 + Max(1, MenuScale), GraphicHeight / 2 + 80*MenuScale+Max(1, MenuScale), SelectedLoadingScreen\title, True, True)
+			Text(Config\Graphics\ScreenWidth / 2 + Max(1, MenuScale), Config\Graphics\ScreenHeight / 2 + 80*MenuScale+Max(1, MenuScale), SelectedLoadingScreen\title, True, True)
 			SetFont Font1
-			RowText(SelectedLoadingScreen\txt[LoadingScreenText], GraphicWidth / 2-200*MenuScale+Max(1, MenuScale), GraphicHeight / 2 +120*MenuScale+Max(1, MenuScale),400*MenuScale,300*MenuScale,True)
+			RowText(SelectedLoadingScreen\txt[LoadingScreenText], Config\Graphics\ScreenWidth / 2-200*MenuScale+Max(1, MenuScale), Config\Graphics\ScreenHeight / 2 +120*MenuScale+Max(1, MenuScale),400*MenuScale,300*MenuScale,True)
 			
 			Color 255,255,255
 			SetFont Font2
-			Text(GraphicWidth / 2, GraphicHeight / 2 +80*MenuScale, SelectedLoadingScreen\title, True, True)
+			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 +80*MenuScale, SelectedLoadingScreen\title, True, True)
 			SetFont Font1
-			RowText(SelectedLoadingScreen\txt[LoadingScreenText], GraphicWidth / 2-200*MenuScale, GraphicHeight / 2 +120*MenuScale,400*MenuScale,300*MenuScale,True)
+			RowText(SelectedLoadingScreen\txt[LoadingScreenText], Config\Graphics\ScreenWidth / 2-200*MenuScale, Config\Graphics\ScreenHeight / 2 +120*MenuScale,400*MenuScale,300*MenuScale,True)
 			
 		EndIf
 
@@ -2062,27 +2062,27 @@ Function DrawLoading(percent%, shortloading=False)
 		EndIf
 		
 		Color 0,0,0
-		Text(GraphicWidth / 2 + Max(1, enuScale), GraphicHeight / 2 - 100 * MenuScale + Max(1, MenuScale), Format(I_Loc\Menu_Loading, percent), True, True)
+		Text(Config\Graphics\ScreenWidth / 2 + Max(1, enuScale), Config\Graphics\ScreenHeight / 2 - 100 * MenuScale + Max(1, MenuScale), Format(I_Loc\Menu_Loading, percent), True, True)
 		Color 255,255,255
-		Text(GraphicWidth / 2, GraphicHeight / 2 - 100 * MenuScale, Format(I_Loc\Menu_Loading, percent), True, True)
+		Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 - 100 * MenuScale, Format(I_Loc\Menu_Loading, percent), True, True)
 		
 		If percent = 100 Then 
 			If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound_Strict LoadTempSound(("SFX\Horror\Horror8.ogg"))
-			Text(GraphicWidth / 2, GraphicHeight - 50 * MenuScale, I_Loc\Menu_Pressany, True, True)
+			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 50 * MenuScale, I_Loc\Menu_Pressany, True, True)
 		Else
 			FlushKeys()
 			FlushMouse()
 		EndIf
 		
 		If BorderlessWindowed Then
-			If (RealGraphicWidth<>GraphicWidth) Or (RealGraphicHeight<>GraphicHeight) Then
+			If (RealGraphicWidth<>Config\Graphics\ScreenWidth) Or (RealGraphicHeight<>Config\Graphics\ScreenHeight) Then
 				SetBuffer TextureBuffer(fresize_texture)
 				ClsColor 0,0,0 : Cls
-				CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+				CopyRect 0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight,1024-Config\Graphics\ScreenWidth/2,1024-Config\Graphics\ScreenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 				SetBuffer BackBuffer()
 				ClsColor 0,0,0 : Cls
-				ScaleRender(0,0,2050.0 / Float(GraphicWidth) * AspectRatioRatio, 2050.0 / Float(GraphicWidth) * AspectRatioRatio)
-				;might want to replace Float(GraphicWidth) with Max(GraphicWidth,GraphicHeight) if portrait sizes cause issues
+				ScaleRender(0,0,2050.0 / Float(Config\Graphics\ScreenWidth) * AspectRatioRatio, 2050.0 / Float(Config\Graphics\ScreenWidth) * AspectRatioRatio)
+				;might want to replace Float(Config\Graphics\ScreenWidth) with Max(Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight) if portrait sizes cause issues
 				;everyone uses landscape so it's probably a non-issue
 			EndIf
 		EndIf
@@ -2367,7 +2367,7 @@ Function GetLineAmount(A$, W, H, Leading#=1)
 End Function
 
 Function DrawTooltip(message$)
-	Local scale# = GraphicHeight/768.0
+	Local scale# = Config\Graphics\ScreenHeight/768.0
 	
 	Local width = (StringWidth(message$))+20*MenuScale
 	

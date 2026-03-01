@@ -63,11 +63,11 @@ For i = 0 To MAXACHIEVEMENTS-1
 	AchievementDescs(i) = GetModdedINIString(StringsFile, "Achievement Desc", AchvNames[i])
 	
 	AchvIMG(i) = LoadImage_Strict("GFX\menu\achievements\Achv"+AchvNames[i]+".jpg")
-	AchvIMG(i) = ResizeImage2(AchvIMG(i),ImageWidth(AchvIMG(i))*GraphicHeight/768.0,ImageHeight(AchvIMG(i))*GraphicHeight/768.0)
+	AchvIMG(i) = ResizeImage2(AchvIMG(i),ImageWidth(AchvIMG(i))*Config\Graphics\ScreenHeight/768.0,ImageHeight(AchvIMG(i))*Config\Graphics\ScreenHeight/768.0)
 Next
 
 Global AchvLocked = LoadImage_Strict("GFX\menu\achievements\achvlocked.jpg")
-AchvLocked = ResizeImage2(AchvLocked,ImageWidth(AchvLocked)*GraphicHeight/768.0,ImageHeight(AchvLocked)*GraphicHeight/768.0)
+AchvLocked = ResizeImage2(AchvLocked,ImageWidth(AchvLocked)*Config\Graphics\ScreenHeight/768.0,ImageHeight(AchvLocked)*Config\Graphics\ScreenHeight/768.0)
 
 Function GiveAchievement(achvname%, showMessage%=True)
 	If Achievements(achvname)<>True Then
@@ -84,7 +84,7 @@ Function GiveAchievement(achvname%, showMessage%=True)
 End Function
 
 Function AchievementTooltip(achvno%)
-    Local scale# = GraphicHeight/768.0
+    Local scale# = Config\Graphics\ScreenHeight/768.0
     
     SetFont Font3
     Local width = StringWidth(AchievementStrings(achvno))
@@ -108,7 +108,7 @@ End Function
 
 Function DrawAchvIMG(x%, y%, achvno%)
 	Local row%
-	Local scale# = GraphicHeight/768.0
+	Local scale# = Config\Graphics\ScreenHeight/768.0
 	Local SeparationConst2 = 76 * scale
 ;	If achvno >= 0 And achvno < 4 Then 
 ;		row = achvno
@@ -163,15 +163,15 @@ End Function
 
 Function UpdateAchievementMsg()
 	Local amsg.AchievementMsg,amsg2.AchievementMsg
-	Local scale# = GraphicHeight/768.0
+	Local scale# = Config\Graphics\ScreenHeight/768.0
 	Local width% = 264*scale
 	Local height% = 84*scale
 	Local x%,y%
 	
 	For amsg = Each AchievementMsg
 		If amsg\msgtime <> 0
-			x=GraphicWidth+amsg\msgx
-			y=(GraphicHeight-height)
+			x=Config\Graphics\ScreenWidth+amsg\msgx
+			y=(Config\Graphics\ScreenHeight-height)
 			For amsg2 = Each AchievementMsg
 				If amsg2 <> amsg
 					If amsg2\msgID > amsg\msgID

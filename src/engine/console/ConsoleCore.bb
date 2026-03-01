@@ -114,8 +114,8 @@ Function Console_CalculateLayout.ConsoleLayout()
 	
 	; Calculate console dimensions & position
 	l\X = 0
-	l\Y = GraphicHeight - CONSOLE_HEIGHT_PX*MenuScale
-	l\Width = GraphicWidth
+	l\Y = Config\Graphics\ScreenHeight - CONSOLE_HEIGHT_PX*MenuScale
+	l\Width = Config\Graphics\ScreenWidth
 	l\Height = (CONSOLE_HEIGHT_PX - CONSOLE_PADDING_PX)*MenuScale
 
 	; Compute total number of console messages

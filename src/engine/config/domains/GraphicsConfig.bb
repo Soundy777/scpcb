@@ -21,3 +21,17 @@ Type GraphicsConfig
     Field HUDOffset#
     Field HUDScaleFactor#
 End Type
+
+Function GraphicsConfig_Load.GraphicsConfig()
+
+    Local config.GraphicsConfig = New GraphicsConfig
+
+    ;; ToDo:: potentially account for width & height CLI alias of "w" & "h"
+    config\ScreenWidth = Config_ResolveIntSetting("graphics", "width")
+    config\ScreenHeight = Config_ResolveIntSetting("graphics", "height")
+    If config\ScreenWidth <= 0 Then config\ScreenWidth = DesktopWidth()
+    If config\ScreenHeight <= 0 Then config\ScreenHeight = DesktopHeight()
+
+    return config
+
+End Function

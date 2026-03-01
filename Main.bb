@@ -1,5 +1,5 @@
 ; ===========================================================================
-; Eventually this will be move to game.bb & consist of simply those 3 lines
+; Eventually game.bb will consist soley of those 4 lines
 ; ===========================================================================
 
 Include "src/engine/core/Engine.bb"
@@ -20,15 +20,13 @@ Global IsRunning% = True
 Global ShouldRestart% = False
 ;; ToDo End
 
+;; ToDo:: collection of non-config related stuff to sort
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 Dim ArrowIMG(4)
-
-Global GraphicWidth% = GetCLIInt("width", GetCLIInt("w", GetOptionInt("graphics", "width")))
-Global GraphicHeight% = GetCLIInt("height", GetCLIInt("h", GetOptionInt("graphics", "height")))
-If GraphicWidth <= 0 Then GraphicWidth = DesktopWidth()
-If GraphicHeight <= 0 Then GraphicHeight = DesktopHeight()
-
 Global Depth% = 0
+;; ToDo End
+
+;; ToDo:: migrate this one to our new config system next
 Global Fullscreen% = GetOptionInt("graphics", "fullscreen")
 
 Global SelectedGFXDriver% = Min(Max(GetOptionInt("graphics", "gfx driver"), 1), CountGfxDrivers())
@@ -89,7 +87,7 @@ Next
 LoadLocalization(I_Loc, StringsFile)
 
 ; Exclusive fullscreen ONLY supports the reported resolutions
-If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Fullscreen And (Not GfxMode3DExists(GraphicWidth, GraphicHeight, 32-16*Bit16Mode)) Then
+If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Bit16Mode)) Then
 	UpdateLauncher()
 EndIf
 
@@ -104,17 +102,17 @@ If BorderlessWindowed
 	RealGraphicWidth = DesktopWidth()
 	RealGraphicHeight = DesktopHeight()
 	
-	AspectRatioRatio = (Float(GraphicWidth)/Float(GraphicHeight))/(Float(RealGraphicWidth)/Float(RealGraphicHeight))
+	AspectRatioRatio = (Float(Config\Graphics\ScreenWidth)/Float(Config\Graphics\ScreenHeight))/(Float(RealGraphicWidth)/Float(RealGraphicHeight))
 	
 	Fullscreen = False
 Else
 	AspectRatioRatio = 1.0
-	RealGraphicWidth = GraphicWidth
-	RealGraphicHeight = GraphicHeight
+	RealGraphicWidth = Config\Graphics\ScreenWidth
+	RealGraphicHeight = Config\Graphics\ScreenHeight
 	If Fullscreen Then
-		Graphics3DExt(GraphicWidth, GraphicHeight, (16*Bit16Mode), 1)
+		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, (16*Bit16Mode), 1)
 	Else
-		Graphics3DExt(GraphicWidth, GraphicHeight, 0, 2)
+		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 0, 2)
 	End If
 EndIf
 
@@ -122,7 +120,7 @@ Global MenuScale# = CalculateMenuScale()
 Global HUDScale# = Max(MenuScale * HUDScaleFactor, 1)
 
 Function CalculateMenuScale#()
-	Local short% = Min(GraphicWidth, GraphicHeight)
+	Local short% = Min(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight)
 	If short > 1024 Then Return short / 1024.0
 	If short > 840 Then Return 1
 	Return short / 840.0
@@ -152,14 +150,14 @@ Global HUDOffsetScale# = GetOptionFloat("graphics", "hud offset")
 UpdateHUDOffsets()
 
 Function UpdateHUDOffsets()
-	If GraphicWidth > GraphicHeight Then
-		HUDStartY = 0 : HUDEndY = GraphicHeight
-		HUDStartX = Int(HUDOffsetScale * GraphicWidth / 2)
-		HUDEndX = GraphicWidth - HUDStartX
+	If Config\Graphics\ScreenWidth > Config\Graphics\ScreenHeight Then
+		HUDStartY = 0 : HUDEndY = Config\Graphics\ScreenHeight
+		HUDStartX = Int(HUDOffsetScale * Config\Graphics\ScreenWidth / 2)
+		HUDEndX = Config\Graphics\ScreenWidth - HUDStartX
 	Else
-		HUDStartX = 0 : HUDEndX = GraphicWidth
-		HUDStartY = Int(HUDOffsetScale * GraphicHeight / 2)
-		HUDEndY = GraphicHeight - HUDStartY
+		HUDStartX = 0 : HUDEndX = Config\Graphics\ScreenWidth
+		HUDStartY = Int(HUDOffsetScale * Config\Graphics\ScreenHeight / 2)
+		HUDEndY = Config\Graphics\ScreenHeight - HUDStartY
 	EndIf
 End Function
 
@@ -593,7 +591,7 @@ For i = 0 To 3
 Next
 NavImages(4) = LoadImage_Strict("GFX\navigator\batterymeter.png")
 
-Global NavBG = CreateImage(GraphicWidth,GraphicHeight)
+Global NavBG = CreateImage(Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight)
 
 Global LightConeModel
 
@@ -2040,7 +2038,7 @@ While IsRunning
 				ConsoleOpen = (Not ConsoleOpen)
 				If Flags\SteamActive Then
 					If ConsoleOpen Then
-						Steam_OpenOnScreenKeyboard(0, GraphicWidth / 2, GraphicHeight / 2, GraphicWidth / 2, GraphicHeight / 2)
+						Steam_OpenOnScreenKeyboard(0, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2)
 					Else
 						Steam_CloseOnScreenKeyboard()
 					EndIf
@@ -2084,14 +2082,14 @@ While IsRunning
 			Local messageOpacity% = Min(MsgTimer / 2, 255)
 			If (Not temp%)
 				Color 0,0,0
-				Text((GraphicWidth / 2)+1, (GraphicHeight / 2) + 201, Msg, True, False)
+				Text((Config\Graphics\ScreenWidth / 2)+1, (Config\Graphics\ScreenHeight / 2) + 201, Msg, True, False)
 				Color messageOpacity, messageOpacity, messageOpacity
-				Text((GraphicWidth / 2), (GraphicHeight / 2) + 200, Msg, True, False)
+				Text((Config\Graphics\ScreenWidth / 2), (Config\Graphics\ScreenHeight / 2) + 200, Msg, True, False)
 			Else
 				Color 0,0,0
-				Text((GraphicWidth / 2)+1, (GraphicHeight * 0.94) + 1, Msg, True, False)
+				Text((Config\Graphics\ScreenWidth / 2)+1, (Config\Graphics\ScreenHeight * 0.94) + 1, Msg, True, False)
 				Color messageOpacity, messageOpacity, messageOpacity
-				Text((GraphicWidth / 2), (GraphicHeight * 0.94), Msg, True, False)
+				Text((Config\Graphics\ScreenWidth / 2), (Config\Graphics\ScreenHeight * 0.94), Msg, True, False)
 			EndIf
 			MsgTimer=MsgTimer-FPSfactor2 
 		End If
@@ -2112,14 +2110,14 @@ While IsRunning
 	End If
 	
 	If BorderlessWindowed Then
-		If (RealGraphicWidth<>GraphicWidth) Or (RealGraphicHeight<>GraphicHeight) Then
+		If (RealGraphicWidth<>Config\Graphics\ScreenWidth) Or (RealGraphicHeight<>Config\Graphics\ScreenHeight) Then
 			SetBuffer TextureBuffer(fresize_texture)
 			ClsColor 0,0,0 : Cls
-			CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			CopyRect 0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight,1024-Config\Graphics\ScreenWidth/2,1024-Config\Graphics\ScreenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			SetBuffer BackBuffer()
 			ClsColor 0,0,0 : Cls
-			ScaleRender(0,0,2050.0 / Float(GraphicWidth) * AspectRatioRatio, 2050.0 / Float(GraphicWidth) * AspectRatioRatio)
-			;might want to replace Float(GraphicWidth) with Max(GraphicWidth,GraphicHeight) if portrait sizes cause issues
+			ScaleRender(0,0,2050.0 / Float(Config\Graphics\ScreenWidth) * AspectRatioRatio, 2050.0 / Float(Config\Graphics\ScreenWidth) * AspectRatioRatio)
+			;might want to replace Float(Config\Graphics\ScreenWidth) with Max(Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight) if portrait sizes cause issues
 			;everyone uses landscape so it's probably a non-issue
 		EndIf
 	EndIf
@@ -2622,10 +2620,10 @@ Function DrawEnding()
 			;-200 -> -700
 			;Max(50 - (Abs(KillTimer)-200),0)    =    0->50
 			If Rand(1,150)<Min((Abs(EndingTimer)-200),155) Then
-				DrawImage EndingScreen, GraphicWidth/2-400, GraphicHeight/2-400
+				DrawImage EndingScreen, Config\Graphics\ScreenWidth/2-400, Config\Graphics\ScreenHeight/2-400
 			Else
 				Color 0,0,0
-				Rect 100,100,GraphicWidth-200,GraphicHeight-200
+				Rect 100,100,Config\Graphics\ScreenWidth-200,Config\Graphics\ScreenHeight-200
 				Color 255,255,255
 			EndIf
 			
@@ -2640,14 +2638,14 @@ Function DrawEnding()
 			
 		Else
 			
-			DrawImage EndingScreen, GraphicWidth/2-400, GraphicHeight/2-400
+			DrawImage EndingScreen, Config\Graphics\ScreenWidth/2-400, Config\Graphics\ScreenHeight/2-400
 			
 			If EndingTimer < -1000 And EndingTimer > -2000
 				
 				width = ImageWidth(PauseMenuIMG)
 				height = ImageHeight(PauseMenuIMG)
-				x = GraphicWidth / 2 - width / 2
-				y = GraphicHeight / 2 - height / 2
+				x = Config\Graphics\ScreenWidth / 2 - width / 2
+				y = Config\Graphics\ScreenHeight / 2 - height / 2
 				
 				DrawImage PauseMenuIMG, x, y
 				
@@ -2695,8 +2693,8 @@ Function DrawEnding()
 					Text x, y+100*MenuScale, I_Loc\Menu_EndDocs+" " +docsfound+"/"+docamount
 					Text x, y+120*MenuScale, I_Loc\Menu_End914+" " +RefinedItems			
 					
-					x = GraphicWidth / 2 - width / 2
-					y = GraphicHeight / 2 - height / 2
+					x = Config\Graphics\ScreenWidth / 2 - width / 2
+					y = Config\Graphics\ScreenHeight / 2 - height / 2
 					x = x+width/2
 					y = y+height-100*MenuScale
 					
@@ -2781,8 +2779,8 @@ Function InitCredits()
 	Local file% = OpenFile("Credits.txt")
 	Local l$
 	
-	CreditsFont% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(21 * (GraphicHeight / 1024.0)))
-	CreditsFont2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(35 * (GraphicHeight / 1024.0)))
+	CreditsFont% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(21 * (Config\Graphics\ScreenHeight / 1024.0)))
+	CreditsFont2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(35 * (Config\Graphics\ScreenHeight / 1024.0)))
 	
 	If CreditsScreen = 0
 		CreditsScreen = LoadImage_Strict("GFX\creditsscreen.pt")
@@ -2820,7 +2818,7 @@ Function InitCreditsFromFile(creditsPath$)
 End Function
 
 Function DrawCredits()
-    Local credits_Y# = (EndingTimer+2000)/2+(GraphicHeight+10)
+    Local credits_Y# = (EndingTimer+2000)/2+(Config\Graphics\ScreenHeight+10)
     Local cl.CreditsLine
     Local id%
     Local endlinesamount%
@@ -2829,7 +2827,7 @@ Function DrawCredits()
     Cls
 	
 	If Rand(1,300)>1
-		DrawImage CreditsScreen, GraphicWidth/2-400, GraphicHeight/2-400
+		DrawImage CreditsScreen, Config\Graphics\ScreenWidth/2-400, Config\Graphics\ScreenHeight/2-400
 	EndIf
 	
 	id = 0
@@ -2841,14 +2839,14 @@ Function DrawCredits()
 		If Left(cl\txt,1)="*"
 			SetFont CreditsFont2
 			If cl\stay=False
-				Text GraphicWidth/2,credits_Y+(24*cl\id*MenuScale),Right(cl\txt,Len(cl\txt)-1),True
+				Text Config\Graphics\ScreenWidth/2,credits_Y+(24*cl\id*MenuScale),Right(cl\txt,Len(cl\txt)-1),True
 			EndIf
 		ElseIf Left(cl\txt,1)="/"
 			LastCreditLine = Before(cl)
 		Else
 			SetFont CreditsFont
 			If cl\stay=False
-				Text GraphicWidth/2,credits_Y+(24*cl\id*MenuScale),cl\txt,True
+				Text Config\Graphics\ScreenWidth/2,credits_Y+(24*cl\id*MenuScale),cl\txt,True
 			EndIf
 		EndIf
 		If LastCreditLine<>Null
@@ -2883,9 +2881,9 @@ Function DrawCredits()
 			If cl\stay
 				SetFont CreditsFont
 				If Left(cl\txt,1)="/"
-					Text GraphicWidth/2,(GraphicHeight/2)+(endlinesamount/2)+(24*cl\id*MenuScale),Right(cl\txt,Len(cl\txt)-1),True
+					Text Config\Graphics\ScreenWidth/2,(Config\Graphics\ScreenHeight/2)+(endlinesamount/2)+(24*cl\id*MenuScale),Right(cl\txt,Len(cl\txt)-1),True
 				Else
-					Text GraphicWidth/2,(GraphicHeight/2)+(24*(cl\id-LastCreditLine\id)*MenuScale)-((endlinesamount/2)*24*MenuScale),cl\txt,True
+					Text Config\Graphics\ScreenWidth/2,(Config\Graphics\ScreenHeight/2)+(24*(cl\id-LastCreditLine\id)*MenuScale)-((endlinesamount/2)*24*MenuScale),cl\txt,True
 				EndIf
 			EndIf
 		Next
@@ -3527,7 +3525,7 @@ Function DrawGUI()
 									If e\img = 0 Then e\img = LoadImage_Strict("GFX\npcs\106face.jpg")
 								EndIf
 							Else
-								DrawImage e\img, GraphicWidth/2-Rand(390,310), GraphicHeight/2-Rand(290,310)
+								DrawImage e\img, Config\Graphics\ScreenWidth/2-Rand(390,310), Config\Graphics\ScreenHeight/2-Rand(290,310)
 							EndIf
 						Else
 							If e\img <> 0 Then FreeImage e\img : e\img = 0
@@ -3548,7 +3546,7 @@ Function DrawGUI()
 								EndIf
 							EndIf
 						Else
-							DrawImage e\img, GraphicWidth/2-Rand(390,310), GraphicHeight/2-Rand(290,310)
+							DrawImage e\img, Config\Graphics\ScreenWidth/2-Rand(390,310), Config\Graphics\ScreenHeight/2-Rand(290,310)
 						EndIf
 					Else
 						If e\img <> 0 Then FreeImage e\img : e\img = 0
@@ -3583,7 +3581,7 @@ Function DrawGUI()
 		
 		FreeEntity (temp)
 		
-		DrawImage(HandIcon, GraphicWidth / 2 + Sin(yawvalue) * (GraphicWidth / 3) - 32 * HUDScale, GraphicHeight / 2 - Sin(pitchvalue) * (GraphicHeight / 3) - 32 * HUDScale)
+		DrawImage(HandIcon, Config\Graphics\ScreenWidth / 2 + Sin(yawvalue) * (Config\Graphics\ScreenWidth / 3) - 32 * HUDScale, Config\Graphics\ScreenHeight / 2 - Sin(pitchvalue) * (Config\Graphics\ScreenHeight / 3) - 32 * HUDScale)
 		
 		If MouseUp1 Then
 			MouseUp1 = False
@@ -3606,14 +3604,14 @@ Function DrawGUI()
 		If pitchvalue > 90 And pitchvalue <= 180 Then pitchvalue = 90
 		If pitchvalue > 180 And pitchvalue < 270 Then pitchvalue = 270
 		
-		DrawImage(HandIcon2, GraphicWidth / 2 + Sin(yawvalue) * (GraphicWidth / 3) - 32 * HUDScale, GraphicHeight / 2 - Sin(pitchvalue) * (GraphicHeight / 3) - 32 * HUDScale)
+		DrawImage(HandIcon2, Config\Graphics\ScreenWidth / 2 + Sin(yawvalue) * (Config\Graphics\ScreenWidth / 3) - 32 * HUDScale, Config\Graphics\ScreenHeight / 2 - Sin(pitchvalue) * (Config\Graphics\ScreenHeight / 3) - 32 * HUDScale)
 	EndIf
 	
-	If DrawHandIcon Then DrawImage(HandIcon, GraphicWidth / 2 - 32 * HUDScale, GraphicHeight / 2 - 32 * HUDScale)
+	If DrawHandIcon Then DrawImage(HandIcon, Config\Graphics\ScreenWidth / 2 - 32 * HUDScale, Config\Graphics\ScreenHeight / 2 - 32 * HUDScale)
 	For i = 0 To 3
 		If DrawArrowIcon(i) Then
-			x = GraphicWidth / 2 - 32 * HUDScale
-			y = GraphicHeight / 2 - 32 * HUDScale	
+			x = Config\Graphics\ScreenWidth / 2 - 32 * HUDScale
+			y = Config\Graphics\ScreenHeight / 2 - 32 * HUDScale	
 			Select i
 				Case 0
 					y = y - 64 * HUDScale - 5
@@ -3635,7 +3633,7 @@ Function DrawGUI()
 	If Using294 Then Use294()
 	
 	If SelectedScreen <> Null Then
-		DrawImage SelectedScreen\img, GraphicWidth/2-ImageWidth(SelectedScreen\img)/2,GraphicHeight/2-ImageHeight(SelectedScreen\img)/2
+		DrawImage SelectedScreen\img, Config\Graphics\ScreenWidth/2-ImageWidth(SelectedScreen\img)/2,Config\Graphics\ScreenHeight/2-ImageHeight(SelectedScreen\img)/2
 		
 		If MouseUp1 Or MouseHit2 Then
 			FreeImage SelectedScreen\img : SelectedScreen\img = 0
@@ -3666,8 +3664,8 @@ Function DrawGUI()
 			CameraProject(Camera, EntityX(ClosestButton,True),EntityY(ClosestButton,True)-MeshHeight(ButtonOBJ)*0.015,EntityZ(ClosestButton,True))
 			scale# = (ProjectedY()-projy)/462.0
 			
-			x = GraphicWidth/2-317*scale/2
-			y = GraphicHeight/2-462*scale/2
+			x = Config\Graphics\ScreenWidth/2-317*scale/2
+			y = Config\Graphics\ScreenHeight/2-462*scale/2
 			
 			Select True
 				Case WearingNightVision=1 Color 0,255,0
@@ -3678,16 +3676,16 @@ Function DrawGUI()
 			If KeypadMSG <> "" Then 
 				KeypadTimer = KeypadTimer-FPSfactor2
 				
-				If (KeypadTimer Mod 70) < 35 Then Text GraphicWidth/2, y+124*scale, KeypadMSG, True,True
+				If (KeypadTimer Mod 70) < 35 Then Text Config\Graphics\ScreenWidth/2, y+124*scale, KeypadMSG, True,True
 				If KeypadTimer =<0 Then
 					KeypadMSG = ""
 					SelectedDoor = Null
 					MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
 				EndIf
 			Else
-				Text GraphicWidth/2, y+70*scale, I_Loc\HUD_KeypadCode,True,True	
+				Text Config\Graphics\ScreenWidth/2, y+70*scale, I_Loc\HUD_KeypadCode,True,True	
 				SetFont Font4
-				Text GraphicWidth/2, y+124*scale, KeypadInput,True,True	
+				Text Config\Graphics\ScreenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 
 			SetFont Font1
@@ -3820,8 +3818,8 @@ Function DrawGUI()
 		height% = 70 * HUDScale
 		spacing% = 35 * HUDScale
 		
-		x = GraphicWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
-		y = GraphicHeight / 2 - (height * OtherSize /5 + height * (OtherSize / 5 - 1)) / 2;height
+		x = Config\Graphics\ScreenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
+		y = Config\Graphics\ScreenHeight / 2 - (height * OtherSize /5 + height * (OtherSize / 5 - 1)) / 2;height
 		
 		ItemAmount = 0
 		For  n% = 0 To OtherSize - 1
@@ -3891,7 +3889,7 @@ Function DrawGUI()
 			If tempX = 5 Then 
 				tempX=0
 				y = y + height*2 
-				x = GraphicWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
+				x = Config\Graphics\ScreenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
 			EndIf
 		Next
 		
@@ -4011,8 +4009,8 @@ Function DrawGUI()
 		height% = 70 * HUDScale
 		spacing% = 35 * HUDScale
 		
-		x = GraphicWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
-		y = GraphicHeight / 2 - (height * MaxItemAmount /5 + height * (MaxItemAmount / 5 - 1)) / 2
+		x = Config\Graphics\ScreenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
+		y = Config\Graphics\ScreenHeight / 2 - (height * MaxItemAmount /5 + height * (MaxItemAmount / 5 - 1)) / 2
 		
 		ItemAmount = 0
 		For  n% = 0 To MaxItemAmount - 1
@@ -4129,7 +4127,7 @@ Function DrawGUI()
 			x=x+width + spacing
 			If n = 4 Then 
 				y = y + height*2 
-				x = GraphicWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
+				x = Config\Graphics\ScreenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
 			EndIf
 		Next
 		
@@ -4452,7 +4450,7 @@ Function DrawGUI()
 					;[End Block]
 				Case "key1", "key2", "key3", "key4", "key5", "key6", "keyomni", "scp860", "hand", "hand2", "25ct"
 					;[Block]
-					DrawImage(SelectedItem\itemtemplate\invimg, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+					DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 					;[End Block]
 				Case "scp513"
 					;[Block]
@@ -4543,9 +4541,9 @@ Function DrawGUI()
 							CurrSpeed = CurveValue(0, CurrSpeed, 5.0)
 							Crouch = True
 							
-							DrawImage(SelectedItem\itemtemplate\invimg, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+							DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 							
-							DrawBar(BlinkMeterIMG, GraphicWidth / 2, GraphicHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
+							DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
 							
 							SelectedItem\state = Min(SelectedItem\state+(FPSfactor/5.0),100)			
 							
@@ -4663,7 +4661,7 @@ Function DrawGUI()
 					
 					If (Not Wearing714) Then SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])
 					
-					DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+					DrawImage(SelectedItem\itemtemplate\img, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					;[End Block]
 				Case "cup"
 					;[Block]
@@ -5206,9 +5204,9 @@ Function DrawGUI()
 					If WearingVest = 0 Then
 						CurrSpeed = CurveValue(0, CurrSpeed, 5.0)
 						
-						DrawImage(SelectedItem\itemtemplate\invimg, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+						DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 						
-						DrawBar(BlinkMeterIMG, GraphicWidth / 2, GraphicHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
+						DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
 						
 						SelectedItem\state = Min(SelectedItem\state+(FPSfactor/4.0),100)
 						
@@ -5241,9 +5239,9 @@ Function DrawGUI()
 					;[Block]
 					CurrSpeed = CurveValue(0, CurrSpeed, 5.0)
 					
-					DrawImage(SelectedItem\itemtemplate\invimg, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+					DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 					
-					DrawBar(BlinkMeterIMG, GraphicWidth / 2, GraphicHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
+					DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
 
 					SelectedItem\state = Min(SelectedItem\state+(FPSfactor/(2.0+(0.5*(SelectedItem\itemtemplate\name="finevest")))),100)
 					
@@ -5521,9 +5519,9 @@ Function DrawGUI()
 					
 					CurrSpeed = CurveValue(0, CurrSpeed, 5.0)
 					
-					DrawImage(SelectedItem\itemtemplate\invimg, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+					DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 					
-					DrawBar(BlinkMeterIMG, GraphicWidth / 2, GraphicHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
+					DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
 					
 					SelectedItem\state = Min(SelectedItem\state+(FPSfactor),100)
 					
@@ -5604,7 +5602,7 @@ Function DrawGUI()
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+					DrawImage(SelectedItem\itemtemplate\img, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
 					If SelectedItem\state = 0 Then
 						PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(6,10)+".ogg")
@@ -5637,7 +5635,7 @@ Function DrawGUI()
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+					DrawImage(SelectedItem\itemtemplate\img, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
 					If SelectedItem\state = 0
 						BlurTimer = 1000
@@ -5657,7 +5655,7 @@ Function DrawGUI()
 					Msg = ""
 					
 					SelectedItem\state = 1
-					DrawImage(SelectedItem\itemtemplate\invimg, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+					DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 					;[End Block]
 				Case "scp427"
 					;[Block]
@@ -5742,7 +5740,7 @@ Function DrawGUI()
 							MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 						EndIf
 						
-						DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+						DrawImage(SelectedItem\itemtemplate\img, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 						;[End Block]
 					Else
 						;[Block]
@@ -6067,8 +6065,8 @@ Function DrawMenu()
 		
 		width = ImageWidth(PauseMenuIMG)
 		height = ImageHeight(PauseMenuIMG)
-		x = GraphicWidth / 2 - width / 2
-		y = GraphicHeight / 2 - height / 2
+		x = Config\Graphics\ScreenWidth / 2 - width / 2
+		y = Config\Graphics\ScreenHeight / 2 - height / 2
 		
 		DrawImage PauseMenuIMG, x, y
 		
@@ -6104,7 +6102,7 @@ Function DrawMenu()
 		End If		
 		
 		Local AchvXIMG% = (x + (22*MenuScale))
-		Local scale# = GraphicHeight/768.0
+		Local scale# = Config\Graphics\ScreenHeight/768.0
 		Local SeparationConst% = 76*scale
 		Local imgsize% = 64
 		
@@ -6141,9 +6139,9 @@ Function DrawMenu()
 			If DrawButton(x+215*MenuScale,y,100*MenuScale,30*MenuScale,I_Loc\Option_Controls,False) Then OptionsMenu = 3
 			If DrawButton(x+325*MenuScale,y,100*MenuScale,30*MenuScale,I_Loc\Option_Advanced,False) Then OptionsMenu = 4
 			
-			Local tx# = (GraphicWidth/2)+(width/2)
+			Local tx# = (Config\Graphics\ScreenWidth/2)+(width/2)
 			Local ty# = y
-			Local tw# = Min(400*MenuScale, GraphicWidth - tx)
+			Local tw# = Min(400*MenuScale, Config\Graphics\ScreenWidth - tx)
 			Local th# = 150*MenuScale
 			
 			Color 255,255,255
@@ -6791,7 +6789,7 @@ Function LoadEntities()
 	SoundEmitter = CreatePivot()
 	
 	Camera = CreateCamera()
-	CameraViewport Camera,0,0,GraphicWidth,GraphicHeight
+	CameraViewport Camera,0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight
 	CameraRange(Camera, 0.05, CameraFogFar)
 	CameraFogMode (Camera, 1)
 	CameraFogRange (Camera, CameraFogNear, CameraFogFar)
@@ -6807,7 +6805,7 @@ Function LoadEntities()
 	FogTexture = LoadTexture_Strict("GFX\fog.jpg", 1)
 	
 	Fog = CreateSprite(ark_blur_cam)
-	ScaleSprite(Fog, 1.0, Max(Float(GraphicHeight) / Float(GraphicWidth), 0.8))
+	ScaleSprite(Fog, 1.0, Max(Float(Config\Graphics\ScreenHeight) / Float(Config\Graphics\ScreenWidth), 0.8))
 	EntityTexture(Fog, FogTexture)
 	EntityBlend (Fog, 2)
 	EntityOrder Fog, -1000
@@ -6815,7 +6813,7 @@ Function LoadEntities()
 	
 	GasMaskTexture = LoadTexture_Strict("GFX\GasmaskOverlay.jpg", 1)
 	GasMaskOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(GasMaskOverlay, 1.0, Max(Float(GraphicHeight) / Float(GraphicWidth), 0.8))
+	ScaleSprite(GasMaskOverlay, 1.0, Max(Float(Config\Graphics\ScreenHeight) / Float(Config\Graphics\ScreenWidth), 0.8))
 	EntityTexture(GasMaskOverlay, GasMaskTexture)
 	EntityBlend (GasMaskOverlay, 2)
 	EntityFX(GasMaskOverlay, 1)
@@ -6825,7 +6823,7 @@ Function LoadEntities()
 	
 	InfectTexture = LoadTexture_Strict("GFX\InfectOverlay.jpg", 1)
 	InfectOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(InfectOverlay, 1.0, Max(Float(GraphicHeight) / Float(GraphicWidth), 0.8))
+	ScaleSprite(InfectOverlay, 1.0, Max(Float(Config\Graphics\ScreenHeight) / Float(Config\Graphics\ScreenWidth), 0.8))
 	EntityTexture(InfectOverlay, InfectTexture)
 	EntityBlend (InfectOverlay, 3)
 	EntityFX(InfectOverlay, 1)
@@ -6836,7 +6834,7 @@ Function LoadEntities()
 	
 	NVTexture = LoadTexture_Strict("GFX\NightVisionOverlay.jpg", 1)
 	NVOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(NVOverlay, 1.0, Max(Float(GraphicHeight) / Float(GraphicWidth), 0.8))
+	ScaleSprite(NVOverlay, 1.0, Max(Float(Config\Graphics\ScreenHeight) / Float(Config\Graphics\ScreenWidth), 0.8))
 	EntityTexture(NVOverlay, NVTexture)
 	EntityBlend (NVOverlay, 2)
 	EntityFX(NVOverlay, 1)
@@ -6844,7 +6842,7 @@ Function LoadEntities()
 	MoveEntity(NVOverlay, 0, 0, 1.0)
 	HideEntity(NVOverlay)
 	NVBlink = CreateSprite(ark_blur_cam)
-	ScaleSprite(NVBlink, 1.0, Max(Float(GraphicHeight) / Float(GraphicWidth), 0.8))
+	ScaleSprite(NVBlink, 1.0, Max(Float(Config\Graphics\ScreenHeight) / Float(Config\Graphics\ScreenWidth), 0.8))
 	EntityColor(NVBlink,0,0,0)
 	EntityFX(NVBlink, 1)
 	EntityOrder NVBlink, -1005
@@ -6861,7 +6859,7 @@ Function LoadEntities()
 	SetBuffer BackBuffer()
 	
 	Dark = CreateSprite(ark_blur_cam)
-	ScaleSprite(Dark, 1.0, Max(Float(GraphicHeight) / Float(GraphicWidth), 0.8))
+	ScaleSprite(Dark, 1.0, Max(Float(Config\Graphics\ScreenHeight) / Float(Config\Graphics\ScreenWidth), 0.8))
 	EntityTexture(Dark, DarkTexture)
 	EntityBlend (Dark, 1)
 	EntityOrder Dark, -1002
@@ -6878,7 +6876,7 @@ Function LoadEntities()
 	TeslaTexture = LoadTexture_Strict("GFX\map\tesla.jpg", 1+2)
 	
 	Light = CreateSprite(ark_blur_cam)
-	ScaleSprite(Light, 1.0, Max(Float(GraphicHeight) / Float(GraphicWidth), 0.8))
+	ScaleSprite(Light, 1.0, Max(Float(Config\Graphics\ScreenHeight) / Float(Config\Graphics\ScreenWidth), 0.8))
 	EntityTexture(Light, LightTexture)
 	EntityBlend (Light, 1)
 	EntityOrder Light, -1002
@@ -9005,8 +9003,8 @@ End Function
 Function Use294()
 	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
 	
-	x = GraphicWidth/2 - (ImageWidth(Panel294)/2)
-	y = GraphicHeight/2 - (ImageHeight(Panel294)/2)
+	x = Config\Graphics\ScreenWidth/2 - (ImageWidth(Panel294)/2)
+	y = Config\Graphics\ScreenHeight/2 - (ImageHeight(Panel294)/2)
 	DrawImage Panel294, x, y
 	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
@@ -9819,7 +9817,7 @@ Function ResizeImage2(image%,width%,height%)
 	CopyRect 0,0,oldWidth,oldHeight,1024-oldWidth/2,1024-oldHeight/2,ImageBuffer(image),TextureBuffer(fresize_texture)
 	SetBuffer BackBuffer()
 	ScaleRender(0,0,2048.0 / Float(RealGraphicWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(RealGraphicWidth) * Float(height) / Float(oldHeight))
-	;might want to replace Float(GraphicWidth) with Max(GraphicWidth,GraphicHeight) if portrait sizes cause issues
+	;might want to replace Float(Config\Graphics\ScreenWidth) with Max(Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight) if portrait sizes cause issues
 	;everyone uses landscape so it's probably a non-issue
 	CopyRect RealGraphicWidth/2-width/2,RealGraphicHeight/2-height/2,width,height,0,0,BackBuffer(),ImageBuffer(img)
 	
@@ -9847,7 +9845,7 @@ Function RenderWorld2()
 	IsNVGBlinking% = False
 	HideEntity NVBlink
 	
-	CameraViewport Camera,0,0,GraphicWidth,GraphicHeight
+	CameraViewport Camera,0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight
 	
 	Local hasBattery% = 2
 	Local power% = 0
@@ -9908,10 +9906,10 @@ Function RenderWorld2()
 			Local plusY% = 0
 			If hasBattery=1 Then plusY% = 40
 			
-			Text GraphicWidth/2,HUDStartY+(20+plusY)*MenuScale,I_Loc\HUD_NvgRefresh,True,False
+			Text Config\Graphics\ScreenWidth/2,HUDStartY+(20+plusY)*MenuScale,I_Loc\HUD_NvgRefresh,True,False
 			
-			Text GraphicWidth/2,HUDStartY+(60+plusY)*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
-			Text GraphicWidth/2,HUDStartY+(100+plusY)*MenuScale,I_Loc\HUD_NvgRefreshSeconds,True,False
+			Text Config\Graphics\ScreenWidth/2,HUDStartY+(60+plusY)*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
+			Text Config\Graphics\ScreenWidth/2,HUDStartY+(100+plusY)*MenuScale,I_Loc\HUD_NvgRefreshSeconds,True,False
 			
 			temp% = CreatePivot() : temp2% = CreatePivot()
 			PositionEntity temp, EntityX(Collider), EntityY(Collider), EntityZ(Collider)
@@ -9944,8 +9942,8 @@ Function RenderWorld2()
 						EndIf
 						
 						If (Not IsNVGBlinking%)
-						Text GraphicWidth / 2 + xvalue * (GraphicWidth / 2),GraphicHeight / 2 - yvalue * (GraphicHeight / 2),np\NVName,True,True
-						Text GraphicWidth / 2 + xvalue * (GraphicWidth / 2),GraphicHeight / 2 - yvalue * (GraphicHeight / 2) + 30.0 * MenuScale,Format(I_Loc\HUD_NvgMeters, f2s(dist,1)),True,True
+						Text Config\Graphics\ScreenWidth / 2 + xvalue * (Config\Graphics\ScreenWidth / 2),Config\Graphics\ScreenHeight / 2 - yvalue * (Config\Graphics\ScreenHeight / 2),np\NVName,True,True
+						Text Config\Graphics\ScreenWidth / 2 + xvalue * (Config\Graphics\ScreenWidth / 2),Config\Graphics\ScreenHeight / 2 - yvalue * (Config\Graphics\ScreenHeight / 2) + 30.0 * MenuScale,Format(I_Loc\HUD_NvgMeters, f2s(dist,1)),True,True
 					EndIf
 				EndIf
 				EndIf
@@ -9957,25 +9955,25 @@ Function RenderWorld2()
 			
 			Color 0,0,55
 			For k=0 To 10
-				Rect HUDStartX+45,GraphicHeight*0.5-(k*20),54,10,True
+				Rect HUDStartX+45,Config\Graphics\ScreenHeight*0.5-(k*20),54,10,True
 			Next
 			Color 0,0,255
 			For l=0 To Floor((power%+50)*0.01)
-				Rect HUDStartX+45,GraphicHeight*0.5-(l*20),54,10,True
+				Rect HUDStartX+45,Config\Graphics\ScreenHeight*0.5-(l*20),54,10,True
 			Next
-			DrawImage NVGImages,HUDStartX+40,GraphicHeight*0.5+30,1
+			DrawImage NVGImages,HUDStartX+40,Config\Graphics\ScreenHeight*0.5+30,1
 			
 			Color 255,255,255
 		ElseIf WearingNightVision=1 And hasBattery<>0
 			Color 0,55,0
 			For k=0 To 10
-				Rect HUDStartX+45,GraphicHeight*0.5-(k*20),54,10,True
+				Rect HUDStartX+45,Config\Graphics\ScreenHeight*0.5-(k*20),54,10,True
 			Next
 			Color 0,255,0
 			For l=0 To Floor((power%+50)*0.01)
-				Rect HUDStartX+45,GraphicHeight*0.5-(l*20),54,10,True
+				Rect HUDStartX+45,Config\Graphics\ScreenHeight*0.5-(l*20),54,10,True
 			Next
-			DrawImage NVGImages,HUDStartX+40,GraphicHeight*0.5+30,0
+			DrawImage NVGImages,HUDStartX+40,Config\Graphics\ScreenHeight*0.5+30,0
 		EndIf
 	EndIf
 	
@@ -9990,7 +9988,7 @@ Function RenderWorld2()
 			Color 255,0,0
 			SetFont Font3
 			
-			Text GraphicWidth/2,20*MenuScale,I_Loc\HUD_NvgBatlow,True,False
+			Text Config\Graphics\ScreenWidth/2,20*MenuScale,I_Loc\HUD_NvgBatlow,True,False
 			Color 255,255,255
 			SetFont Font1
 		EndIf
@@ -10238,11 +10236,11 @@ Function CheckTriggers$()
 End Function
 
 Function ScaledMouseX%()
-	Return Float(MouseX()-(RealGraphicWidth*0.5*(1.0-AspectRatioRatio)))*Float(GraphicWidth)/Float(RealGraphicWidth*AspectRatioRatio)
+	Return Float(MouseX()-(RealGraphicWidth*0.5*(1.0-AspectRatioRatio)))*Float(Config\Graphics\ScreenWidth)/Float(RealGraphicWidth*AspectRatioRatio)
 End Function
 
 Function ScaledMouseY%()
-	Return Float(MouseY())*Float(GraphicHeight)/Float(RealGraphicHeight)
+	Return Float(MouseY())*Float(Config\Graphics\ScreenHeight)/Float(RealGraphicHeight)
 End Function
 
 Function PlayAnnouncement(file$) ;This function streams the announcement currently playing

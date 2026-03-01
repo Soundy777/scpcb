@@ -481,7 +481,7 @@ End Function
 Function Cmd_Inspect(args$)
 
     ConsoleR = 0 : ConsoleG = 255 : ConsoleB = 0
-    c = CameraPick(Camera,GraphicWidth/2, GraphicHeight/2)
+    c = CameraPick(Camera,Config\Graphics\ScreenWidth/2, Config\Graphics\ScreenHeight/2)
     If c = 0 Then
         CreateConsoleMsg("******************************")
         CreateConsoleMsg("No entity  picked")

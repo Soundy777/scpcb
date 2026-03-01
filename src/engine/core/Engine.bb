@@ -38,8 +38,6 @@ Function Engine_Init()
     Flags\DiscordActive = DiscordIntegration_Init()
     Flags\ModsEnabled = ModManager_Init()
 
-    DebugLog "ModsEnabled:: " + Flags\ModsEnabled
-
     ;; ToDo:: init RenderSystem
     ;; ToDo:: init AudioSystem
 

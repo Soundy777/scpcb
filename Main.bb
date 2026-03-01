@@ -30,9 +30,6 @@ Global ConsoleFont%
 Global MenuWhite%, MenuBlack%
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 
-Global EnableSFXRelease% = GetOptionInt("audio", "sfx release")
-Global EnableSFXRelease_Prev% = EnableSFXRelease%
-
 Global DebugResourcePacks% = GetOptionInt("debug", "resource pack strict load")
 
 Global UseNumericSeeds% = GetOptionInt("general", "numeric seeds")
@@ -1696,7 +1693,7 @@ While IsRunning
 	EndIf
 	
 	UpdateMusic()
-	If EnableSFXRelease Then AutoReleaseSounds()
+	If Config\Audio\EnableSFXRelease Then AutoReleaseSounds()
 	
 	If MainMenuOpen Then
 		If ShouldPlay = 21 Then
@@ -6277,7 +6274,7 @@ Function DrawMenu()
 					
 					Color 100,100,100
 					Text x, y, I_Loc\OptionName_Sfxautorelease
-					EnableSFXRelease = DrawTick(x + 270 * MenuScale, y + MenuScale, EnableSFXRelease,True)
+					Config\Audio\EnableSFXRelease = DrawTick(x + 270 * MenuScale, y + MenuScale, Config\Audio\EnableSFXRelease,True)
 					If MouseOn(x+270*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th+220*MenuScale,"sfxautorelease")
 					EndIf
@@ -8143,7 +8140,7 @@ Function KillSounds()
 	If IntercomStreamCHN <> 0
 		StopStream_Strict(IntercomStreamCHN) : IntercomStreamCHN = 0
 	EndIf
-	If EnableSFXRelease
+	If Config\Audio\EnableSFXRelease
 		For snd.Sound = Each Sound
 			If snd\internalHandle <> 0 Then
 				FreeSound snd\internalHandle
@@ -9733,7 +9730,7 @@ Function SaveOptionsINI()
 	
 	PutINIValue(OptionFile, "audio", "music volume", MusicVolume)
 	PutINIValue(OptionFile, "audio", "sound volume", PrevSFXVolume)
-	PutINIValue(OptionFile, "audio", "sfx release", EnableSFXRelease)
+	PutINIValue(OptionFile, "audio", "sfx release", Config\Audio\EnableSFXRelease)
 	PutINIValue(OptionFile, "audio", "enable user tracks", EnableUserTracks%)
 	PutINIValue(OptionFile, "audio", "user track setting", UserTrackMode%)
 	

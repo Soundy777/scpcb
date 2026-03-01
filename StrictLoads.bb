@@ -101,7 +101,7 @@ Function PlaySound_Strict%(sndHandle%)
 								ConsoleOpen = True
 							EndIf
 						Else
-							If EnableSFXRelease Then snd\internalHandle = LoadSound(DetermineModdedPath(snd\name))
+							If Config\Audio\EnableSFXRelease Then snd\internalHandle = LoadSound(DetermineModdedPath(snd\name))
 						EndIf
 						If snd\internalHandle = 0 Then
 							CreateConsoleMsg("Failed to load Sound: " + Chr(34) + snd\name + Chr(34))
@@ -127,7 +127,7 @@ Function PlaySound_Strict%(sndHandle%)
 							ConsoleOpen = True
 						EndIf
 					Else
-						If EnableSFXRelease Then snd\internalHandle = LoadSound(DetermineModdedPath(snd\name))
+						If Config\Audio\EnableSFXRelease Then snd\internalHandle = LoadSound(DetermineModdedPath(snd\name))
 					EndIf
 						
 					If snd\internalHandle = 0 Then
@@ -158,7 +158,7 @@ Function LoadSound_Strict(file$)
 	snd\name = file
 	snd\internalHandle = 0
 	snd\releaseTime = 0
-	If (Not EnableSFXRelease) Then
+	If (Not Config\Audio\EnableSFXRelease) Then
 		If snd\internalHandle = 0 Then 
 			snd\internalHandle = LoadSound(snd\name)
 		EndIf

@@ -29,6 +29,8 @@ Global MenuStr$, MenuStrX%, MenuStrY%
 
 Global MainMenuTab%
 
+Global EnableSFXRelease_Prev% = Config\Audio\EnableSFXRelease%
+
 
 Global IntroEnabled% = GetOptionInt("general", "intro enabled")
 
@@ -779,9 +781,9 @@ Function UpdateMainMenu()
 					
 					Color 255,255,255
 					Text x + 20 * MenuScale, y, I_Loc\OptionName_Sfxautorelease
-					EnableSFXRelease = DrawTick(x + 310 * MenuScale, y + MenuScale, EnableSFXRelease)
-					If EnableSFXRelease_Prev% <> EnableSFXRelease
-						If EnableSFXRelease%
+					Config\Audio\EnableSFXRelease = DrawTick(x + 310 * MenuScale, y + MenuScale, Config\Audio\EnableSFXRelease)
+					If EnableSFXRelease_Prev% <> Config\Audio\EnableSFXRelease
+						If Config\Audio\EnableSFXRelease%
 							For snd.Sound = Each Sound
 								For i=0 To 31
 									If snd\channels[i]<>0 Then
@@ -801,7 +803,7 @@ Function UpdateMainMenu()
 								If snd\internalHandle = 0 Then snd\internalHandle = LoadSound_Strict(snd\name)
 							Next
 						EndIf
-						EnableSFXRelease_Prev% = EnableSFXRelease
+						EnableSFXRelease_Prev% = Config\Audio\EnableSFXRelease
 					EndIf
 					If MouseOn(x+310*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th+220*MenuScale,"sfxautorelease")

@@ -1,4 +1,4 @@
-Function InitErrorHandling(versionNumber$)
+Function ErrorHandling_Init(versionNumber$)
 
     InitErrorMsgs(11, True)
 
@@ -10,16 +10,6 @@ Function InitErrorHandling(versionNumber$)
 
     SetErrorMsg(8, "Caught exception: " + "_CaughtError_")
 
-End Function
-
-Function GetOSBits%()
-
-    If GetEnv("ProgramFiles(X86)") <> 0 Then
-        Return 64
-    Else
-        Return 32
-    EndIf
-    
 End Function
 
 Function CatchErrors(location$)

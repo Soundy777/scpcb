@@ -1,0 +1,12 @@
+Type KeybindsConfig
+    Field KEY_LEFT%
+    Field KEY_RIGHT%
+    Field KEY_UP%
+    Field KEY_DOWN%
+    Field KEY_BLINK%
+    Field KEY_SPRINT%
+    Field KEY_INVENTORY%
+    Field KEY_CROUCH%
+    Field KEY_SAVE%
+    Field KEY_CONSOLE%
+End Type

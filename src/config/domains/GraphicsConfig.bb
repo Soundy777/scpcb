@@ -1,0 +1,23 @@
+Type GraphicsConfig
+    Field ScreenWidth%
+    Field ScreenHeight%
+    Field Fullscreen%
+    Field BorderlessWindowed%
+    Field SelectedGFXDriver%
+    Field ScreenGamma#
+    Field ShowFPS%
+    Field Framelimit%
+    Field Vsync%
+    Field BumpMapEnabled%
+    Field Anisotropy%
+    Field AntiAliasing%
+    Field HUDEnabled%
+    Field RoomLightsEnabled%
+    Field TextureDetails%
+    Field Bit16Mode%
+    Field ParticleAmount#
+    Field EnableVRam%
+    Field FOV%
+    Field HUDOffset#
+    Field HUDScaleFactor#
+End Type

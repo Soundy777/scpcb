@@ -2,10 +2,10 @@ Include "src/core/Boot.bb"
 
 BootGame()
 
-;; ToDo:: Replace instances of these old path globals with the new Paths_ variants
-;; ToDo:: rename the Paths_ variants to just Path_
-Global OptionFile$ = PATH_FILE_OPTIONS
-Global ModsFile$ = PATH_FILE_MODS
+;; ToDo:: this will eventually be removed when all options have migrated over to our new config system
+Global OptionFile$ = Paths\OptionsFile
+
+Global ModsFile$ = Paths\ModsFile		;; ToDo:: move this down to the mods section when we get to that point
 
 ;; ToDo:: find a more logical place to include this - perhaps in a dedicated modules loader? (ask chat)
 Include "DevilParticleSystem.bb"

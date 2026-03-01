@@ -1,0 +1,12 @@
+Type GameplayConfig
+    Field IntroEnabled%
+    Field AchievementPopups%
+    Field MoveInputCancelling%
+    Field UseNumericSeeds%
+    Field SpeedRunMode%
+    Field PlayStartupVideo%
+    Field EnableMods%
+    Field EnableSteam%
+    Field EnableDiscord%
+    Field LoadingScreenCyclePerCharMS%
+End Type

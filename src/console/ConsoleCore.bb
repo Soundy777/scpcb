@@ -51,9 +51,9 @@ Global ConsoleR% = 255, ConsoleG% = 255, ConsoleB% = 255
 
 ; ---------------------------------------------------------------------------
 
-Function InitConsole()
+Function Console_Init()
 	ConsoleOpen = False
-	ConsoleEnabled = Options\ConsoleEnabled
+	ConsoleEnabled = Config\Console\ConsoleEnabled
 
 	InitConsoleCommands()
 
@@ -62,6 +62,7 @@ End Function
 
 ; ---------------------------------------------------------------------------
 
+;; ToDo:: Make use of these throughout the codebase
 Function OpenConsole()
 	Console\IsOpen = True
 End Function
@@ -350,7 +351,7 @@ End Function
 
 Function UpdateConsole()
 	
-	If Not Options\ConsoleEnabled Then Return
+	If Not Config\Console\ConsoleEnabled Then Return
 
 	;; ToDo:: use Console\IsOpen when we've integrated the functions to control opening & closing of the console
 	;If Not Console\IsOpen Then Return

@@ -1,0 +1,10 @@
+Type GameConfig
+    Field Audio.AudioConfig
+    Field Console.ConsoleConfig
+    Field Controls.ControlsConfig
+    Field Debug.DebugConfig
+    Field Gameplay.GameplayConfig
+    Field Graphics.GraphicsConfig
+    Field Keybinds.KeybindsConfig
+    Field Launcher.LauncherConfig
+End Type

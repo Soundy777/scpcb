@@ -26,8 +26,6 @@ Dim ArrowIMG(4)
 Global Depth% = 0
 ;; ToDo End
 
-Global SelectedGFXDriver% = Min(Max(GetOptionInt("graphics", "gfx driver"), 1), CountGfxDrivers())
-
 Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 
@@ -88,8 +86,8 @@ If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsResta
 	UpdateLauncher()
 EndIf
 
-SetGfxDriver(SelectedGFXDriver)
-Global GFXDriverName$ = GFXDriverName(SelectedGFXDriver)
+SetGfxDriver(Config\Graphics\SelectedGFXDriver)
+Global GFXDriverName$ = GFXDriverName(Config\Graphics\SelectedGFXDriver)
 
 ;New "fake fullscreen" - ENDSHN Psst, it's called borderless windowed mode --Love Mark,
 If BorderlessWindowed

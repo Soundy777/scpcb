@@ -34,7 +34,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
 
     config\Fullscreen = Config_ResolveIntSetting("graphics", "fullscreen")
     ; BorderlessWindowed
-    ; SelectedGFXDriver
+    config\SelectedGFXDriver = Min(Max(Config_ResolveIntSetting("graphics", "gfx driver"), 1), CountGfxDrivers())
     ; ScreenGamma
     ; ShowFPS
     ; Framelimit

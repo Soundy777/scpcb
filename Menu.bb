@@ -1669,12 +1669,12 @@ Function UpdateLauncher()
 			Color 0, 0, 0
 			txt$ = EllipsisLeft(GfxDrivers(i), 30)
 			txtW% = StringWidth(txt)
-			If SelectedGFXDriver = i Then Rect(x - 4, y - 4, txtW + 8, height, False)
+			If Config\Graphics\SelectedGFXDriver = i Then Rect(x - 4, y - 4, txtW + 8, height, False)
 			Text(x, y, txt)
 			If MouseOn(x - 4, y - 4, txtW + 8, height) Then
 				Color 100, 100, 100
 				Rect(x - 4, y - 4, txtW + 8, height, False)
-				If MouseHit1 Then SelectedGFXDriver = i
+				If MouseHit1 Then Config\Graphics\SelectedGFXDriver = i
 			EndIf
 			
 			y=y+20
@@ -1758,7 +1758,7 @@ Function UpdateLauncher()
 	Else
 		PutINIValue(Paths\OptionsFile, "graphics", "16bit", "false")
 	EndIf
-	PutINIValue(Paths\OptionsFile, "graphics", "gfx driver", SelectedGFXDriver)
+	PutINIValue(Paths\OptionsFile, "graphics", "gfx driver", Config\Graphics\SelectedGFXDriver)
 	
 	FreeImage(LauncherIMG) : LauncherIMG = 0
 	

@@ -1010,7 +1010,7 @@ Function UpdateMainMenu()
 
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_Launcher)
-					LauncherEnabled% = DrawTick(x + 310 * MenuScale, y + MenuScale, LauncherEnabled%)
+					Config\Launcher\LauncherEnabled% = DrawTick(x + 310 * MenuScale, y + MenuScale, Config\Launcher\LauncherEnabled%)
 					If MouseOn(x+310*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"launcher")
 					EndIf
@@ -1503,7 +1503,7 @@ Function UpdateLauncher()
 
 	MenuScale = 1
 	
-	Graphics3DExt(LauncherWidth, LauncherHeight, 0, 2)
+	Graphics3DExt(Config\Launcher\LauncherWidth, Config\Launcher\LauncherHeight, 0, 2)
 
 	;InitExt
 	
@@ -1589,7 +1589,7 @@ Function UpdateLauncher()
 	Repeat
 		;Cls
 		Color 0,0,0
-		Rect 0,0,LauncherWidth,LauncherHeight,True
+		Rect 0,0,Config\Launcher\LauncherWidth,Config\Launcher\LauncherHeight,True
 		
 		MouseHit1 = MouseHit(1)
 		MouseDown1 = MouseDown(1)
@@ -1654,7 +1654,7 @@ Function UpdateLauncher()
 			EndIf
 			
 			y=y+20
-			If y >= 250 - 65 + (LauncherHeight - 80 - 260) Then y = 270 - 65 : x=x+105
+			If y >= 250 - 65 + (Config\Launcher\LauncherHeight - 80 - 260) Then y = 270 - 65 : x=x+105
 		Next
 		
 		;-----------------------------------------------------------------
@@ -1689,7 +1689,7 @@ Function UpdateLauncher()
 
 		If BorderlessWindowed Or (Not Fullscreen) Then lock% = True
 		Bit16Mode = DrawTick(40 + 430 - 15, 260 - 55 + 65 + 8, Bit16Mode,lock%)
-		LauncherEnabled = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, LauncherEnabled)
+		Config\Launcher\LauncherEnabled = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, Config\Launcher\LauncherEnabled)
 
 		Text(40 + 430 + 15, 262 - 55 + 5 - 8, I_Loc\Launcher_FullscreenExclusive)
 		Color 255, 255, 255
@@ -1714,17 +1714,17 @@ Function UpdateLauncher()
 			Text(260 + 15, 262 - 55 + 140, I_Loc\Launcher_ResolutionCurrent+" "+gfxWidth + "x" + gfxHeight + ",32")
 		EndIf
 
-		If DrawButton(LauncherWidth - 30 - 90 - 130 - 15, LauncherHeight - 50 - 55, 130, 30, I_Loc\Launcher_Mapcreator, False, False) Then
+		If DrawButton(Config\Launcher\LauncherWidth - 30 - 90 - 130 - 15, Config\Launcher\LauncherHeight - 50 - 55, 130, 30, I_Loc\Launcher_Mapcreator, False, False) Then
 			ExecFile(Chr(34)+"Map Creator\StartMapCreator.bat"+Chr(34))
 			quit = True
 			Exit
 		EndIf
 
-		If DrawButton(LauncherWidth - 30 - 90 - 130 - 15, LauncherHeight - 50, 130, 30, I_Loc\Launcher_Discord, False, False) Then
+		If DrawButton(Config\Launcher\LauncherWidth - 30 - 90 - 130 - 15, Config\Launcher\LauncherHeight - 50, 130, 30, I_Loc\Launcher_Discord, False, False) Then
 			ExecFile("https://discord.gg/guqwRtQPdq")
 		EndIf
 		
-		If DrawButton(LauncherWidth - 30 - 90, LauncherHeight - 50 - 55, 100, 30, I_Loc\Launcher_Launch, False, False) Then
+		If DrawButton(Config\Launcher\LauncherWidth - 30 - 90, Config\Launcher\LauncherHeight - 50 - 55, 100, 30, I_Loc\Launcher_Launch, False, False) Then
 			GraphicWidth = gfxWidth
 			GraphicHeight = gfxHeight
 			RealGraphicWidth = GraphicWidth
@@ -1732,7 +1732,7 @@ Function UpdateLauncher()
 			Exit
 		EndIf
 		
-		If DrawButton(LauncherWidth - 30 - 90, LauncherHeight - 50, 100, 30, I_Loc\Launcher_Exit, False, False) Then quit = True : Exit
+		If DrawButton(Config\Launcher\LauncherWidth - 30 - 90, Config\Launcher\LauncherHeight - 50, 100, 30, I_Loc\Launcher_Exit, False, False) Then quit = True : Exit
 		Flip
 	Forever
 	
@@ -1743,7 +1743,7 @@ Function UpdateLauncher()
 	Else
 		PutINIValue(Paths\OptionsFile, "graphics", "fullscreen", "false")
 	EndIf
-	If LauncherEnabled Then
+	If Config\Launcher\LauncherEnabled Then
 		PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", "true")
 	Else
 		PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", "false")

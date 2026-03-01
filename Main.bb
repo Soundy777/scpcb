@@ -23,10 +23,6 @@ Global ShouldRestart% = False
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 Dim ArrowIMG(4)
 
-Global LauncherWidth%= Min(GetOptionInt("launcher", "launcher width"), 1024)
-Global LauncherHeight% = Min(GetOptionInt("launcher", "launcher height"), 768)
-Global LauncherEnabled% = GetOptionInt("launcher", "launcher enabled")
-
 Global GraphicWidth% = GetCLIInt("width", GetCLIInt("w", GetOptionInt("graphics", "width")))
 Global GraphicHeight% = GetCLIInt("height", GetCLIInt("h", GetOptionInt("graphics", "height")))
 If GraphicWidth <= 0 Then GraphicWidth = DesktopWidth()
@@ -93,7 +89,7 @@ Next
 LoadLocalization(I_Loc, StringsFile)
 
 ; Exclusive fullscreen ONLY supports the reported resolutions
-If (LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Fullscreen And (Not GfxMode3DExists(GraphicWidth, GraphicHeight, 32-16*Bit16Mode)) Then
+If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Fullscreen And (Not GfxMode3DExists(GraphicWidth, GraphicHeight, 32-16*Bit16Mode)) Then
 	UpdateLauncher()
 EndIf
 
@@ -6439,7 +6435,7 @@ Function DrawMenu()
 
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Launcher)
-					LauncherEnabled% = DrawTick(x + 270 * MenuScale, y, LauncherEnabled%)
+					Config\Launcher\LauncherEnabled% = DrawTick(x + 270 * MenuScale, y, Config\Launcher\LauncherEnabled%)
 					If MouseOn(x+270*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"launcher")
 					EndIf
@@ -9706,7 +9702,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "graphics", "show FPS", ShowFPS)
 	PutINIValue(Paths\OptionsFile, "graphics", "framelimit", Framelimit%)
 	PutINIValue(Paths\OptionsFile, "general", "achievement popup enabled", AchvMSGenabled%)
-	PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", LauncherEnabled%)
+	PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", Config\Launcher\LauncherEnabled%)
 	PutINIValue(Paths\OptionsFile, "graphics", "texture details", TextureDetails%)
 	PutINIValue(Paths\OptionsFile, "console", "enabled", ConsoleEnabled%)
 	PutINIValue(Paths\OptionsFile, "console", "auto opening", ConsoleOpening%)

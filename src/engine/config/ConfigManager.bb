@@ -41,9 +41,12 @@ Function Config_Load.GameConfig()
 
     config\Audio = AudioConfig_Load()
     config\Console = ConsoleConfig_Load()
-
+    ; controls
     config\Debug = DebugConfig_Load()
     config\Gameplay = GameplayConfig_Load()
+    ; graphics
+    ; keybinds
+    config\Launcher = LauncherConfig_Load()
 
     Return config
 

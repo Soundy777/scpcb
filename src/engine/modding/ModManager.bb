@@ -19,6 +19,17 @@ Global ModCount%
 
 Const STEAM_ITEM_ID_FILENAME$ = "steam_itemid.txt"
 
+Function ModManager_Init%()
+
+    If Not Config\Gameplay\EnableMods Then Return False
+    If HasCLIFlag("nomods") Then Return False
+
+    ReloadMods()
+
+    Return True
+
+End Function
+
 Function InstantiateMod.Mods(id$, path$)
     m.Mods = new Mods
     m\IsNew = True

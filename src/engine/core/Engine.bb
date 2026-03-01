@@ -16,6 +16,8 @@ Include "src/engine/config/ConfigManager.bb"
 Include "src/engine/integrations/SteamIntegration.bb"
 Include "src/engine/integrations/DiscordIntegration.bb"
 
+Include "src/engine/modding/ModManager.bb"
+
 Include "src/engine/console/ConsoleCore.bb"
 
 Include "src/engine/effects/DevilParticleSystem.bb"
@@ -34,6 +36,9 @@ Function Engine_Init()
 
     Flags\SteamActive = SteamIntegration_Init()
     Flags\DiscordActive = DiscordIntegration_Init()
+    Flags\ModsEnabled = ModManager_Init()
+
+    DebugLog "ModsEnabled:: " + Flags\ModsEnabled
 
     ;; ToDo:: init RenderSystem
     ;; ToDo:: init AudioSystem

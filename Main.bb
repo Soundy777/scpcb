@@ -16,14 +16,13 @@ Engine_Init()
 Global OptionFile$ = Paths\OptionsFile	;; ToDo:: remove this entirely when we've fully setup the new config system
 Global ModsFile$ = Paths\ModsFile		;; ToDo:: move this down to the mods section when we get to that point
 
+; BLOCK - App/Loop Data
+;; ToDo:: engineer a more elegant restarting process
 Global IsRestart% = False
 .Start
 Global IsRunning% = True
 Global ShouldRestart% = False
-
-Include "ModManager.bb"
-Global ModsEnabled% = GetOptionInt("general", "enable mods") And (Not HasCLIFlag("nomods"))
-If ModsEnabled Then ReloadMods()
+;; BLOCK - App/Loop Data
 
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Global ConsoleFont%

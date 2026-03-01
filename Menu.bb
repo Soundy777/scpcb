@@ -227,7 +227,7 @@ Function UpdateMainMenu()
 
 		y = y + spacing
 
-		If DrawButton(x, y, width, height, I_Loc\Menu_ModsUpper, True, False, Not ModsEnabled) Then
+		If DrawButton(x, y, width, height, I_Loc\Menu_ModsUpper, True, False, Not Flags\ModsEnabled) Then
 			MainMenuTab = 8
 		EndIf
 

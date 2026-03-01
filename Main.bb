@@ -26,9 +26,6 @@ Dim ArrowIMG(4)
 Global Depth% = 0
 ;; ToDo End
 
-;; ToDo:: migrate this one to our new config system next
-Global Fullscreen% = GetOptionInt("graphics", "fullscreen")
-
 Global SelectedGFXDriver% = Min(Max(GetOptionInt("graphics", "gfx driver"), 1), CountGfxDrivers())
 
 Global fresize_image%, fresize_texture%, fresize_texture2%
@@ -47,8 +44,8 @@ ApplyWindowModeCLIOverrides()
 
 Function ApplyWindowModeCLIOverrides()
 	If HasCLIFlag("noborder") Lor HasCLIFlag("borderless") Then BorderlessWindowed = True : Return
-	If HasCLIFlag("fullscreen") Lor HasCLIFlag("full") Then BorderlessWindowed = False : Fullscreen = True : Return
-	If HasCLIFlag("window") Lor HasCLIFlag("windowed") Lor HasCLIFlag("sw") Lor HasCLIFlag("startwindowed") Then BorderlessWindowed = False : Fullscreen = False
+	If HasCLIFlag("fullscreen") Lor HasCLIFlag("full") Then BorderlessWindowed = False : Config\Graphics\Fullscreen = True : Return
+	If HasCLIFlag("window") Lor HasCLIFlag("windowed") Lor HasCLIFlag("sw") Lor HasCLIFlag("startwindowed") Then BorderlessWindowed = False : Config\Graphics\Fullscreen = False
 End Function
 
 Global EnableRoomLights% = GetOptionInt("graphics", "room lights enabled")
@@ -87,7 +84,7 @@ Next
 LoadLocalization(I_Loc, StringsFile)
 
 ; Exclusive fullscreen ONLY supports the reported resolutions
-If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Bit16Mode)) Then
+If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Config\Graphics\Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Bit16Mode)) Then
 	UpdateLauncher()
 EndIf
 
@@ -96,7 +93,7 @@ Global GFXDriverName$ = GFXDriverName(SelectedGFXDriver)
 
 ;New "fake fullscreen" - ENDSHN Psst, it's called borderless windowed mode --Love Mark,
 If BorderlessWindowed
-	DebugLog "Using Faked Fullscreen"
+	DebugLog "Using Faked Config\Graphics\Fullscreen"
 	Graphics3DExt DesktopWidth(), DesktopHeight(), 0, 4
 	
 	RealGraphicWidth = DesktopWidth()
@@ -104,12 +101,12 @@ If BorderlessWindowed
 	
 	AspectRatioRatio = (Float(Config\Graphics\ScreenWidth)/Float(Config\Graphics\ScreenHeight))/(Float(RealGraphicWidth)/Float(RealGraphicHeight))
 	
-	Fullscreen = False
+	Config\Graphics\Fullscreen = False
 Else
 	AspectRatioRatio = 1.0
 	RealGraphicWidth = Config\Graphics\ScreenWidth
 	RealGraphicHeight = Config\Graphics\ScreenHeight
-	If Fullscreen Then
+	If Config\Graphics\Fullscreen Then
 		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, (16*Bit16Mode), 1)
 	Else
 		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 0, 2)
@@ -139,7 +136,7 @@ Global Opt_AntiAlias = GetOptionInt("graphics", "antialias")
 Global CurrFrameLimit# = (Framelimit%-19)/100.0
 
 Global ScreenGamma# = GetOptionFloat("graphics", "screengamma")
-;If Fullscreen Then UpdateScreenGamma()
+;If Config\Graphics\Fullscreen Then UpdateScreenGamma()
 
 Global FOV% = GetOptionInt("graphics", "fov")
 Const DEFAULT_FOV% = 59
@@ -2742,7 +2739,7 @@ Function DrawEnding()
 		
 	EndIf
 	
-	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
 	SetFont Font1
 End Function
@@ -3746,7 +3743,7 @@ Function DrawGUI()
 				Next
 			Next
 			
-			If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+			If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 			
 			If MouseHit2 Then
 				SelectedDoor = Null
@@ -3995,7 +3992,7 @@ Function DrawGUI()
 			EndIf
 		EndIf
 		
-		If Fullscreen Then DrawImage CursorIMG,ScaledMouseX(),ScaledMouseY()
+		If Config\Graphics\Fullscreen Then DrawImage CursorIMG,ScaledMouseX(),ScaledMouseY()
 		If (closedInv) And (Not InvOpen) Then 
 			OtherOpen=Null
 			UpdateMenuState()
@@ -4346,7 +4343,7 @@ Function DrawGUI()
 			End If
 		End If
 		
-		If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 		
 		If InvOpen = False Then 
 			UpdateMenuState()
@@ -6697,7 +6694,7 @@ Function DrawMenu()
 			If KillTimer < 0 Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
 		EndIf
 		
-		If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 		
 	End If
 	
@@ -9006,7 +9003,7 @@ Function Use294()
 	x = Config\Graphics\ScreenWidth/2 - (ImageWidth(Panel294)/2)
 	y = Config\Graphics\ScreenHeight/2 - (ImageHeight(Panel294)/2)
 	DrawImage Panel294, x, y
-	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
 	temp = True
 	If PlayerRoom\SoundCHN<>0 Then temp = False

@@ -1405,7 +1405,7 @@ Function UpdateMainMenu()
 	
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 	
-	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
 	SetFont Font1
 End Function
@@ -1680,14 +1680,14 @@ Function UpdateLauncher()
 			y=y+20
 		Next
 		
-		Fullscreen = DrawTick(40 + 430 - 15, 260 - 55 + 5 - 8, Fullscreen)
-		If Fullscreen Then BorderlessWindowed = False
+		Config\Graphics\Fullscreen = DrawTick(40 + 430 - 15, 260 - 55 + 5 - 8, Config\Graphics\Fullscreen)
+		If Config\Graphics\Fullscreen Then BorderlessWindowed = False
 		BorderlessWindowed = DrawTick(40 + 430 - 15, 260 - 55 + 35, BorderlessWindowed)
-		If BorderlessWindowed Then Fullscreen = False
+		If BorderlessWindowed Then Config\Graphics\Fullscreen = False
 
 		lock% = False
 
-		If BorderlessWindowed Or (Not Fullscreen) Then lock% = True
+		If BorderlessWindowed Or (Not Config\Graphics\Fullscreen) Then lock% = True
 		Bit16Mode = DrawTick(40 + 430 - 15, 260 - 55 + 65 + 8, Bit16Mode,lock%)
 		Config\Launcher\LauncherEnabled = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, Config\Launcher\LauncherEnabled)
 
@@ -1695,7 +1695,7 @@ Function UpdateLauncher()
 		Color 255, 255, 255
 		RowText(I_Loc\Launcher_Fullscreen, 40 + 430 + 15, 262 - 55 + 35 - 6, 150, 50)
 
-		If BorderlessWindowed Or (Not Fullscreen)
+		If BorderlessWindowed Or (Not Config\Graphics\Fullscreen)
  		   Color 255, 0, 0
  		   Bit16Mode = False
 		Else
@@ -1708,7 +1708,7 @@ Function UpdateLauncher()
 		
 		gfxWidth% = GfxModeWidthsByAspectRatio(SelectedAspectRatio, SelectedGfxMode) : gfxHeight% = GfxModeHeightsByAspectRatio(SelectedAspectRatio, SelectedGfxMode)
 
-		If Fullscreen
+		If Config\Graphics\Fullscreen
 			Text(260 + 15, 262 - 55 + 140, I_Loc\Launcher_ResolutionCurrent+" "+gfxWidth + "x" + gfxHeight + "," + (16+(16*(Not Bit16Mode))))
 		Else
 			Text(260 + 15, 262 - 55 + 140, I_Loc\Launcher_ResolutionCurrent+" "+gfxWidth + "x" + gfxHeight + ",32")
@@ -1738,7 +1738,7 @@ Function UpdateLauncher()
 	
 	PutINIValue(Paths\OptionsFile, "graphics", "width", GfxModeWidthsByAspectRatio(SelectedAspectRatio, SelectedGfxMode))
 	PutINIValue(Paths\OptionsFile, "graphics", "height", GfxModeHeightsByAspectRatio(SelectedAspectRatio, SelectedGfxMode))
-	If Fullscreen Then
+	If Config\Graphics\Fullscreen Then
 		PutINIValue(Paths\OptionsFile, "graphics", "fullscreen", "true")
 	Else
 		PutINIValue(Paths\OptionsFile, "graphics", "fullscreen", "false")

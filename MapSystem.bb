@@ -969,7 +969,7 @@ Function GenForestGrid(fr.Forest)
 				i=i-1
 			Next
 
-			If Fullscreen Then DrawImage(CursorIMG,ScaledMouseX(),ScaledMouseY())
+			If Config\Graphics\Fullscreen Then DrawImage(CursorIMG,ScaledMouseX(),ScaledMouseY())
 			Color(255, 255, 255)
 			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 25 * HUDScale, I_Loc\Menu_Pressany, True, True)
 			
@@ -7617,7 +7617,7 @@ Function CreateMap(loadingstart,loadingcount#)
 				Next
 			Next
 
-			If Fullscreen Then DrawImage(CursorIMG,ScaledMouseX(),ScaledMouseY())
+			If Config\Graphics\Fullscreen Then DrawImage(CursorIMG,ScaledMouseX(),ScaledMouseY())
 			Color 255, 255, 255
 			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 25 * HUDScale, I_Loc\Menu_Pressany, True, True)
 			

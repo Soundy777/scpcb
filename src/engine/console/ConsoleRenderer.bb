@@ -14,7 +14,7 @@ Function Console_Render(layout.ConsoleLayout)
 	Console_RenderScrollbar(layout)
 	Console_RenderInputBox(layout)
 
-	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 
 	Color 255,255,255
 	SetFont Font1

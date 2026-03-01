@@ -32,6 +32,26 @@ Function GraphicsConfig_Load.GraphicsConfig()
     If config\ScreenWidth <= 0 Then config\ScreenWidth = DesktopWidth()
     If config\ScreenHeight <= 0 Then config\ScreenHeight = DesktopHeight()
 
+    config\Fullscreen = Config_ResolveIntSetting("graphics", "fullscreen")
+    ; BorderlessWindowed
+    ; SelectedGFXDriver
+    ; ScreenGamma
+    ; ShowFPS
+    ; Framelimit
+    ; Vsync
+    ; BumpMapEnabled
+    ; Anisotropy
+    ; AntiAliasing
+    ; HUDEnabled
+    ; RoomLightsEnabled
+    ; TextureDetails
+    ; Bit16Mode
+    ; ParticleAmount
+    ; EnableVRam
+    ; FOV
+    ; HUDOffset
+    ; HUDScaleFactor
+
     return config
 
 End Function

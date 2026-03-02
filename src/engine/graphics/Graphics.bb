@@ -42,7 +42,6 @@ Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 ;; ToDo End
 
-Global GFXDriverName$
 Global RealGraphicWidth%, RealGraphicHeight%
 Global AspectRatioRatio#
 Global MenuScale#
@@ -105,7 +104,6 @@ Function Graphics_Init(config.GraphicsConfig)
     ; -------------------------
 	; Temp Global Assignment
 	; -------------------------
-    GFXDriverName = Gfx\DriverName
     RealGraphicWidth = Gfx\RealWidth
     RealGraphicHeight = Gfx\RealHeight
     AspectRatioRatio = Gfx\AspectRatio

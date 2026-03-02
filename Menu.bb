@@ -1799,7 +1799,7 @@ Function DrawLoading(percent%, shortloading=False)
 		EndIf
 		
 		If Config\Graphics\BorderlessWindowed Then
-			If (RealGraphicWidth<>Config\Graphics\ScreenWidth) Or (RealGraphicHeight<>Config\Graphics\ScreenHeight) Then
+			If (Gfx\RealWidth<>Config\Graphics\ScreenWidth) Or (Gfx\RealHeight<>Config\Graphics\ScreenHeight) Then
 				SetBuffer TextureBuffer(fresize_texture)
 				ClsColor 0,0,0 : Cls
 				CopyRect 0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight,1024-Config\Graphics\ScreenWidth/2,1024-Config\Graphics\ScreenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
@@ -1814,19 +1814,19 @@ Function DrawLoading(percent%, shortloading=False)
 		;not by any means a perfect solution
 		;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
 		If Config\Graphics\ScreenGamma>1.0 Then
-			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			CopyRect 0,0,Gfx\RealWidth,Gfx\RealHeight,1024-Gfx\RealWidth/2,1024-Gfx\RealHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			EntityBlend fresize_image,1
 			ClsColor 0,0,0 : Cls
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
 			EntityFX fresize_image,1+32
 			EntityBlend fresize_image,3
 			EntityAlpha fresize_image,Config\Graphics\ScreenGamma-1.0
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
 		ElseIf Config\Graphics\ScreenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			CopyRect 0,0,Gfx\RealWidth,Gfx\RealHeight,1024-Gfx\RealWidth/2,1024-Gfx\RealHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			EntityBlend fresize_image,1
 			ClsColor 0,0,0 : Cls
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
 			EntityFX fresize_image,1+32
 			EntityBlend fresize_image,2
 			EntityAlpha fresize_image,1.0
@@ -1834,7 +1834,7 @@ Function DrawLoading(percent%, shortloading=False)
 			ClsColor 255*Config\Graphics\ScreenGamma,255*Config\Graphics\ScreenGamma,255*Config\Graphics\ScreenGamma
 			Cls
 			SetBuffer BackBuffer()
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
 			SetBuffer(TextureBuffer(fresize_texture2))
 			ClsColor 0,0,0
 			Cls

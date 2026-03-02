@@ -89,7 +89,7 @@ ScaleImage(BlinkMeterIMG, HUDScale, HUDScale)
 DrawLoading(0, True)
 
 ; - -Viewport.
-Global viewport_center_x% = RealGraphicWidth / 2, viewport_center_y% = RealGraphicHeight / 2
+Global viewport_center_x% = Gfx\RealWidth / 2, viewport_center_y% = Gfx\RealHeight / 2
 
 ; -- Mouselook.
 Global mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
@@ -1991,7 +1991,7 @@ While IsRunning
 	End If
 	
 	If Config\Graphics\BorderlessWindowed Then
-		If (RealGraphicWidth<>Config\Graphics\ScreenWidth) Or (RealGraphicHeight<>Config\Graphics\ScreenHeight) Then
+		If (Gfx\RealWidth<>Config\Graphics\ScreenWidth) Or (Gfx\RealHeight<>Config\Graphics\ScreenHeight) Then
 			SetBuffer TextureBuffer(fresize_texture)
 			ClsColor 0,0,0 : Cls
 			CopyRect 0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight,1024-Config\Graphics\ScreenWidth/2,1024-Config\Graphics\ScreenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
@@ -2006,19 +2006,19 @@ While IsRunning
 	;not by any means a perfect solution
 	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
 	If Config\Graphics\ScreenGamma>1.0 Then
-		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		CopyRect 0,0,Gfx\RealWidth,Gfx\RealHeight,1024-Gfx\RealWidth/2,1024-Gfx\RealHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
 		EntityFX fresize_image,1+32
 		EntityBlend fresize_image,3
 		EntityAlpha fresize_image,Config\Graphics\ScreenGamma-1.0
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
 	ElseIf Config\Graphics\ScreenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		CopyRect 0,0,Gfx\RealWidth,Gfx\RealHeight,1024-Gfx\RealWidth/2,1024-Gfx\RealHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
 		EntityFX fresize_image,1+32
 		EntityBlend fresize_image,2
 		EntityAlpha fresize_image,1.0
@@ -2026,7 +2026,7 @@ While IsRunning
 		ClsColor 255*Config\Graphics\ScreenGamma,255*Config\Graphics\ScreenGamma,255*Config\Graphics\ScreenGamma
 		Cls
 		SetBuffer BackBuffer()
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
 		SetBuffer(TextureBuffer(fresize_texture2))
 		ClsColor 0,0,0
 		Cls
@@ -3133,7 +3133,7 @@ Function MovePlayer()
 End Function
 
 Function ZoomCamera(fov%)
-	CameraZoom(Camera, Min(1.0+(CurrCameraZoom/400.0),1.1) / Tan((ATan(Tan(fov%/2.0)*RealGraphicWidth/RealGraphicHeight))))
+	CameraZoom(Camera, Min(1.0+(CurrCameraZoom/400.0),1.1) / Tan((ATan(Tan(fov%/2.0)*Gfx\RealWidth/Gfx\RealHeight))))
 End Function
 
 Function MouseLook()
@@ -9682,10 +9682,10 @@ Function ResizeImage2(image%,width%,height%)
 	oldHeight% = ImageHeight(image)
 	CopyRect 0,0,oldWidth,oldHeight,1024-oldWidth/2,1024-oldHeight/2,ImageBuffer(image),TextureBuffer(fresize_texture)
 	SetBuffer BackBuffer()
-	ScaleRender(0,0,2048.0 / Float(RealGraphicWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(RealGraphicWidth) * Float(height) / Float(oldHeight))
+	ScaleRender(0,0,2048.0 / Float(Gfx\RealWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(Gfx\RealWidth) * Float(height) / Float(oldHeight))
 	;might want to replace Float(Config\Graphics\ScreenWidth) with Max(Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight) if portrait sizes cause issues
 	;everyone uses landscape so it's probably a non-issue
-	CopyRect RealGraphicWidth/2-width/2,RealGraphicHeight/2-height/2,width,height,0,0,BackBuffer(),ImageBuffer(img)
+	CopyRect Gfx\RealWidth/2-width/2,Gfx\RealHeight/2-height/2,width,height,0,0,BackBuffer(),ImageBuffer(img)
 	
     FreeImage image
     Return img
@@ -9902,7 +9902,7 @@ Function InitFastResize()
 	AddTriangle sf, 0, 1, 2
 	AddTriangle sf, 3, 2, 1
 	EntityFX spr, 17
-	ScaleEntity spr, 2048.0 / Float(RealGraphicWidth), 2048.0 / Float(RealGraphicHeight), 1
+	ScaleEntity spr, 2048.0 / Float(Gfx\RealWidth), 2048.0 / Float(Gfx\RealHeight), 1
 	PositionEntity spr, 0, 0, 1.0001
 	EntityOrder spr, -100001
 	EntityBlend spr, 1
@@ -10102,11 +10102,11 @@ Function CheckTriggers$()
 End Function
 
 Function ScaledMouseX%()
-	Return Float(MouseX()-(RealGraphicWidth*0.5*(1.0-AspectRatioRatio)))*Float(Config\Graphics\ScreenWidth)/Float(RealGraphicWidth*AspectRatioRatio)
+	Return Float(MouseX()-(Gfx\RealWidth*0.5*(1.0-AspectRatioRatio)))*Float(Config\Graphics\ScreenWidth)/Float(Gfx\RealWidth*AspectRatioRatio)
 End Function
 
 Function ScaledMouseY%()
-	Return Float(MouseY())*Float(Config\Graphics\ScreenHeight)/Float(RealGraphicHeight)
+	Return Float(MouseY())*Float(Config\Graphics\ScreenHeight)/Float(Gfx\RealHeight)
 End Function
 
 Function PlayAnnouncement(file$) ;This function streams the announcement currently playing
@@ -10197,24 +10197,24 @@ End Function
 Function PlayMovie(moviefile$)
 
 	Local ScaledGraphicHeight%
-	Local Ratio# = Float(RealGraphicWidth)/Float(RealGraphicHeight)
+	Local Ratio# = Float(Gfx\RealWidth)/Float(Gfx\RealHeight)
 	If Ratio>1.76 And Ratio<1.78
-		ScaledGraphicHeight = RealGraphicHeight
+		ScaledGraphicHeight = Gfx\RealHeight
 		DebugLog "Not Scaled"
 	Else
-		ScaledGraphicHeight% = Float(RealGraphicWidth)/(16.0/9.0)
+		ScaledGraphicHeight% = Float(Gfx\RealWidth)/(16.0/9.0)
 		DebugLog "Scaled: "+ScaledGraphicHeight
 	EndIf
 
 	Local SplashScreenVideo = OpenMovie(moviefile$+".avi")
 	If SplashScreenVideo = 0 Then Return
 
-	DebugLog(RealGraphicHeight)
+	DebugLog(Gfx\RealHeight)
 
 	Local SplashScreenAudio = StreamSound_Strict(moviefile$+".ogg",Config\Audio\SFXVolume,0)
 	Repeat
 		Cls
-		DrawMovie(SplashScreenVideo, 0, (RealGraphicHeight/2-ScaledGraphicHeight/2), RealGraphicWidth, ScaledGraphicHeight)
+		DrawMovie(SplashScreenVideo, 0, (Gfx\RealHeight/2-ScaledGraphicHeight/2), Gfx\RealWidth, ScaledGraphicHeight)
 		Flip
 	Until (GetKey() Or (Not IsStreamPlaying_Strict(SplashScreenAudio)))
 	StopStream_Strict(SplashScreenAudio)

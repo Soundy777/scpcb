@@ -1032,21 +1032,21 @@ Function UpdateMainMenu()
 					If DrawTick(x + 310 * MenuScale, y, CurrFrameLimit > 0.0) Then
 						;CurrFrameLimit# = (SlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.0, 1)/50.0)
 						;CurrFrameLimit = Max(CurrFrameLimit, 0.1)
-						;Framelimit% = CurrFrameLimit#*100.0
+						;Config\Graphics\Framelimit% = CurrFrameLimit#*100.0
 						CurrFrameLimit# = (SlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*99.0, 1)/99.0)
 						CurrFrameLimit# = Max(CurrFrameLimit, 0.01)
-						Framelimit% = 19+(CurrFrameLimit*100.0)
+						Config\Graphics\Framelimit% = 19+(CurrFrameLimit*100.0)
 						Color 255,255,0
-						Text(x + 25 * MenuScale, y + 25 * MenuScale, Format(I_Loc\OptionName_FramelimitFps, Framelimit%))
+						Text(x + 25 * MenuScale, y + 25 * MenuScale, Format(I_Loc\OptionName_FramelimitFps, Config\Graphics\Framelimit%))
 						If (MouseOn(x+150*MenuScale,y+30*MenuScale,100*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=1
-							DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Framelimit)
+							DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
 						EndIf
 					Else
 						CurrFrameLimit# = 0.0
-						Framelimit = 0
+						Config\Graphics\Framelimit = 0
 					EndIf
 					If MouseOn(x+310*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
-						DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Framelimit)
+						DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
 					EndIf
 					;[End Block]
 				EndIf

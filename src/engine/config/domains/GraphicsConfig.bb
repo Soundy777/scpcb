@@ -50,7 +50,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     config\SelectedGFXDriver = Min(Max(Config_ResolveIntSetting("graphics", "gfx driver"), 1), CountGfxDrivers())
     ; ScreenGamma
     config\ShowFPS = Config_ResolveIntSetting("graphics", "show FPS")
-    ; Framelimit
+    config\Framelimit = Config_ResolveIntSetting("graphics", "framelimit")
     ; Vsync
     ; BumpMapEnabled
     ; Anisotropy

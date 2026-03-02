@@ -105,10 +105,9 @@ SetBuffer(BackBuffer()) ;; ToDo:: move this into our upcoming Graphics.bb Init
 
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
 Local CheckFPS%, ElapsedLoops%, FPS%
-Global Framelimit% = GetOptionInt("graphics", "framelimit")
 Global Vsync% = GetOptionInt("graphics", "vsync")
 Global Opt_AntiAlias = GetOptionInt("graphics", "antialias")
-Global CurrFrameLimit# = (Framelimit%-19)/100.0
+Global CurrFrameLimit# = (Config\Graphics\Framelimit%-19)/100.0
 Global ScreenGamma# = GetOptionFloat("graphics", "screengamma")
 Global FOV% = GetOptionInt("graphics", "fov")
 Const DEFAULT_FOV% = 59
@@ -1602,9 +1601,9 @@ While IsRunning
 
 	If IsPaused() Then FPSfactor = 0
 	
-	If Framelimit > 0 Then
-	    ;Framelimit
-		Local WaitingTime% = (1000.0 / Framelimit) - (MilliSecs() - LoopDelay)
+	If Config\Graphics\Framelimit > 0 Then
+	    ;Config\Graphics\Framelimit
+		Local WaitingTime% = (1000.0 / Config\Graphics\Framelimit) - (MilliSecs() - LoopDelay)
 		Delay WaitingTime%
 		
 		LoopDelay = MilliSecs()
@@ -6420,21 +6419,21 @@ Function DrawMenu()
 					If DrawTick(x + 270 * MenuScale, y, CurrFrameLimit > 0.0) Then
 						;CurrFrameLimit# = (SlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.0, 1)/50.0)
 						;CurrFrameLimit = Max(CurrFrameLimit, 0.1)
-						;Framelimit% = CurrFrameLimit#*100.0
+						;Config\Graphics\Framelimit% = CurrFrameLimit#*100.0
 						CurrFrameLimit# = (SlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*99.0, 1)/99.0)
 						CurrFrameLimit# = Max(CurrFrameLimit, 0.01)
-						Framelimit% = 19+(CurrFrameLimit*100.0)
+						Config\Graphics\Framelimit% = 19+(CurrFrameLimit*100.0)
 						Color 255,255,0
-						Text(x + 5 * MenuScale, y + 25 * MenuScale, Format(I_Loc\OptionName_FramelimitFps, Framelimit%))
+						Text(x + 5 * MenuScale, y + 25 * MenuScale, Format(I_Loc\OptionName_FramelimitFps, Config\Graphics\Framelimit%))
 						If (MouseOn(x+150*MenuScale,y+30*MenuScale,100*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=1
-							DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Framelimit)
+							DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
 						EndIf
 					Else
 						CurrFrameLimit# = 0.0
-						Framelimit = 0
+						Config\Graphics\Framelimit = 0
 					EndIf
 					If MouseOn(x+270*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
-						DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Framelimit)
+						DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
 					EndIf
 					;[End Block]
 			End Select
@@ -9662,7 +9661,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "graphics", "antialias", Opt_AntiAlias)
 	PutINIValue(Paths\OptionsFile, "graphics", "vsync", Vsync)
 	PutINIValue(Paths\OptionsFile, "graphics", "show FPS", Config\Graphics\ShowFPS)
-	PutINIValue(Paths\OptionsFile, "graphics", "framelimit", Framelimit%)
+	PutINIValue(Paths\OptionsFile, "graphics", "framelimit", Config\Graphics\Framelimit%)
 	PutINIValue(Paths\OptionsFile, "general", "achievement popup enabled", AchvMSGenabled%)
 	PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", Config\Launcher\LauncherEnabled%)
 	PutINIValue(Paths\OptionsFile, "graphics", "texture details", Config\Graphics\TextureDetails%)

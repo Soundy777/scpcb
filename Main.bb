@@ -31,8 +31,6 @@ Global fresize_cam%
 Global WireframeState
 ;; ToDo End
 
-Global EnableRoomLights% = GetOptionInt("graphics", "room lights enabled")
-
 Global TextureDetails% = GetOptionInt("graphics", "texture details")
 Global TextureFloat#
 Select TextureDetails%

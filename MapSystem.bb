@@ -7912,7 +7912,7 @@ Function UpdateRoomLights(cam%)
 		If r\dist < HideDistance*0.7 Or r = PlayerRoom Then
 			For i = 0 To r\MaxLights%
 				If r\Lights%[i]<>0 Then
-					If EnableRoomLights% And (SecondaryLightOn>0.5) And cam%=Camera Then
+					If Config\Graphics\RoomLightsEnabled% And (SecondaryLightOn>0.5) And cam%=Camera Then
 						EntityOrder r\LightSprites2[i],-1
 						If UpdateRoomLightsTimer=0.0 Then
 							ShowEntity r\LightSprites[i]

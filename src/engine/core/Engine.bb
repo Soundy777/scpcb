@@ -39,7 +39,7 @@ Function Engine_Init()
     Config_Init()
     Config = Config_Load()
 
-    Time_Init(config\Graphics)
+    Time_Init()
     Graphics_Init(Config\Graphics)
 
     Flags\SteamActive = SteamIntegration_Init()

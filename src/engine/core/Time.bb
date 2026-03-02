@@ -9,8 +9,6 @@ Type TTime
 	
 	Field LoopDelay%
 	
-	Field TargetFPS%
-	
 	Field FPS%
 	Field CheckFPS%
 	Field ElapsedLoops%
@@ -27,14 +25,29 @@ Const MAX_FRAME_SCALE# = 5.0
 
 Global ttime.TTime
 Global DeltaTime# ; legacy scaled (matches old FPSfactor behaviour)
+Global RawDeltaTime# ; Not subject to pausing
+ 
+;; ToDo:: Temp globals to refactor out
+Global FPSfactor# ; DeltaTime
+Global FPSfactor2# ; RawDeltaTime
+
+;-----------------------------------------------------------------------------
+; Public API
+;-----------------------------------------------------------------------------
+
+Function Time_GetElapsedTime%()
+    return ttime\ElapsedTime
+End Function
+
+Function Time_GetFPS%()
+    return ttime\FPS
+End Function
 
 ;-----------------------------------------------------------------------------
 
-Function Time_Init(config.GraphicsConfig)
+Function Time_Init()
 
 	ttime = New TTime
-	
-	ttime\TargetFPS = config\Framelimit
 	
 	ttime\CurTime = MilliSecs()
 	ttime\PrevTime = ttime\CurTime
@@ -66,15 +79,17 @@ Function Time_Update()
 		DeltaTime = MAX_FRAME_SCALE
 	EndIf
 	
+    RawDeltaTime = DeltaTime
+
 	; --- Pause handling ---
 	If IsPaused() Then
 		DeltaTime = 0
 	EndIf
 	
 	; --- Frame limiting ---
-	If ttime\TargetFPS > 0 Then
+	If Config\Graphics\Framelimit > 0 Then
 	
-		Local WaitingTime% = Int(1000.0 / ttime\TargetFPS) - (MilliSecs() - ttime\LoopDelay)
+		Local WaitingTime% = Int(1000.0 / Config\Graphics\Framelimit) - (MilliSecs() - ttime\LoopDelay)
 		
 		If WaitingTime > 0 Then
 			Delay WaitingTime
@@ -91,5 +106,8 @@ Function Time_Update()
 	EndIf
 	
 	ttime\ElapsedLoops = ttime\ElapsedLoops + 1
+
+    FPSfactor = DeltaTime
+    FPSfactor2 = RawDeltaTime
 
 End Function

@@ -20,11 +20,6 @@ Engine_Init()
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 ;; ToDo End
 
-;; ToDo:: migrate this to a new time.bb system
-Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
-Local CheckFPS%, ElapsedLoops%, FPS%
-Global CurrFrameLimit# = (Config\Graphics\Framelimit%-19)/100.0
-
 ;; ToDo:: group all HUD logic together
 Global HUDScale# = Max(Gfx\MenuScale * Config\Graphics\HUDScaleFactor, 1)
 Global HUDStartX%, HUDEndX%, HUDStartY%, HUDEndY%
@@ -1497,52 +1492,16 @@ Global I_Zone.MapZones = New MapZones
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------       		MAIN LOOP                 ---------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
-
-Global TotalVidMem = TotalVidMem()
-Global TotalPhysMem = TotalPhys()
-
 Global IsRunning% = True
 While IsRunning
-	SetErrorMsg(5, "GPU: " + Gfx\DriverName + " (" + (TotalVidMem - (AvailVidMem() / 1024)) + "MB/" + TotalVidMem + " MB)")
-	SetErrorMsg(6, "Global memory status: (" + (TotalPhysMem - (AvailPhys() / 1024)) + "MB/" + TotalPhysMem + " MB)")
 
 	Cls
 	
-	; ===========================================================================
-	;; Time Refactoring Region
-	; ===========================================================================
+	Time_Update()
+	ErrorHandling_Update()
 	
-	;Time_Update()
-
-	CurTime = MilliSecs()
-
-	Local ElapsedTime% = CurTime - PrevTime
-	PrevTime = CurTime
-	PrevFPSFactor = FPSfactor
-	FPSfactor = Min(ElapsedTime / 1000.0 * 70, 5.0)
-	FPSfactor2 = FPSfactor
-
-	If IsPaused() Then FPSfactor = 0
-	
-	If Config\Graphics\Framelimit > 0 Then
-	    ;Config\Graphics\Framelimit
-		Local WaitingTime% = (1000.0 / Config\Graphics\Framelimit) - (MilliSecs() - LoopDelay)
-		Delay WaitingTime%
-		
-		LoopDelay = MilliSecs()
-	EndIf
-	
-	;Counting the fps
-	If CheckFPS < MilliSecs() Then
-		FPS = ElapsedLoops
-		ElapsedLoops = 0
-		CheckFPS = MilliSecs()+1000
-	EndIf
-	ElapsedLoops = ElapsedLoops + 1
-	
-	;; ToDo:: refactor total play time last
-	If (SpeedRunMode Lor (Not (MainMenuOpen Lor MenuOpen))) And SelectedEnding="" And TimerStopped=0 Then PlayTime = PlayTime + ElapsedTime
-	; ===========================================================================
+	;; ToDo:: eventually find a more sensible place to track playtime
+	If (SpeedRunMode Lor (Not (MainMenuOpen Lor MenuOpen))) And SelectedEnding="" And TimerStopped=0 Then PlayTime = PlayTime + Time_GetElapsedTime()
 	
 	If Input_ResetTime<=0.0
 		DoubleClick = False
@@ -1985,7 +1944,7 @@ While IsRunning
 		End If
 		
 		Color 255, 255, 255
-		If Config\Graphics\ShowFPS Then SetFont ConsoleFont : Text 20, 20, Format(I_Loc\HUD_Fps, FPS) : SetFont Font1
+		If Config\Graphics\ShowFPS Then SetFont ConsoleFont : Text 20, 20, Format(I_Loc\HUD_Fps, Time_GetFPS()) : SetFont Font1
 		
 		If EndingTimer < 0 Then
 			If SelectedEnding <> "" Then DrawEnding()
@@ -6322,31 +6281,33 @@ Function DrawMenu()
 						DrawOptionsTooltip(tx,ty,tw,th,"showfps")
 					EndIf
 					
-					y = y + 30*Gfx\MenuScale
+					; ============================================================
+					; Removed Option for framelimit
+					; Reason: the slider is a normalized range from 0-100%.
+					; framelimit is an int and this is unintuitive to use
+					; This same code (buy with adjusted x,y offsets) appears in menu.bb
+					; ============================================================
+					;y = y + 30*Gfx\MenuScale
 					
-					Color 255,255,255
-					Text(x, y, I_Loc\OptionName_Framelimit)
+					;Color 255,255,255
+					;Text(x, y, I_Loc\OptionName_Framelimit)
 					
-					Color 255,255,255
-					If DrawTick(x + 270 * Gfx\MenuScale, y, CurrFrameLimit > 0.0) Then
-						;CurrFrameLimit# = (SlideBar(x + 150*Gfx\MenuScale, y+30*Gfx\MenuScale, 100*Gfx\MenuScale, CurrFrameLimit#*50.0, 1)/50.0)
-						;CurrFrameLimit = Max(CurrFrameLimit, 0.1)
-						;Config\Graphics\Framelimit% = CurrFrameLimit#*100.0
-						CurrFrameLimit# = (SlideBar(x + 150*Gfx\MenuScale, y+30*Gfx\MenuScale, 100*Gfx\MenuScale, CurrFrameLimit#*99.0, 1)/99.0)
-						CurrFrameLimit# = Max(CurrFrameLimit, 0.01)
-						Config\Graphics\Framelimit% = 19+(CurrFrameLimit*100.0)
-						Color 255,255,0
-						Text(x + 5 * Gfx\MenuScale, y + 25 * Gfx\MenuScale, Format(I_Loc\OptionName_FramelimitFps, Config\Graphics\Framelimit%))
-						If (MouseOn(x+150*Gfx\MenuScale,y+30*Gfx\MenuScale,100*Gfx\MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=1
-							DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
-						EndIf
-					Else
-						CurrFrameLimit# = 0.0
-						Config\Graphics\Framelimit = 0
-					EndIf
-					If MouseOn(x+270*Gfx\MenuScale,y+Gfx\MenuScale,20*Gfx\MenuScale,20*Gfx\MenuScale) And OnSliderID=0
-						DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
-					EndIf
+					;Color 255,255,255
+					;If DrawTick(x + 270 * Gfx\MenuScale, y, Config\Graphics\Framelimit > 0) Then
+						;Config\Graphics\Framelimit = Int(SlideBar(x + 150*Gfx\MenuScale, y+30*Gfx\MenuScale, 100*Gfx\MenuScale, Config\Graphics\Framelimit, 1))
+						;Config\Graphics\Framelimit = Min(Config\Graphics\Framelimit, 0)
+						;Color 255,255,0
+						;Text(x + 5 * Gfx\MenuScale, y + 25 * Gfx\MenuScale, Format(I_Loc\OptionName_FramelimitFps, Config\Graphics\Framelimit%))
+						;If (MouseOn(x+150*Gfx\MenuScale,y+30*Gfx\MenuScale,100*Gfx\MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=1
+							;DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
+						;EndIf
+					;Else
+						;Config\Graphics\Framelimit = 0
+					;EndIf
+					;If MouseOn(x+270*Gfx\MenuScale,y+Gfx\MenuScale,20*Gfx\MenuScale,20*Gfx\MenuScale) And OnSliderID=0
+						;DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
+					;EndIf
+					; ============================================================
 					;[End Block]
 			End Select
 		ElseIf AchievementsMenu <= 0 And OptionsMenu <= 0 And QuitMSG > 0 And KillTimer >= 0
@@ -6483,7 +6444,6 @@ Function DrawMenu()
 							
 							UpdateWorld 0.0
 							
-							PrevTime = MilliSecs()
 							FPSfactor = 0
 							
 							ResetInput()
@@ -6539,7 +6499,6 @@ Function DrawMenu()
 						
 						UpdateWorld 0.0
 						
-						PrevTime = MilliSecs()
 						FPSfactor = 0
 						
 						ResetInput()
@@ -7329,7 +7288,6 @@ Function InitNewGame()
 	
 	DropSpeed = 0
 	
-	PrevTime = MilliSecs()
 	CatchErrors("InitNewGame")
 End Function
 
@@ -7413,7 +7371,6 @@ Function InitLoadGame()
 
 	MoveMouse viewport_center_x,viewport_center_y
 	
-	PrevTime = MilliSecs()
 	FPSfactor = 0
 	ResetInput()
 	

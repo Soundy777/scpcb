@@ -958,7 +958,7 @@ Function UpdateMainMenu()
 					;[End Block]
 				ElseIf MainMenuTab = 7 ;Advanced
 					;[Block]
-					height = (325 + (CurrFrameLimit > 0.0) * 30) * Gfx\MenuScale
+					height = (325 + (Config\Graphics\Framelimit > 0.0) * 30) * Gfx\MenuScale
 					DrawFrame(x, y, width, height)	
 					
 					y = y + 20*Gfx\MenuScale
@@ -1024,30 +1024,32 @@ Function UpdateMainMenu()
 						DrawOptionsTooltip(tx,ty,tw,th,"showfps")
 					EndIf
 					
-					y = y + 30*Gfx\MenuScale
+					; ============================================================
+					; Removed Option for framelimit
+					; Reason: the slider is a normalized range from 0-100%.
+					; framelimit is an int and this is unintuitive to use
+					; This same code (buy with adjusted x,y offsets) appears in main.bb
+					; ============================================================
+					;y = y + 30*Gfx\MenuScale
 					
-					Color 255,255,255
-					Text(x + 20 * Gfx\MenuScale, y, I_Loc\OptionName_Framelimit)
-					Color 255,255,255
-					If DrawTick(x + 310 * Gfx\MenuScale, y, CurrFrameLimit > 0.0) Then
-						;CurrFrameLimit# = (SlideBar(x + 150*Gfx\MenuScale, y+30*Gfx\MenuScale, 100*Gfx\MenuScale, CurrFrameLimit#*50.0, 1)/50.0)
-						;CurrFrameLimit = Max(CurrFrameLimit, 0.1)
-						;Config\Graphics\Framelimit% = CurrFrameLimit#*100.0
-						CurrFrameLimit# = (SlideBar(x + 150*Gfx\MenuScale, y+30*Gfx\MenuScale, 100*Gfx\MenuScale, CurrFrameLimit#*99.0, 1)/99.0)
-						CurrFrameLimit# = Max(CurrFrameLimit, 0.01)
-						Config\Graphics\Framelimit% = 19+(CurrFrameLimit*100.0)
-						Color 255,255,0
-						Text(x + 25 * Gfx\MenuScale, y + 25 * Gfx\MenuScale, Format(I_Loc\OptionName_FramelimitFps, Config\Graphics\Framelimit%))
-						If (MouseOn(x+150*Gfx\MenuScale,y+30*Gfx\MenuScale,100*Gfx\MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=1
-							DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
-						EndIf
-					Else
-						CurrFrameLimit# = 0.0
-						Config\Graphics\Framelimit = 0
-					EndIf
-					If MouseOn(x+310*Gfx\MenuScale,y+Gfx\MenuScale,20*Gfx\MenuScale,20*Gfx\MenuScale) And OnSliderID=0
-						DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
-					EndIf
+					;Color 255,255,255
+					;Text(x + 20 * Gfx\MenuScale, y, I_Loc\OptionName_Framelimit)
+					;Color 255,255,255
+					;If DrawTick(x + 310 * Gfx\MenuScale, y, Config\Graphics\Framelimit > 0) Then
+						;Config\Graphics\Framelimit = Int(SlideBar(x + 150*Gfx\MenuScale, y+30*Gfx\MenuScale, 100*Gfx\MenuScale, Config\Graphics\Framelimit, 1))
+						;Config\Graphics\Framelimit = Min(Config\Graphics\Framelimit, 0)
+						;Color 255,255,0
+						;Text(x + 25 * Gfx\MenuScale, y + 25 * Gfx\MenuScale, Format(I_Loc\OptionName_FramelimitFps, Config\Graphics\Framelimit%))
+						;If (MouseOn(x+150*Gfx\MenuScale,y+30*Gfx\MenuScale,100*Gfx\MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=1
+							;DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
+						;EndIf
+					;Else
+						;Config\Graphics\Framelimit = 0
+					;EndIf
+					;If MouseOn(x+310*Gfx\MenuScale,y+Gfx\MenuScale,20*Gfx\MenuScale,20*Gfx\MenuScale) And OnSliderID=0
+						;DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
+					;EndIf
+					; ============================================================
 					;[End Block]
 				EndIf
 				;[End Block]

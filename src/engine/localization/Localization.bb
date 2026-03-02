@@ -419,6 +419,23 @@ Type LocalizationTable
     Field Cup_Oj$
 End Type
 
+Global I_Loc.LocalizationTable
+
+Function Localization_Init()
+
+    If I_Loc <> Null Then Delete I_Loc ; Note:: this is used for when we're hot reloading
+
+    I_Loc = New LocalizationTable
+    
+    For m.ActiveMods = Each ActiveMods
+        Local modPath$ = m\Path + Paths\StringsFile
+        If FileType(modPath) = 1 Then LoadLocalization(I_Loc, modPath)
+    Next
+
+    LoadLocalization(I_Loc, Paths\StringsFile)
+
+End Function
+
 Function LoadLocalization(loc.LocalizationTable, file$)
     Local section$
     Local f% = OpenFile(file)

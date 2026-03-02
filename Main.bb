@@ -46,19 +46,6 @@ Select Config\Graphics\TextureDetails%
 End Select
 ;; ToDo End ---------------------------------------------------------------------
 
-; LOCALIZATION START ---------------------------------------------------------------------
-Include "Localization.bb"
-
-Global I_Loc.LocalizationTable
-If I_Loc <> Null Then Delete I_Loc ; Happens on reload
-I_Loc = New LocalizationTable
-For m.ActiveMods = Each ActiveMods
-	Local modPath$ = m\Path + Paths\StringsFile
-	If FileType(modPath) = 1 Then LoadLocalization(I_Loc, modPath)
-Next
-LoadLocalization(I_Loc, Paths\StringsFile)
-; LOCALIZATION END ---------------------------------------------------------------------
-
 ; LAUNCHER START ---------------------------------------------------------------------
 ; Exclusive fullscreen ONLY supports the reported resolutions
 If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Config\Graphics\Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Config\Graphics\Bit16Mode)) Then

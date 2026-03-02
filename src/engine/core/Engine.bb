@@ -17,6 +17,7 @@ Include "src/engine/integrations/SteamIntegration.bb"
 Include "src/engine/integrations/DiscordIntegration.bb"
 
 Include "src/engine/modding/ModManager.bb"
+Include "src/engine/localization/Localization.bb"
 
 Include "src/engine/console/ConsoleCore.bb"
 
@@ -39,6 +40,8 @@ Function Engine_Init()
     Flags\SteamActive = SteamIntegration_Init()
     Flags\DiscordActive = DiscordIntegration_Init()
     Flags\ModsEnabled = ModManager_Init()
+
+    Localization_Init()
 
     ;; ToDo:: init RenderSystem
     ;; ToDo:: init AudioSystem

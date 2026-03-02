@@ -722,7 +722,7 @@ Function UpdateMainMenu()
 
 					y=y+50*MenuScale
 
-					HUDOffsetScale = SlideBar(x + 310*MenuScale, y+6*MenuScale,150*MenuScale, HUDOffsetScale*100, 5)/100
+					Config\Graphics\HUDOffset = SlideBar(x + 310*MenuScale, y+6*MenuScale,150*MenuScale, Config\Graphics\HUDOffset*100, 5)/100
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_Hudoffset)
 					If (MouseOn(x+310*MenuScale,y+6*MenuScale,150*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=5
@@ -2434,7 +2434,7 @@ Function DrawOptionsTooltip(x%,y%,width%,height%,option$,value#=0,ingame%=False)
 			R = 255
 			G = 255
 			B = 255
-			txt2 = Format(I_Loc\Option_HintDefault, "%", Str(Int(HUDOffsetScale*100)), "0")
+			txt2 = Format(I_Loc\Option_HintDefault, "%", Str(Int(Config\Graphics\HUDOffset*100)), "0")
 		Case "fov"
 			txt = I_Loc\OptionTooltip_Fov
 			R = 255

@@ -108,16 +108,15 @@ Local CheckFPS%, ElapsedLoops%, FPS%
 Global CurrFrameLimit# = (Config\Graphics\Framelimit%-19)/100.0
 
 Global HUDStartX%, HUDEndX%, HUDStartY%, HUDEndY%
-Global HUDOffsetScale# = GetOptionFloat("graphics", "hud offset")
 UpdateHUDOffsets()
 Function UpdateHUDOffsets()
 	If Config\Graphics\ScreenWidth > Config\Graphics\ScreenHeight Then
 		HUDStartY = 0 : HUDEndY = Config\Graphics\ScreenHeight
-		HUDStartX = Int(HUDOffsetScale * Config\Graphics\ScreenWidth / 2)
+		HUDStartX = Int(Config\Graphics\HUDOffset * Config\Graphics\ScreenWidth / 2)
 		HUDEndX = Config\Graphics\ScreenWidth - HUDStartX
 	Else
 		HUDStartX = 0 : HUDEndX = Config\Graphics\ScreenWidth
-		HUDStartY = Int(HUDOffsetScale * Config\Graphics\ScreenHeight / 2)
+		HUDStartY = Int(Config\Graphics\HUDOffset * Config\Graphics\ScreenHeight / 2)
 		HUDEndY = Config\Graphics\ScreenHeight - HUDStartY
 	EndIf
 End Function
@@ -6166,7 +6165,7 @@ Function DrawMenu()
 
 					y=y+50*MenuScale
 
-					HUDOffsetScale = SlideBar(x + 270*MenuScale, y+6*MenuScale,100*MenuScale, HUDOffsetScale*100, 5)/100
+					Config\Graphics\HUDOffset = SlideBar(x + 270*MenuScale, y+6*MenuScale,100*MenuScale, Config\Graphics\HUDOffset*100, 5)/100
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Hudoffset)
 					If (MouseOn(x+270*MenuScale,y+6*MenuScale,100*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=5
@@ -9666,7 +9665,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "general", "numeric seeds", Config\Gameplay\UseNumericSeeds%)
 	PutINIValue(Paths\OptionsFile, "graphics", "enable vram", EnableVRam)
 	PutINIValue(Paths\OptionsFile, "controls", "mouse smoothing", MouseSmooth)
-	PutINIValue(Paths\OptionsFile, "graphics", "hud offset", HUDOffsetScale)
+	PutINIValue(Paths\OptionsFile, "graphics", "hud offset", Config\Graphics\HUDOffset)
 	PutINIValue(Paths\OptionsFile, "graphics", "fov", Config\Graphics\FOV)
 	
 	PutINIValue(Paths\OptionsFile, "audio", "music volume", MusicVolume)

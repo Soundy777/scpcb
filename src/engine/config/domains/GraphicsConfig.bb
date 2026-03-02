@@ -64,7 +64,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     ; EnableVRam
     config\FOV = Config_ResolveIntSetting("graphics", "fov")
     config\DefaultFOV = 59
-    ; HUDOffset
+    config\HUDOffset = Config_ResolveFloatSetting("graphics", "hud offset")
     config\HUDScaleFactor = Config_ResolveFloatSetting("graphics", "hud scale factor")
 
     return config

@@ -63,7 +63,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     ; EnableVRam
     ; FOV
     ; HUDOffset
-    ; HUDScaleFactor
+    config\HUDScaleFactor = Config_ResolveFloatSetting("graphics", "hud scale factor")
 
     return config
 

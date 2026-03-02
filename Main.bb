@@ -47,8 +47,6 @@ Select Config\Graphics\TextureDetails%
 End Select
 ;; ToDo End
 
-Global HUDScaleFactor# = GetOptionFloat("graphics", "hud scale factor")
-
 ; LOCALIZATION START ---------------------------------------------------------------------
 
 Const StringsFile$ = "Data\strings.ini"
@@ -97,7 +95,7 @@ Else
 EndIf
 
 Global MenuScale# = CalculateMenuScale()
-Global HUDScale# = Max(MenuScale * HUDScaleFactor, 1)
+Global HUDScale# = Max(MenuScale * Config\Graphics\HUDScaleFactor, 1)
 Function CalculateMenuScale#()
 	Local short% = Min(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight)
 	If short > 1024 Then Return short / 1024.0

@@ -6,6 +6,7 @@
 ;; ToDos
 ;; Migrate over all GFX, SFX & Fonts into this folder structure
 ;; Bring in the code dependencies (copy them) strictloads.bb && iniparser.bb
+;; The launcher is also dependant upon the Localization system (because ofc it is) so work that shit out when we come to it too
 ;; Setup a dedicated launcher_options.ini to hold any launcher specific config such as width/height
 ;; Create a UI_Utils.bb which goes about drawing the button (copy it from menu.bb)
 ;; Develop a proper app init, update_loop & shutdown procedure

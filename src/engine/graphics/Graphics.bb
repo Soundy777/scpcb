@@ -42,8 +42,6 @@ Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 ;; ToDo End
 
-Global MenuScale#
-
 ;-----------------------------------------------------------------------------
 
 Function Graphics_Init(config.GraphicsConfig)
@@ -98,11 +96,6 @@ Function Graphics_Init(config.GraphicsConfig)
 	WireFrame False
 	
 	SetBuffer BackBuffer()
-
-    ; -------------------------
-	; Temp Global Assignment
-	; -------------------------
-    MenuScale = Gfx\MenuScale
 
 End Function
 

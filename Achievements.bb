@@ -92,18 +92,18 @@ Function AchievementTooltip(achvno%)
     If (StringWidth(AchievementDescs(achvno))>width) Then
         width = StringWidth(AchievementDescs(achvno))
     EndIf
-    width = width+20*MenuScale
+    width = width+20*Gfx\MenuScale
     
     Local height = 38*scale
     
     Color 25,25,25
-    Rect(ScaledMouseX()+(20*MenuScale),ScaledMouseY()+(20*MenuScale),width,height,True)
+    Rect(ScaledMouseX()+(20*Gfx\MenuScale),ScaledMouseY()+(20*Gfx\MenuScale),width,height,True)
     Color 150,150,150
-    Rect(ScaledMouseX()+(20*MenuScale),ScaledMouseY()+(20*MenuScale),width,height,False)
+    Rect(ScaledMouseX()+(20*Gfx\MenuScale),ScaledMouseY()+(20*Gfx\MenuScale),width,height,False)
     SetFont Font3
-    Text(ScaledMouseX()+(20*MenuScale)+(width/2),ScaledMouseY()+(35*MenuScale), AchievementStrings(achvno), True, True)
+    Text(ScaledMouseX()+(20*Gfx\MenuScale)+(width/2),ScaledMouseY()+(35*Gfx\MenuScale), AchievementStrings(achvno), True, True)
     SetFont Font1
-    Text(ScaledMouseX()+(20*MenuScale)+(width/2),ScaledMouseY()+(55*MenuScale), AchievementDescs(achvno), True, True)
+    Text(ScaledMouseX()+(20*Gfx\MenuScale)+(width/2),ScaledMouseY()+(55*Gfx\MenuScale), AchievementDescs(achvno), True, True)
 End Function
 
 Function DrawAchvIMG(x%, y%, achvno%)

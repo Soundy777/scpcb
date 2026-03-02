@@ -25,22 +25,22 @@ End Function
 
 Function Console_RenderBackground(layout.ConsoleLayout)
 
-    DrawFrame layout\X, layout\Y, layout\Width, layout\Height + CONSOLE_PADDING_PX * MenuScale
+    DrawFrame layout\X, layout\Y, layout\Width, layout\Height + CONSOLE_PADDING_PX * Gfx\MenuScale
 
 End Function
 
 Function Console_RenderMessages(layout.ConsoleLayout)
 
-	Local consoleTop# = layout\Y + 5 * MenuScale
-	Local consoleBottom# = layout\Y + layout\Height - 20 * MenuScale
+	Local consoleTop# = layout\Y + 5 * Gfx\MenuScale
+	Local consoleBottom# = layout\Y + layout\Height - 20 * Gfx\MenuScale
 	Local y# = consoleBottom# - Console\Scroll
 
 	For cm.ConsoleMsg = Each ConsoleMsg
 		If (y > consoleTop# And y <= consoleBottom#) Then
 			Color cm\r, cm\g, cm\b
-			Text layout\X + CONSOLE_LINE_LEFTPADDING_PX * MenuScale, y, cm\txt
+			Text layout\X + CONSOLE_LINE_LEFTPADDING_PX * Gfx\MenuScale, y, cm\txt
 		EndIf
-		y = y - CONSOLE_LINE_HEIGHT_PX * MenuScale
+		y = y - CONSOLE_LINE_HEIGHT_PX * Gfx\MenuScale
 	Next
 
 End Function

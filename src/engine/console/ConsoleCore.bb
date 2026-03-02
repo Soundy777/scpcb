@@ -114,9 +114,9 @@ Function Console_CalculateLayout.ConsoleLayout()
 	
 	; Calculate console dimensions & position
 	l\X = 0
-	l\Y = Config\Graphics\ScreenHeight - CONSOLE_HEIGHT_PX*MenuScale
+	l\Y = Config\Graphics\ScreenHeight - CONSOLE_HEIGHT_PX*Gfx\MenuScale
 	l\Width = Config\Graphics\ScreenWidth
-	l\Height = (CONSOLE_HEIGHT_PX - CONSOLE_PADDING_PX)*MenuScale
+	l\Height = (CONSOLE_HEIGHT_PX - CONSOLE_PADDING_PX)*Gfx\MenuScale
 
 	; Compute total number of console messages
 	Local numConsoleMessages% = 0
@@ -125,13 +125,13 @@ Function Console_CalculateLayout.ConsoleLayout()
 	Next
 	
 	; Calculate content height
-	l\ContentHeight = numConsoleMessages * (CONSOLE_LINE_HEIGHT_PX*MenuScale)
+	l\ContentHeight = numConsoleMessages * (CONSOLE_LINE_HEIGHT_PX*Gfx\MenuScale)
 
 	; Zero out scroll if no messages are present
 	If numConsoleMessages = 0 Then Console\Scroll = 0
 
 	; Calculate scroll bar dimensions & position
-	l\ScrollbarWidth = CONSOLE_SCROLLBAR_WIDTH_PX * MenuScale
+	l\ScrollbarWidth = CONSOLE_SCROLLBAR_WIDTH_PX * Gfx\MenuScale
 
 	If numConsoleMessages > 0 And l\ContentHeight > l\Height Then
 		l\ScrollbarHeight = Max(l\Height * (Float(l\Height)/l\ContentHeight), CONSOLE_SCROLLBAR_MINHEIGHT_PX)
@@ -160,7 +160,7 @@ Function Console_CalculateLayout.ConsoleLayout()
 	l\ScrollbarY = Int(trackTop + scrollRatio * trackRange)
 	
 	; Calculate the inputbox height
-	l\InputBoxHeight = Int(CONSOLE_INPUTBOX_HEIGHT * MenuScale)
+	l\InputBoxHeight = Int(CONSOLE_INPUTBOX_HEIGHT * Gfx\MenuScale)
 
 	Return l
 End Function
@@ -218,7 +218,7 @@ Function Console_HandleMouseWheel()
 	Local mouseZSpeed = MouseZSpeed()
 
 	If mouseZSpeed <> 0 Then
-		Console\Scroll = Console\Scroll - CONSOLE_MOUSESCROLL_SPEED * MenuScale * mouseZSpeed
+		Console\Scroll = Console\Scroll - CONSOLE_MOUSESCROLL_SPEED * Gfx\MenuScale * mouseZSpeed
 	EndIf
 End Function
 

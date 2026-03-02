@@ -101,7 +101,7 @@ Function CreateItemTemplate.ItemTemplates(name$, group$, displayname$, objpath$,
 	;	
 	;	;DebugLog imgpath
 	;	
-	;	If it\img<>0 Then ResizeImage(it\img, ImageWidth(it\img) * MenuScale, ImageHeight(it\img) * MenuScale)
+	;	If it\img<>0 Then ResizeImage(it\img, ImageWidth(it\img) * Gfx\MenuScale, ImageHeight(it\img) * Gfx\MenuScale)
 	;EndIf
 	
 	it\group = group

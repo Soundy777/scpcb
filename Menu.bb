@@ -665,7 +665,7 @@ Function UpdateMainMenu()
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_Vsync)
-					Vsync% = DrawTick(x + 310 * MenuScale, y + MenuScale, Vsync%)
+					Config\Graphics\Vsync% = DrawTick(x + 310 * MenuScale, y + MenuScale, Config\Graphics\Vsync%)
 					If MouseOn(x+310*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"vsync")
 					EndIf

@@ -51,7 +51,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     ; ScreenGamma
     config\ShowFPS = Config_ResolveIntSetting("graphics", "show FPS")
     config\Framelimit = Config_ResolveIntSetting("graphics", "framelimit")
-    ; Vsync
+    config\Vsync = Config_ResolveIntSetting("graphics", "vsync")
     ; BumpMapEnabled
     ; Anisotropy
     ; AntiAliasing

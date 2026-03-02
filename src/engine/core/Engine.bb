@@ -12,6 +12,7 @@ Include "StrictLoads.bb"    ;; ToDo:: this will become part of our resource mana
 Include "KeyName.bb"        ;; ToDo:: this will become part of our input management system
 
 Include "src/engine/config/ConfigManager.bb"
+Include "src/engine/core/Time.bb"
 Include "src/engine/graphics/Graphics.bb"
 
 Include "src/engine/integrations/SteamIntegration.bb"
@@ -38,6 +39,7 @@ Function Engine_Init()
     Config_Init()
     Config = Config_Load()
 
+    Time_Init(config\Graphics)
     Graphics_Init(Config\Graphics)
 
     Flags\SteamActive = SteamIntegration_Init()

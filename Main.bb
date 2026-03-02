@@ -1508,11 +1508,16 @@ While IsRunning
 
 	Cls
 	
+	; ===========================================================================
+	;; Time Refactoring Region
+	; ===========================================================================
+	
+	;Time_Update()
+
 	CurTime = MilliSecs()
 
 	Local ElapsedTime% = CurTime - PrevTime
 	PrevTime = CurTime
-	If (SpeedRunMode Lor (Not (MainMenuOpen Lor MenuOpen))) And SelectedEnding="" And TimerStopped=0 Then PlayTime = PlayTime + ElapsedTime
 	PrevFPSFactor = FPSfactor
 	FPSfactor = Min(ElapsedTime / 1000.0 * 70, 5.0)
 	FPSfactor2 = FPSfactor
@@ -1534,6 +1539,10 @@ While IsRunning
 		CheckFPS = MilliSecs()+1000
 	EndIf
 	ElapsedLoops = ElapsedLoops + 1
+	
+	;; ToDo:: refactor total play time last
+	If (SpeedRunMode Lor (Not (MainMenuOpen Lor MenuOpen))) And SelectedEnding="" And TimerStopped=0 Then PlayTime = PlayTime + ElapsedTime
+	; ===========================================================================
 	
 	If Input_ResetTime<=0.0
 		DoubleClick = False
@@ -2434,7 +2443,6 @@ Function DrawEnding()
 	ShowPointer()
 	
 	FPSfactor = 0
-	;EndingTimer=EndingTimer-FPSfactor2
 	If EndingTimer>-2000
 		EndingTimer=Max(EndingTimer-FPSfactor2,-1111)
 	Else

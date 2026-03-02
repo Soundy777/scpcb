@@ -47,7 +47,6 @@ Select Config\Graphics\TextureDetails%
 End Select
 ;; ToDo End
 
-Global Bit16Mode = GetOptionInt("graphics", "16bit")
 Global HUDScaleFactor# = GetOptionFloat("graphics", "hud scale factor")
 
 ; LOCALIZATION START ---------------------------------------------------------------------
@@ -69,7 +68,7 @@ LoadLocalization(I_Loc, StringsFile)
 ; LAUNCHER START ---------------------------------------------------------------------
 
 ; Exclusive fullscreen ONLY supports the reported resolutions
-If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Config\Graphics\Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Bit16Mode)) Then
+If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Config\Graphics\Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Config\Graphics\Bit16Mode)) Then
 	UpdateLauncher()
 EndIf
 
@@ -91,7 +90,7 @@ Else
 	RealGraphicWidth = Config\Graphics\ScreenWidth
 	RealGraphicHeight = Config\Graphics\ScreenHeight
 	If Config\Graphics\Fullscreen Then
-		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, (16*Bit16Mode), 1)
+		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, (16*Config\Graphics\Bit16Mode), 1)
 	Else
 		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 0, 2)
 	End If

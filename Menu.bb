@@ -1688,7 +1688,7 @@ Function UpdateLauncher()
 		lock% = False
 
 		If Config\Graphics\BorderlessWindowed Or (Not Config\Graphics\Fullscreen) Then lock% = True
-		Bit16Mode = DrawTick(40 + 430 - 15, 260 - 55 + 65 + 8, Bit16Mode,lock%)
+		Config\Graphics\Bit16Mode = DrawTick(40 + 430 - 15, 260 - 55 + 65 + 8, Config\Graphics\Bit16Mode,lock%)
 		Config\Launcher\LauncherEnabled = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, Config\Launcher\LauncherEnabled)
 
 		Text(40 + 430 + 15, 262 - 55 + 5 - 8, I_Loc\Launcher_FullscreenExclusive)
@@ -1697,7 +1697,7 @@ Function UpdateLauncher()
 
 		If Config\Graphics\BorderlessWindowed Or (Not Config\Graphics\Fullscreen)
  		   Color 255, 0, 0
- 		   Bit16Mode = False
+ 		   Config\Graphics\Bit16Mode = False
 		Else
 		    Color 255, 255, 255
 		EndIf
@@ -1709,7 +1709,7 @@ Function UpdateLauncher()
 		gfxWidth% = GfxModeWidthsByAspectRatio(SelectedAspectRatio, SelectedGfxMode) : gfxHeight% = GfxModeHeightsByAspectRatio(SelectedAspectRatio, SelectedGfxMode)
 
 		If Config\Graphics\Fullscreen
-			Text(260 + 15, 262 - 55 + 140, I_Loc\Launcher_ResolutionCurrent+" "+gfxWidth + "x" + gfxHeight + "," + (16+(16*(Not Bit16Mode))))
+			Text(260 + 15, 262 - 55 + 140, I_Loc\Launcher_ResolutionCurrent+" "+gfxWidth + "x" + gfxHeight + "," + (16+(16*(Not Config\Graphics\Bit16Mode))))
 		Else
 			Text(260 + 15, 262 - 55 + 140, I_Loc\Launcher_ResolutionCurrent+" "+gfxWidth + "x" + gfxHeight + ",32")
 		EndIf
@@ -1753,7 +1753,7 @@ Function UpdateLauncher()
 	Else
 		PutINIValue(Paths\OptionsFile, "graphics", "borderless windowed", "false")
 	EndIf
-	If Bit16Mode Then
+	If Config\Graphics\Bit16Mode Then
 		PutINIValue(Paths\OptionsFile, "graphics", "16bit", "true")
 	Else
 		PutINIValue(Paths\OptionsFile, "graphics", "16bit", "false")

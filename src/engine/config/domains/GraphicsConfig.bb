@@ -58,7 +58,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     ; HUDEnabled
     config\RoomLightsEnabled = Config_ResolveIntSetting("graphics", "room lights enabled")
     config\TextureDetails = Config_ResolveIntSetting("graphics", "texture details")
-    ; Bit16Mode
+    config\Bit16Mode = Config_ResolveIntSetting("graphics", "16bit")
     ; ParticleAmount
     ; EnableVRam
     ; FOV

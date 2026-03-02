@@ -26,6 +26,8 @@ Function Engine_Init()
 
     DebugLog "Starting Bootup Sequence"
 
+    SeedRnd MilliSecs() ; Initialize the rng seed
+
     AppPaths_Init()
     ErrorHandling_Init(GAME_VERSION$)
     ;; ToDo:: init Logger

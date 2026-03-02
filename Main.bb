@@ -31,7 +31,7 @@ Global fresize_cam%
 Global WireframeState
 ;; ToDo End
 
-;; ToDo:: extract to upcoming Graphics.bb system
+;; ToDo:: extract to upcoming Graphics.bb system ------------------------------------
 Global TextureFloat#
 Select Config\Graphics\TextureDetails%
 	Case 0
@@ -45,10 +45,9 @@ Select Config\Graphics\TextureDetails%
 	Case 4
 		TextureFloat# = -0.8
 End Select
-;; ToDo End
+;; ToDo End ---------------------------------------------------------------------
 
 ; LOCALIZATION START ---------------------------------------------------------------------
-
 Const StringsFile$ = "Data\strings.ini"
 Include "Localization.bb"
 
@@ -60,18 +59,16 @@ For m.ActiveMods = Each ActiveMods
 	If FileType(modPath) = 1 Then LoadLocalization(I_Loc, modPath)
 Next
 LoadLocalization(I_Loc, StringsFile)
-
 ; LOCALIZATION END ---------------------------------------------------------------------
 
 ; LAUNCHER START ---------------------------------------------------------------------
-
 ; Exclusive fullscreen ONLY supports the reported resolutions
 If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Config\Graphics\Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Config\Graphics\Bit16Mode)) Then
 	UpdateLauncher()
 EndIf
-
 ;LAUNCHER END ---------------------------------------------------------------------
 
+;; ToDo:: extract this to graphics.bb ---------------------------------------------------------------------
 SetGfxDriver(Config\Graphics\SelectedGFXDriver)
 Global GFXDriverName$ = GFXDriverName(Config\Graphics\SelectedGFXDriver)
 Global RealGraphicWidth%,RealGraphicHeight%
@@ -104,6 +101,7 @@ Function CalculateMenuScale#()
 End Function
 
 SetBuffer(BackBuffer()) ;; ToDo:: move this into our upcoming Graphics.bb Init
+;; ToDo End ---------------------------------------------------------------------
 
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
 Local CheckFPS%, ElapsedLoops%, FPS%
@@ -132,8 +130,6 @@ End Function
 
 Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
 
-SeedRnd MilliSecs() ;; ToDo:: figure out where to move this? Perhaps engine_init
-
 Global GameSaved%
 Global CanSave% = True
 
@@ -142,6 +138,8 @@ Global CanSave% = True
 ;; ReEnable these when we've finished cleaning everything up
 ;PlayStartupVideos()
 
+;---------------------------------------------------------------------------------------------------------------------
+; Refactoring Checkpoint #1
 ;---------------------------------------------------------------------------------------------------------------------
 
 ;[Block]

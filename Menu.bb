@@ -106,7 +106,7 @@ Function UpdateMainMenu()
 	
 	SetFont Font1
 	
-	MenuBlinkTimer(1)=MenuBlinkTimer(1)-FPSfactor
+	MenuBlinkTimer(1)=MenuBlinkTimer(1)-DeltaTime
 	If MenuBlinkTimer(1) < MenuBlinkDuration(1) Then
 		Color(50, 50, 50)
 		Text(MenuStrX + Rand(-5, 5), MenuStrY + Rand(-5, 5), MenuStr, True)

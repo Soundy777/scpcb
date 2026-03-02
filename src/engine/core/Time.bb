@@ -26,10 +26,6 @@ Const MAX_FRAME_SCALE# = 5.0
 Global ttime.TTime
 Global DeltaTime# ; legacy scaled (matches old FPSfactor behaviour)
 Global RawDeltaTime# ; Not subject to pausing
- 
-;; ToDo:: Temp globals to refactor out
-Global FPSfactor# ; DeltaTime
-Global FPSfactor2# ; RawDeltaTime
 
 ;-----------------------------------------------------------------------------
 ; Public API
@@ -106,8 +102,5 @@ Function Time_Update()
 	EndIf
 	
 	ttime\ElapsedLoops = ttime\ElapsedLoops + 1
-
-    FPSfactor = DeltaTime
-    FPSfactor2 = RawDeltaTime
 
 End Function

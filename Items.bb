@@ -463,8 +463,8 @@ Function UpdateItems()
 					If ShouldEntitiesFall
 						pick = LinePick(EntityX(i\collider),EntityY(i\collider),EntityZ(i\collider),0,-10,0)
 						If pick
-							i\DropSpeed = i\DropSpeed - 0.0004 * FPSfactor
-							TranslateEntity i\collider, i\xspeed*FPSfactor, i\DropSpeed * FPSfactor, i\zspeed*FPSfactor
+							i\DropSpeed = i\DropSpeed - 0.0004 * DeltaTime
+							TranslateEntity i\collider, i\xspeed*DeltaTime, i\DropSpeed * DeltaTime, i\zspeed*DeltaTime
 							If i\WontColl Then ResetEntity(i\collider)
 						Else
 							i\DropSpeed = 0
@@ -731,13 +731,13 @@ Function Update294()
 	CatchErrors("Uncaught (Update294)")
 	
 	If CameraShakeTimer > 0 Then
-		CameraShakeTimer = Max(CameraShakeTimer - (FPSfactor/70), 0)
+		CameraShakeTimer = Max(CameraShakeTimer - (DeltaTime/70), 0)
 		CameraShake = 2
 	EndIf
 	
 	If VomitTimer > 0 Then
 		DebugLog VomitTimer
-		VomitTimer = VomitTimer - (FPSfactor/70)
+		VomitTimer = VomitTimer - (DeltaTime/70)
 		
 		If (MilliSecs() Mod 1600) < Rand(200, 400) Then
 			If BlurTimer = 0 Then BlurTimer = Rnd(10, 20)*70
@@ -763,7 +763,7 @@ Function Update294()
 		EndIf
 		
 	ElseIf VomitTimer < 0 Then ;vomit
-		VomitTimer = VomitTimer - (FPSfactor/70)
+		VomitTimer = VomitTimer - (DeltaTime/70)
 		
 		If VomitTimer > -5 Then
 			If (MilliSecs() Mod 400) < 50 Then CameraShake = 4 

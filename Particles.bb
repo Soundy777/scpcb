@@ -47,25 +47,25 @@ End Function
 Function UpdateParticles()
 	Local p.Particles
 	For p.Particles = Each Particles
-		MoveEntity(p\pvt, 0, 0, p\speed * FPSfactor)
-		If p\gravity <> 0 Then p\yspeed = p\yspeed - p\gravity * FPSfactor
-		TranslateEntity(p\pvt, 0, p\yspeed * FPSfactor, 0, True)
+		MoveEntity(p\pvt, 0, 0, p\speed * DeltaTime)
+		If p\gravity <> 0 Then p\yspeed = p\yspeed - p\gravity * DeltaTime
+		TranslateEntity(p\pvt, 0, p\yspeed * DeltaTime, 0, True)
 		
 		PositionEntity(p\obj, EntityX(p\pvt,True), EntityY(p\pvt,True), EntityZ(p\pvt,True), True)
 		
-		;TurnEntity(p\obj, 0, 0, FPSfactor)
+		;TurnEntity(p\obj, 0, 0, DeltaTime)
 		
 		If p\Achange <> 0 Then
-			p\A=Min(Max(p\A+p\Achange * FPSfactor,0.0),1.0)
+			p\A=Min(Max(p\A+p\Achange * DeltaTime,0.0),1.0)
 			EntityAlpha(p\obj, p\A)		
 		EndIf
 		
 		If p\SizeChange <> 0 Then 
-			p\size= p\size+p\SizeChange * FPSfactor
+			p\size= p\size+p\SizeChange * DeltaTime
 			ScaleSprite p\obj, p\size, p\size
 		EndIf
 		
-		p\lifetime=p\lifetime-FPSfactor
+		p\lifetime=p\lifetime-DeltaTime
 		If p\lifetime <= 0 Or p\size < 0.00001 Or p\A =< 0 Then
 			RemoveParticle(p)
 		End If
@@ -103,7 +103,7 @@ End Type
 Function UpdateEmitters()
 	InSmoke = False
 	For e.emitters = Each Emitters
-		If FPSfactor > 0 And (PlayerRoom = e\room Or e\room\dist < 8) Then
+		If DeltaTime > 0 And (PlayerRoom = e\room Or e\room\dist < 8) Then
 			;If ParticleAmount = 2 Or SmokeDelay#=0.0
 			Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minimage, e\maximage), e\size, e\gravity, e\lifetime)
 			p\speed = e\speed
@@ -128,7 +128,7 @@ Function UpdateEmitters()
 			EndIf
 			;If ParticleAmount <> 2
 			;	If SmokeDelay#<(10-(5*ParticleAmount))
-			;		SmokeDelay#=SmokeDelay#+FPSfactor
+			;		SmokeDelay#=SmokeDelay#+DeltaTime
 			;	Else
 			;		SmokeDelay#=0.0
 			;	EndIf
@@ -153,7 +153,7 @@ Function UpdateEmitters()
 			EndIf
 		EndIf
 		
-		EyeIrritation=EyeIrritation+FPSfactor * 4
+		EyeIrritation=EyeIrritation+DeltaTime * 4
 	EndIf	
 End Function
 	
@@ -228,12 +228,12 @@ Function UpdateDevilEmitters()
 	Local InSmoke = False
 	
 	For dem = Each DevilEmitters
-		If FPSfactor > 0 And (PlayerRoom = dem\room Or dem\room\dist < 8)
+		If DeltaTime > 0 And (PlayerRoom = dem\room Or dem\room\dist < 8)
 			If dem\timer = 0
 				SetEmitter(dem\obj,ParticleEffect[dem\particleID])
-				dem\timer = FPSfactor
+				dem\timer = DeltaTime
 			ElseIf dem\timer < dem\maxtimer
-				dem\timer = Min(dem\timer+FPSfactor,dem\maxtimer)
+				dem\timer = Min(dem\timer+DeltaTime,dem\maxtimer)
 			Else
 				dem\timer = 0.0
 			EndIf
@@ -268,7 +268,7 @@ Function UpdateDevilEmitters()
 			EndIf
 		EndIf
 		
-		EyeIrritation=EyeIrritation+FPSfactor * 4
+		EyeIrritation=EyeIrritation+DeltaTime * 4
 	EndIf
 	
 End Function

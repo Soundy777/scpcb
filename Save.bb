@@ -4,7 +4,7 @@ Function SaveGame(file$)
 	
 	If Not Playable Then Return ;don't save if the player can't move at all
 	
-	If DropSpeed#>0.02*FPSfactor Or DropSpeed#<-0.02*FPSfactor Then Return
+	If DropSpeed#>0.02*DeltaTime Or DropSpeed#<-0.02*DeltaTime Then Return
 	
 	If KillTimer < 0 Then Return
 	

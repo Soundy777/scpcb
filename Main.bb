@@ -760,7 +760,7 @@ Function UpdateDoors()
 		
 		UpdateDoorsTimer = 30
 	Else
-		UpdateDoorsTimer = Max(UpdateDoorsTimer-FPSfactor,0)
+		UpdateDoorsTimer = Max(UpdateDoorsTimer-DeltaTime,0)
 	EndIf
 	
 	ClosestButton = 0
@@ -803,32 +803,32 @@ Function UpdateDoors()
 				If d\openstate < 180 Then
 					Select d\dir
 						Case 0
-							d\openstate = Min(180, d\openstate + FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen*2+1) * FPSfactor / 80.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen+1) * FPSfactor / 80.0, 0, 0)		
+							d\openstate = Min(180, d\openstate + DeltaTime * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen*2+1) * DeltaTime / 80.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen+1) * DeltaTime / 80.0, 0, 0)		
 						Case 1
-							d\openstate = Min(180, d\openstate + FPSfactor * 0.8)
-							MoveEntity(d\obj, Sin(d\openstate) * FPSfactor / 180.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, -Sin(d\openstate) * FPSfactor / 180.0, 0, 0)
+							d\openstate = Min(180, d\openstate + DeltaTime * 0.8)
+							MoveEntity(d\obj, Sin(d\openstate) * DeltaTime / 180.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, -Sin(d\openstate) * DeltaTime / 180.0, 0, 0)
 						Case 2
-							d\openstate = Min(180, d\openstate + FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen+1) * FPSfactor / 85.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen*2+1) * FPSfactor / 120.0, 0, 0)
+							d\openstate = Min(180, d\openstate + DeltaTime * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen+1) * DeltaTime / 85.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen*2+1) * DeltaTime / 120.0, 0, 0)
 						Case 3
-							d\openstate = Min(180, d\openstate + FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen*2+1) * FPSfactor / 162.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen*2+1) * FPSfactor / 162.0, 0, 0)
+							d\openstate = Min(180, d\openstate + DeltaTime * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen*2+1) * DeltaTime / 162.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen*2+1) * DeltaTime / 162.0, 0, 0)
 						Case 4 ;Used for 914 only
-							d\openstate = Min(180, d\openstate + FPSfactor * 1.4)
-							MoveEntity(d\obj, Sin(d\openstate) * FPSfactor / 114.0, 0, 0)
+							d\openstate = Min(180, d\openstate + DeltaTime * 1.4)
+							MoveEntity(d\obj, Sin(d\openstate) * DeltaTime / 114.0, 0, 0)
 					End Select
 				Else
 					d\fastopen = 0
 					ResetEntity(d\obj)
 					If d\obj2 <> 0 Then ResetEntity(d\obj2)
 					If d\timerstate > 0 Then
-						d\timerstate = Max(0, d\timerstate - FPSfactor)
-						If d\timerstate + FPSfactor > 110 And d\timerstate <= 110 Then d\SoundCHN = PlaySound2(CautionSFX, Camera, d\obj)
+						d\timerstate = Max(0, d\timerstate - DeltaTime)
+						If d\timerstate + DeltaTime > 110 And d\timerstate <= 110 Then d\SoundCHN = PlaySound2(CautionSFX, Camera, d\obj)
 						;If d\timerstate = 0 Then d\open = (Not d\open) : PlaySound2(CloseDoorSFX(Min(d\dir,1),Rand(0, 2)), Camera, d\obj)
 						Local sound%
 						If d\dir = 1 Then sound% = Rand(0, 1) Else sound% = Rand(0, 2)
@@ -845,28 +845,28 @@ Function UpdateDoors()
 				If d\openstate > 0 Then
 					Select d\dir
 						Case 0
-							d\openstate = Max(0, d\openstate - FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * -FPSfactor * (d\fastopen+1) / 80.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -FPSfactor / 80.0, 0, 0)	
+							d\openstate = Max(0, d\openstate - DeltaTime * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * -DeltaTime * (d\fastopen+1) / 80.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -DeltaTime / 80.0, 0, 0)	
 						Case 1
-							d\openstate = Max(0, d\openstate - FPSfactor*0.8)
-							MoveEntity(d\obj, Sin(d\openstate) * -FPSfactor / 180.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * FPSfactor / 180.0, 0, 0)
-							If ParticleAmount=2 And d\openstate < 15 And d\openstate+FPSfactor => 15
+							d\openstate = Max(0, d\openstate - DeltaTime*0.8)
+							MoveEntity(d\obj, Sin(d\openstate) * -DeltaTime / 180.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * DeltaTime / 180.0, 0, 0)
+							If ParticleAmount=2 And d\openstate < 15 And d\openstate+DeltaTime => 15
 								Local particles% = SetEmitter(d\frameobj, ParticleEffect[2])
 								EntityOrder(particles, -1)
 							EndIf
 						Case 2
-							d\openstate = Max(0, d\openstate - FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * -FPSfactor * (d\fastopen+1) / 85.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -FPSfactor / 120.0, 0, 0)
+							d\openstate = Max(0, d\openstate - DeltaTime * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * -DeltaTime * (d\fastopen+1) / 85.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -DeltaTime / 120.0, 0, 0)
 						Case 3
-							d\openstate = Max(0, d\openstate - FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * -FPSfactor * (d\fastopen+1) / 162.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -FPSfactor / 162.0, 0, 0)
+							d\openstate = Max(0, d\openstate - DeltaTime * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * -DeltaTime * (d\fastopen+1) / 162.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -DeltaTime / 162.0, 0, 0)
 						Case 4 ;Used for 914 only
-							d\openstate = Min(180, d\openstate - FPSfactor * 1.4)
-							MoveEntity(d\obj, Sin(d\openstate) * -FPSfactor / 114.0, 0, 0)
+							d\openstate = Min(180, d\openstate - DeltaTime * 1.4)
+							MoveEntity(d\obj, Sin(d\openstate) * -DeltaTime / 114.0, 0, 0)
 					End Select
 					
 					If d\angle = 0 Or d\angle=180 Then
@@ -1521,7 +1521,7 @@ While IsRunning
 		
 		If (Not MouseDown1) And (Not MouseHit1) Then GrabbedEntity = 0
 	Else
-		Input_ResetTime = Max(Input_ResetTime-FPSfactor,0.0)
+		Input_ResetTime = Max(Input_ResetTime-DeltaTime,0.0)
 	EndIf
 	
 	UpdateMusic()
@@ -1551,7 +1551,7 @@ While IsRunning
 		RestoreSanity = True
 		ShouldEntitiesFall = True
 		
-		If FPSfactor > 0 And PlayerRoom\RoomTemplate\Name <> "dimension1499" Then UpdateSecurityCams()
+		If DeltaTime > 0 And PlayerRoom\RoomTemplate\Name <> "dimension1499" Then UpdateSecurityCams()
 		
 		If PlayerRoom\RoomTemplate\Name <> "pocketdimension" And PlayerRoom\RoomTemplate\Name <> "gatea" And PlayerRoom\RoomTemplate\Name <> "exit1" And (Not IsAnyMenuOpen()) Then 
 			
@@ -1601,7 +1601,7 @@ While IsRunning
 			If Rand(50000) = 3 Then
 				Local RN$ = PlayerRoom\RoomTemplate\Name$
 				If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
-					If FPSfactor > 0 Then LightBlink = Rnd(1.0,2.0)
+					If DeltaTime > 0 Then LightBlink = Rnd(1.0,2.0)
 					PlaySound_Strict  LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,7)+".ogg")
 				EndIf 
 			EndIf
@@ -1661,7 +1661,7 @@ While IsRunning
 			UpdateParticles()
 			Use427()
 			UpdateMonitorSaving()
-			UpdateParticles_Time# = UpdateParticles_Time#+FPSfactor
+			UpdateParticles_Time# = UpdateParticles_Time#+DeltaTime
 			If UpdateParticles_Time#=>1
 				UpdateDevilEmitters()
 				UpdateParticles_Devil()
@@ -1669,10 +1669,10 @@ While IsRunning
 			EndIf
 		EndIf
 		
-		If InfiniteStamina% Then Stamina = Min(100, Stamina + (100.0-Stamina)*0.01*FPSfactor)
+		If InfiniteStamina% Then Stamina = Min(100, Stamina + (100.0-Stamina)*0.01*DeltaTime)
 		
 		CatchErrors("Uncaught (UpdateWorld)")
-		If FPSfactor=0
+		If DeltaTime=0
 			UpdateWorld(0)
 		Else
 			UpdateWorld()
@@ -1684,7 +1684,7 @@ While IsRunning
 		BlurVolume = Min(CurveValue(0.0, BlurVolume, 20.0),0.95)
 		If BlurTimer > 0.0 Then
 			BlurVolume = Max(Min(0.95, BlurTimer / 1000.0), BlurVolume)
-			BlurTimer = Max(BlurTimer - FPSfactor, 0.0)
+			BlurTimer = Max(BlurTimer - DeltaTime, 0.0)
 		End If
 		
 		UpdateBlur(BlurVolume)
@@ -1694,7 +1694,7 @@ While IsRunning
 		Local darkA# = 0.0
 		If (Not MenuOpen)  Then
 			If Sanity < 0 Then
-				If RestoreSanity Then Sanity = Min(Sanity + FPSfactor, 0.0)
+				If RestoreSanity Then Sanity = Min(Sanity + DeltaTime, 0.0)
 				If Sanity < (-200) Then 
 					darkA = Max(Min((-Sanity - 200) / 700.0, 0.6), darkA)
 					If KillTimer => 0 Then 
@@ -1706,11 +1706,11 @@ While IsRunning
 			
 			If EyeStuck > 0 Then 
 				BlinkTimer = BLINKFREQ
-				EyeStuck = Max(EyeStuck-FPSfactor,0)
+				EyeStuck = Max(EyeStuck-DeltaTime,0)
 				
 				If EyeStuck < 9000 Then BlurTimer = Max(BlurTimer, (9000-EyeStuck)*0.5)
 				If EyeStuck < 6000 Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.0),1.0)
-				If EyeStuck < 9000 And EyeStuck+FPSfactor =>9000 Then 
+				If EyeStuck < 9000 And EyeStuck+DeltaTime =>9000 Then 
 					Msg = I_Loc\MessageItem_EyedropsTear
 					MsgTimer = 70*6
 				EndIf
@@ -1738,23 +1738,23 @@ While IsRunning
 					BlinkTimer = BLINKFREQ
 				EndIf
 				
-				BlinkTimer = BlinkTimer - FPSfactor
+				BlinkTimer = BlinkTimer - DeltaTime
 			Else
-				BlinkTimer = BlinkTimer - FPSfactor * 0.6 * BlinkEffect
-				If EyeIrritation > 0 Then BlinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * FPSfactor
+				BlinkTimer = BlinkTimer - DeltaTime * 0.6 * BlinkEffect
+				If EyeIrritation > 0 Then BlinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * DeltaTime
 				
 				darkA = Max(darkA, 0.0)
 			End If
 			
-			EyeIrritation = Max(0, EyeIrritation - FPSfactor)
+			EyeIrritation = Max(0, EyeIrritation - DeltaTime)
 			
 			If BlinkEffectTimer > 0 Then
-				BlinkEffectTimer = BlinkEffectTimer - (FPSfactor/70)
+				BlinkEffectTimer = BlinkEffectTimer - (DeltaTime/70)
 			Else
 				If BlinkEffect <> 1.0 Then BlinkEffect = 1.0
 			EndIf
 			
-			LightBlink = Max(LightBlink - (FPSfactor / 35.0), 0)
+			LightBlink = Max(LightBlink - (DeltaTime / 35.0), 0)
 			If LightBlink > 0 Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3, 0.8)), 1.0)
 			
 			If Using294 Then darkA=1.0
@@ -1767,7 +1767,7 @@ While IsRunning
 				SelectedScreen = Null
 				SelectedMonitor = Null
 				BlurTimer = Abs(KillTimer*5)
-				KillTimer=KillTimer-(FPSfactor*0.8)
+				KillTimer=KillTimer-(DeltaTime*0.8)
 				If KillTimer < - 360 Then 
 					MenuOpen = True 
 					If SelectedEnding <> "" Then EndingTimer = Min(KillTimer,-0.1)
@@ -1788,7 +1788,7 @@ While IsRunning
 				SelectedScreen = Null
 				SelectedMonitor = Null
 				BlurTimer = Abs(FallTimer*10)
-				FallTimer = FallTimer-FPSfactor
+				FallTimer = FallTimer-DeltaTime
 				darkA = Max(darkA, Min(Abs(FallTimer / 400.0), 1.0))				
 			EndIf
 			
@@ -1801,7 +1801,7 @@ While IsRunning
 			If LightFlash > 0 Then
 				ShowEntity Light
 				EntityAlpha(Light, Max(Min(LightFlash + Rnd(-0.2, 0.2), 1.0), 0.0))
-				LightFlash = Max(LightFlash - (FPSfactor / 70.0), 0)
+				LightFlash = Max(LightFlash - (DeltaTime / 70.0), 0)
 			Else
 				HideEntity Light
 				;EntityAlpha(Light, LightFlash)
@@ -1940,7 +1940,7 @@ While IsRunning
 				Color messageOpacity, messageOpacity, messageOpacity
 				Text((Config\Graphics\ScreenWidth / 2), (Config\Graphics\ScreenHeight * 0.94), Msg, True, False)
 			EndIf
-			MsgTimer=MsgTimer-FPSfactor2 
+			MsgTimer=MsgTimer-RawDeltaTime 
 		End If
 		
 		Color 255, 255, 255
@@ -2311,7 +2311,7 @@ Function QuickLoadEvents()
 		Case "room966"
 			;[Block]
 			If e\EventState = 1
-				e\EventState2 = e\EventState2+FPSfactor
+				e\EventState2 = e\EventState2+DeltaTime
 				If e\EventState2>30 Then
 					If e\EventStr = ""
 						CreateNPC(NPCtype966, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
@@ -2401,11 +2401,11 @@ Function DrawEnding()
 	
 	ShowPointer()
 	
-	FPSfactor = 0
+	DeltaTime = 0
 	If EndingTimer>-2000
-		EndingTimer=Max(EndingTimer-FPSfactor2,-1111)
+		EndingTimer=Max(EndingTimer-RawDeltaTime,-1111)
 	Else
-		EndingTimer=EndingTimer-FPSfactor2
+		EndingTimer=EndingTimer-RawDeltaTime
 	EndIf
 	
 	GiveAchievement(Achv055)
@@ -2461,7 +2461,7 @@ Function DrawEnding()
 				Color 255,255,255
 			EndIf
 			
-			If EndingTimer+FPSfactor2 > -450 And EndingTimer <= -450 Then
+			If EndingTimer+RawDeltaTime > -450 And EndingTimer <= -450 Then
 				Select Lower(SelectedEnding)
 					Case "a1", "a2"
 						PlaySound_Strict LoadTempSound("SFX\Ending\GateA\Ending"+SelectedEnding+".ogg")
@@ -2694,7 +2694,7 @@ Function DrawCredits()
 		id=id+1
 	Next
 	If (credits_Y+(24*LastCreditLine\id*Gfx\MenuScale))<-StringHeight(LastCreditLine\txt)
-		CreditsTimer=CreditsTimer+(0.5*FPSfactor2)
+		CreditsTimer=CreditsTimer+(0.5*RawDeltaTime)
 		If CreditsTimer>=0.0 And CreditsTimer<255.0
 			Color Max(Min(CreditsTimer,255),0),Max(Min(CreditsTimer,255),0),Max(Min(CreditsTimer,255),0)
 		ElseIf CreditsTimer>=255.0
@@ -2757,7 +2757,7 @@ Function MovePlayer()
 	If SuperMan Then
 		Speed = Speed * 3
 		
-		SuperManTimer=SuperManTimer+FPSfactor
+		SuperManTimer=SuperManTimer+DeltaTime
 		
 		CameraShake = Sin(SuperManTimer / 5.0) * (SuperManTimer / 1500.0)
 		
@@ -2772,20 +2772,20 @@ Function MovePlayer()
 	End If
 	
 	If DeathTimer > 0 Then
-		DeathTimer=DeathTimer-FPSfactor
+		DeathTimer=DeathTimer-DeltaTime
 		If DeathTimer < 1 Then DeathTimer = -1.0
 	ElseIf DeathTimer < 0 
 		Kill()
 	EndIf
 	
 	If CurrSpeed > 0 Then
-        Stamina = Min(Stamina + 0.15 * FPSfactor/1.25, 100.0)
+        Stamina = Min(Stamina + 0.15 * DeltaTime/1.25, 100.0)
     Else
-        Stamina = Min(Stamina + 0.15 * FPSfactor*1.25, 100.0)
+        Stamina = Min(Stamina + 0.15 * DeltaTime*1.25, 100.0)
     EndIf
 	
 	If StaminaEffectTimer > 0 Then
-		StaminaEffectTimer = StaminaEffectTimer - (FPSfactor/70)
+		StaminaEffectTimer = StaminaEffectTimer - (DeltaTime/70)
 	Else
 		If StaminaEffect <> 1.0 Then StaminaEffect = 1.0
 	EndIf
@@ -2842,7 +2842,7 @@ Function MovePlayer()
 		If ForceMove > 0 Lor Playable And (MoveX <> 0 Lor MoveZ <> 0) Then
 			If Crouch = 0 And (KeyDown(KEY_SPRINT)) And Stamina > 0.0 And (Not IsZombie) Then
 				Sprint = 2.5
-				Stamina = Stamina - FPSfactor * 0.4 * StaminaEffect
+				Stamina = Stamina - DeltaTime * 0.4 * StaminaEffect
 				If Stamina <= 0 Then Stamina = -20.0
 			End If
 			
@@ -2864,7 +2864,7 @@ Function MovePlayer()
 			
 			temp# = (Shake Mod 360)
 			Local tempchn%
-			If (Not UnableToMove%) Then Shake# = (Shake + FPSfactor * Min(Sprint, 1.5) * 7) Mod 720
+			If (Not UnableToMove%) Then Shake# = (Shake + DeltaTime * Min(Sprint, 1.5) * 7) Mod 720
 			If temp < 180 And (Shake Mod 360) >= 180 And KillTimer>=0 Then
 				If CurrStepSFX=0 Then
 					temp = GetStepSound(Collider)
@@ -2914,11 +2914,11 @@ Function MovePlayer()
 		
 		temp2 = temp2 * NoClipSpeed
 		
-		If KeyDown(KEY_DOWN) Then MoveEntity Collider, 0, 0, -temp2*FPSfactor
-		If KeyDown(KEY_UP) Then MoveEntity Collider, 0, 0, temp2*FPSfactor
+		If KeyDown(KEY_DOWN) Then MoveEntity Collider, 0, 0, -temp2*DeltaTime
+		If KeyDown(KEY_UP) Then MoveEntity Collider, 0, 0, temp2*DeltaTime
 		
-		If KeyDown(KEY_LEFT) Then MoveEntity Collider, -temp2*FPSfactor, 0, 0
-		If KeyDown(KEY_RIGHT) Then MoveEntity Collider, temp2*FPSfactor, 0, 0	
+		If KeyDown(KEY_LEFT) Then MoveEntity Collider, -temp2*DeltaTime, 0, 0
+		If KeyDown(KEY_RIGHT) Then MoveEntity Collider, temp2*DeltaTime, 0, 0	
 		
 		ResetEntity Collider
 	Else
@@ -2984,7 +2984,7 @@ Function MovePlayer()
 			CurrSpeed = Max(CurveValue(0.0, CurrSpeed-0.1, 1.0),0.0)
 		EndIf
 		
-		If (Not UnableToMove%) Then TranslateEntity Collider, Cos(angle)*CurrSpeed * FPSfactor, 0, Sin(angle)*CurrSpeed * FPSfactor, True
+		If (Not UnableToMove%) Then TranslateEntity Collider, Cos(angle)*CurrSpeed * DeltaTime, 0, Sin(angle)*CurrSpeed * DeltaTime, True
 		
 		Local CollidedFloor% = False
 		For i = 1 To CountCollisions(Collider)
@@ -3006,21 +3006,21 @@ Function MovePlayer()
 			EndIf
 			DropSpeed# = 0
 		Else
-			;DropSpeed# = Min(Max(DropSpeed - 0.006 * FPSfactor, -2.0), 0.0)
+			;DropSpeed# = Min(Max(DropSpeed - 0.006 * DeltaTime, -2.0), 0.0)
 			If PlayerFallingPickDistance#<>0.0
 				Local pick = LinePick(EntityX(Collider),EntityY(Collider),EntityZ(Collider),0,-PlayerFallingPickDistance,0)
 				If pick
-					DropSpeed# = Min(Max(DropSpeed - 0.006 * FPSfactor, -2.0), 0.0)
+					DropSpeed# = Min(Max(DropSpeed - 0.006 * DeltaTime, -2.0), 0.0)
 				Else
 					DropSpeed# = 0
 				EndIf
 			Else
-				DropSpeed# = Min(Max(DropSpeed - 0.006 * FPSfactor, -2.0), 0.0)
+				DropSpeed# = Min(Max(DropSpeed - 0.006 * DeltaTime, -2.0), 0.0)
 			EndIf
 		EndIf
 		PlayerFallingPickDistance# = 10.0
 		
-		If (Not UnableToMove%) And ShouldEntitiesFall Then TranslateEntity Collider, 0, DropSpeed * FPSfactor, 0
+		If (Not UnableToMove%) And ShouldEntitiesFall Then TranslateEntity Collider, 0, DropSpeed * DeltaTime, 0
 	EndIf
 	
 	ForceMove = False
@@ -3029,7 +3029,7 @@ Function MovePlayer()
 		temp2 = Bloodloss
 		BlurTimer = Max(Max(Sin(MilliSecs()/100.0)*Bloodloss*30.0,Bloodloss*2*(2.0-CrouchState)),BlurTimer)
 		If (Not I_427\Using And I_427\Timer < 70*360) Then
-			Bloodloss = Min(Bloodloss + (Min(Injuries,3.5)/300.0)*FPSfactor,100)
+			Bloodloss = Min(Bloodloss + (Min(Injuries,3.5)/300.0)*DeltaTime,100)
 		EndIf
 		
 		If temp2 <= 60 And Bloodloss > 60 Then
@@ -3072,9 +3072,9 @@ Function MovePlayer()
 	
 	If HealTimer > 0 Then
 		DebugLog HealTimer
-		HealTimer = HealTimer - (FPSfactor / 70)
-		Bloodloss = Min(Bloodloss + (2 / 400.0) * FPSfactor, 100)
-		Injuries = Max(Injuries - (FPSfactor / 70) / 30, 0.0)
+		HealTimer = HealTimer - (DeltaTime / 70)
+		Bloodloss = Min(Bloodloss + (2 / 400.0) * DeltaTime, 100)
+		Injuries = Max(Injuries - (DeltaTime / 70) / 30, 0.0)
 	EndIf
 		
 	If Playable Then
@@ -3090,10 +3090,10 @@ Function MovePlayer()
 			
 			HeartBeatTimer = 70.0*(60.0/Max(HeartBeatRate,1.0))
 		Else
-			HeartBeatTimer = HeartBeatTimer - FPSfactor
+			HeartBeatTimer = HeartBeatTimer - DeltaTime
 		EndIf
 		
-		HeartBeatVolume = Max(HeartBeatVolume - FPSfactor*0.05, 0)
+		HeartBeatVolume = Max(HeartBeatVolume - DeltaTime*0.05, 0)
 	EndIf
 	
 	CatchErrors("MovePlayer")
@@ -3106,11 +3106,11 @@ End Function
 Function MouseLook()
 	Local i%
 	
-	CameraShake = Max(CameraShake - (FPSfactor / 10), 0)
+	CameraShake = Max(CameraShake - (DeltaTime / 10), 0)
 	
 	;CameraZoomTemp = CurveValue(CurrCameraZoom,CameraZoomTemp, 5.0)
 	ZoomCamera(Config\Graphics\FOV)
-	CurrCameraZoom = Max(CurrCameraZoom - FPSfactor, 0)
+	CurrCameraZoom = Max(CurrCameraZoom - DeltaTime, 0)
 	
 	If KillTimer >= 0 And FallTimer >=0 Then
 		
@@ -3186,13 +3186,13 @@ Function MouseLook()
 				RotateEntity(Camera, CurveAngle(EntityPitch(Head) + 40.0, EntityPitch(Camera), 40.0), EntityYaw(Camera), EntityRoll(Camera))
 			EndIf
 			
-			HeadDropSpeed# = HeadDropSpeed - 0.002 * FPSfactor
+			HeadDropSpeed# = HeadDropSpeed - 0.002 * DeltaTime
 		EndIf
 		
 		If InvertMouse Then
-			TurnEntity (Camera, -MouseYSpeed() * 0.05 * FPSfactor, -MouseXSpeed() * 0.15 * FPSfactor, 0)
+			TurnEntity (Camera, -MouseYSpeed() * 0.05 * DeltaTime, -MouseXSpeed() * 0.15 * DeltaTime, 0)
 		Else
-			TurnEntity (Camera, MouseYSpeed() * 0.05 * FPSfactor, -MouseXSpeed() * 0.15 * FPSfactor, 0)
+			TurnEntity (Camera, MouseYSpeed() * 0.05 * DeltaTime, -MouseXSpeed() * 0.15 * DeltaTime, 0)
 		End If
 		
 	EndIf
@@ -3224,7 +3224,7 @@ Function MouseLook()
 	If WearingGasMask Or WearingHazmat Or Wearing1499 Then
 		If Wearing714 = False Then
 			If WearingGasMask = 2 Or Wearing1499 = 2 Or WearingHazmat = 2 Then
-				Stamina = Min(100, Stamina + (100.0-Stamina)*0.01*FPSfactor)
+				Stamina = Min(100, Stamina + (100.0-Stamina)*0.01*DeltaTime)
 			EndIf
 		EndIf
 		If WearingHazmat = 1 Then
@@ -3259,7 +3259,7 @@ Function MouseLook()
 		If SCP1025state[i]>0 Then
 			Select i
 				Case 0 ;common cold
-					If FPSfactor>0 Then 
+					If DeltaTime>0 Then 
 						If Rand(1000)=1 Then
 							If CoughCHN = 0 Then
 								CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
@@ -3268,14 +3268,14 @@ Function MouseLook()
 							End If
 						EndIf
 					EndIf
-					Stamina = Stamina - FPSfactor * 0.3
+					Stamina = Stamina - DeltaTime * 0.3
 				Case 1 ;chicken pox
 					If Rand(9000)=1 And Msg="" Then
 						Msg=I_Loc\Message_1025ChickenpoxItchy
 						MsgTimer =70*4
 					EndIf
 				Case 2 ;cancer of the lungs
-					If FPSfactor>0 Then 
+					If DeltaTime>0 Then 
 						If Rand(800)=1 Then
 							If CoughCHN = 0 Then
 								CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
@@ -3284,17 +3284,17 @@ Function MouseLook()
 							End If
 						EndIf
 					EndIf
-					Stamina = Stamina - FPSfactor * 0.1
+					Stamina = Stamina - DeltaTime * 0.1
 				Case 3 ;appendicitis
 					;0.035/sec = 2.1/min
 					If (Not I_427\Using And I_427\Timer < 70*360) Then
-						SCP1025state[i]=SCP1025state[i]+FPSfactor*0.0005
+						SCP1025state[i]=SCP1025state[i]+DeltaTime*0.0005
 					EndIf
 					If SCP1025state[i]>20.0 Then
-						If SCP1025state[i]-FPSfactor<=20.0 Then Msg=I_Loc\Message_1025Appendicitis2 : MsgTimer = 70*4
-						Stamina = Stamina - FPSfactor * 0.3
+						If SCP1025state[i]-DeltaTime<=20.0 Then Msg=I_Loc\Message_1025Appendicitis2 : MsgTimer = 70*4
+						Stamina = Stamina - DeltaTime * 0.3
 					ElseIf SCP1025state[i]>10.0
-						If SCP1025state[i]-FPSfactor<=10.0 Then Msg=I_Loc\Message_1025Appendicitis1 : MsgTimer = 70*4
+						If SCP1025state[i]-DeltaTime<=10.0 Then Msg=I_Loc\Message_1025Appendicitis1 : MsgTimer = 70*4
 					EndIf
 				Case 4 ;asthma
 					If Stamina < 35 Then
@@ -3309,7 +3309,7 @@ Function MouseLook()
 					EndIf
 				Case 5;cardiac arrest
 					If (Not I_427\Using And I_427\Timer < 70*360) Then
-						SCP1025state[i]=SCP1025state[i]+FPSfactor*0.35
+						SCP1025state[i]=SCP1025state[i]+DeltaTime*0.35
 					EndIf
 					;35/sec
 					If SCP1025state[i]>110 Then
@@ -3508,7 +3508,7 @@ Function DrawGUI()
 			End Select
 			SetFont Font3
 			If KeypadMSG <> "" Then 
-				KeypadTimer = KeypadTimer-FPSfactor2
+				KeypadTimer = KeypadTimer-RawDeltaTime
 				
 				If (KeypadTimer Mod 70) < 35 Then Text Config\Graphics\ScreenWidth/2, y+124*scale, KeypadMSG, True,True
 				If KeypadTimer =<0 Then
@@ -4379,7 +4379,7 @@ Function DrawGUI()
 							
 							DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
 							
-							SelectedItem\state = Min(SelectedItem\state+(FPSfactor/5.0),100)			
+							SelectedItem\state = Min(SelectedItem\state+(DeltaTime/5.0),100)			
 							
 							If SelectedItem\state = 100 Then
 								If SelectedItem\itemtemplate\name = "finefirstaid" Then
@@ -4641,7 +4641,7 @@ Function DrawGUI()
 					;[End Block]
 				Case "radio","18vradio","fineradio","veryfineradio"
 					;[Block]
-					If SelectedItem\state <= 100 Then SelectedItem\state = Max(0, SelectedItem\state - FPSfactor * 0.004)
+					If SelectedItem\state <= 100 Then SelectedItem\state = Max(0, SelectedItem\state - DeltaTime * 0.004)
 					
 					If SelectedItem\itemtemplate\img=0 Then
 						SelectedItem\itemtemplate\img=LoadImage_Strict(SelectedItem\itemtemplate\imgpath)	
@@ -4912,9 +4912,9 @@ Function DrawGUI()
 								
 								;radiostate(7)=kuinka mones piippaus menossa
 								;radiostate(8)=kuinka mones access coden numero menossa
-								RadioState(6)=RadioState(6) + FPSfactor
+								RadioState(6)=RadioState(6) + DeltaTime
 								temp = Mid(Str(AccessCode),RadioState(8)+1,1)
-								If RadioState(6)-FPSfactor =< RadioState(7)*50 And RadioState(6)>RadioState(7)*50 Then
+								If RadioState(6)-DeltaTime =< RadioState(7)*50 And RadioState(6)>RadioState(7)*50 Then
 									PlaySound_Strict(RadioBuzz)
 									RadioState(7)=RadioState(7)+1
 									If RadioState(7)=>temp Then
@@ -5042,7 +5042,7 @@ Function DrawGUI()
 						
 						DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
 						
-						SelectedItem\state = Min(SelectedItem\state+(FPSfactor/4.0),100)
+						SelectedItem\state = Min(SelectedItem\state+(DeltaTime/4.0),100)
 						
 						If SelectedItem\state=100 Then
 							If WearingHazmat>0 Then
@@ -5077,7 +5077,7 @@ Function DrawGUI()
 					
 					DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
 
-					SelectedItem\state = Min(SelectedItem\state+(FPSfactor/(2.0+(0.5*(SelectedItem\itemtemplate\name="finevest")))),100)
+					SelectedItem\state = Min(SelectedItem\state+(DeltaTime/(2.0+(0.5*(SelectedItem\itemtemplate\name="finevest")))),100)
 					
 					If SelectedItem\state=100 Then
 						If WearingVest>0 Then
@@ -5139,7 +5139,7 @@ Function DrawGUI()
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					If SelectedItem\state <= 100 Then SelectedItem\state = Max(0, SelectedItem\state - FPSfactor * 0.005)
+					If SelectedItem\state <= 100 Then SelectedItem\state = Max(0, SelectedItem\state - DeltaTime * 0.005)
 					
 					x = HUDEndX - ImageWidth(SelectedItem\itemtemplate\img)*0.5+20
 					y = HUDEndY - ImageHeight(SelectedItem\itemtemplate\img)*0.4-85
@@ -5357,7 +5357,7 @@ Function DrawGUI()
 					
 					DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
 					
-					SelectedItem\state = Min(SelectedItem\state+(FPSfactor),100)
+					SelectedItem\state = Min(SelectedItem\state+(DeltaTime),100)
 					
 					If SelectedItem\state=100 Then
 						If Wearing1499>0 Then
@@ -5880,7 +5880,7 @@ Function DrawMenu()
 				EndIf	
 			ElseIf StopHidingTimer < 40
 				If KillTimer >= 0 Then 
-					StopHidingTimer = StopHidingTimer+FPSfactor
+					StopHidingTimer = StopHidingTimer+DeltaTime
 					
 					If StopHidingTimer => 40 Then
 						PlaySound_Strict(HorrorSFX(15))
@@ -6444,7 +6444,7 @@ Function DrawMenu()
 							
 							UpdateWorld 0.0
 							
-							FPSfactor = 0
+							DeltaTime = 0
 							
 							ResetInput()
 						EndIf
@@ -6499,7 +6499,7 @@ Function DrawMenu()
 						
 						UpdateWorld 0.0
 						
-						FPSfactor = 0
+						DeltaTime = 0
 						
 						ResetInput()
 					EndIf
@@ -7265,7 +7265,7 @@ Function InitNewGame()
 	
 	Playable = False
 	For i% = 0 To 70
-		FPSfactor = 1.0
+		DeltaTime = 1.0
 		FlushKeys()
 		MovePlayer()
 		UpdateDoors()
@@ -7371,7 +7371,7 @@ Function InitLoadGame()
 
 	MoveMouse viewport_center_x,viewport_center_y
 	
-	FPSfactor = 0
+	DeltaTime = 0
 	ResetInput()
 	
 	CatchErrors("InitLoadGame")
@@ -7716,7 +7716,7 @@ Function UpdateMusic()
 	
 	If (Not PlayCustomMusic)
 		If NowPlaying <> ShouldPlay ; playing the wrong clip, fade out
-			CurrMusicVolume# = Max(CurrMusicVolume - (FPSfactor / 250.0), 0)
+			CurrMusicVolume# = Max(CurrMusicVolume - (DeltaTime / 250.0), 0)
 			If CurrMusicVolume = 0
 				If NowPlaying<66
 					StopStream_Strict(MusicCHN)
@@ -7726,7 +7726,7 @@ Function UpdateMusic()
 				CurrMusic=0
 			EndIf
 		Else ; playing the right clip
-			CurrMusicVolume = CurrMusicVolume + (MusicVolume - CurrMusicVolume) * (0.1*FPSfactor)
+			CurrMusicVolume = CurrMusicVolume + (MusicVolume - CurrMusicVolume) * (0.1*DeltaTime)
 		EndIf
 		
 		If NowPlaying < 66
@@ -7737,7 +7737,7 @@ Function UpdateMusic()
 			SetStreamVolume_Strict(MusicCHN,CurrMusicVolume)
 		EndIf
 	Else
-		If FPSfactor > 0 Or OptionsMenu = 2 Then
+		If DeltaTime > 0 Or OptionsMenu = 2 Then
 			;CurrMusicVolume = 1.0
 			If (Not ChannelPlaying(MusicCHN)) Then MusicCHN = PlaySound_Strict(CustomMusic)
 			ChannelVolume MusicCHN,1.0*MusicVolume
@@ -8090,7 +8090,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 	Local newTime#
 	
 	If speed > 0.0 Then 
-		newTime = Max(Min(n\Frame + speed * FPSfactor,quit),start)
+		newTime = Max(Min(n\Frame + speed * DeltaTime,quit),start)
 		
 		If loop And newTime => quit Then
 			newTime = start
@@ -8103,7 +8103,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 		EndIf
 		
 		If loop Then
-			newTime = n\Frame + speed * FPSfactor
+			newTime = n\Frame + speed * DeltaTime
 			
 			If newTime < quit Then 
 				newTime = start
@@ -8111,7 +8111,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 				newTime = quit
 			EndIf
 		Else
-			newTime = Max(Min(n\Frame + speed * FPSfactor,start),quit)
+			newTime = Max(Min(n\Frame + speed * DeltaTime,start),quit)
 		EndIf
 	EndIf
 	SetNPCFrame(n, newTime)
@@ -8131,7 +8131,7 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
 	Local newTime#
 	
 	If speed > 0.0 Then 
-		newTime = Max(Min(curr + speed * FPSfactor,quit),start)
+		newTime = Max(Min(curr + speed * DeltaTime,quit),start)
 		
 		If loop Then
 			If newTime => quit Then 
@@ -8151,15 +8151,15 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
 		EndIf
 		
 		If loop Then
-			newTime = curr + speed * FPSfactor
+			newTime = curr + speed * DeltaTime
 			
 			If newTime < quit Then newTime = start
 			If newTime > start Then newTime = quit
 			
 			;SetAnimTime entity, newTime
 		Else
-			;SetAnimTime (entity, Max(Min(curr + speed * FPSfactor,start),quit))
-			newTime = Max(Min(curr + speed * FPSfactor,start),quit)
+			;SetAnimTime (entity, Max(Min(curr + speed * DeltaTime,start),quit))
+			newTime = Max(Min(curr + speed * DeltaTime,start),quit)
 		EndIf
 	EndIf
 	
@@ -8996,19 +8996,19 @@ Function Use427()
 	
 	If I_427\Timer < 70*360
 		If I_427\Using=True Then
-			I_427\Timer = I_427\Timer + FPSfactor
+			I_427\Timer = I_427\Timer + DeltaTime
 			If Injuries > 0.0 Then
-				Injuries = Max(Injuries - 0.0005 * FPSfactor,0.0)
+				Injuries = Max(Injuries - 0.0005 * DeltaTime,0.0)
 			EndIf
 			If Bloodloss > 0.0 And Injuries <= 1.0 Then
-				Bloodloss = Max(Bloodloss - 0.001 * FPSfactor,0.0)
+				Bloodloss = Max(Bloodloss - 0.001 * DeltaTime,0.0)
 			EndIf
 			If Infect > 0.0 Then
-				Infect = Max(Infect - 0.001 * FPSfactor,0.0)
+				Infect = Max(Infect - 0.001 * DeltaTime,0.0)
 			EndIf
 			For i = 0 To 5
 				If SCP1025state[i]>0.0 Then
-					SCP1025state[i] = Max(SCP1025state[i] - 0.001 * FPSfactor,0.0)
+					SCP1025state[i] = Max(SCP1025state[i] - 0.001 * DeltaTime,0.0)
 				EndIf
 			Next
 			If I_427\Sound[0]=0 Then
@@ -9042,14 +9042,14 @@ Function Use427()
 			Next
 		EndIf
 	Else
-		If prevI427Timer-FPSfactor < 70*360 And I_427\Timer => 70*360 Then
+		If prevI427Timer-DeltaTime < 70*360 And I_427\Timer => 70*360 Then
 			Msg = I_Loc\Message_427_3
 			MsgTimer = 70*5
-		ElseIf prevI427Timer-FPSfactor < 70*390 And I_427\Timer => 70*390 Then
+		ElseIf prevI427Timer-DeltaTime < 70*390 And I_427\Timer => 70*390 Then
 			Msg = I_Loc\Message_427_4
 			MsgTimer = 70*5
 		EndIf
-		I_427\Timer = I_427\Timer + FPSfactor
+		I_427\Timer = I_427\Timer + DeltaTime
 		If I_427\Sound[0]=0 Then
 			I_427\Sound[0] = LoadSound_Strict("SFX\SCP\427\Effect.ogg")
 		EndIf
@@ -9108,7 +9108,7 @@ Function UpdateMTF%()
 						PlayAnnouncement("SFX\Character\MTF\Announc.ogg")
 					EndIf
 					
-					MTFtimer = FPSfactor
+					MTFtimer = DeltaTime
 					Local leader.NPCs
 					For i = 0 To 2
 						n.NPCs = CreateNPC(NPCtypeMTF, EntityX(entrance\obj)+0.3*(i-1), 1.0,EntityZ(entrance\obj)+8.0)
@@ -9126,21 +9126,21 @@ Function UpdateMTF%()
 		EndIf
 	Else
 		If MTFtimer <= 70*120 ;70*120
-			MTFtimer = MTFtimer + FPSfactor
+			MTFtimer = MTFtimer + DeltaTime
 		ElseIf MTFtimer > 70*120 And MTFtimer < 10000
 			If PlayerInReachableRoom()
 				PlayAnnouncement("SFX\Character\MTF\AnnouncAfter1.ogg")
 			EndIf
 			MTFtimer = 10000
 		ElseIf MTFtimer >= 10000 And MTFtimer <= 10000+(70*120) ;70*120
-			MTFtimer = MTFtimer + FPSfactor
+			MTFtimer = MTFtimer + DeltaTime
 		ElseIf MTFtimer > 10000+(70*120) And MTFtimer < 20000
 			If PlayerInReachableRoom()
 				PlayAnnouncement("SFX\Character\MTF\AnnouncAfter2.ogg")
 			EndIf
 			MTFtimer = 20000
 		ElseIf MTFtimer >= 20000 And MTFtimer <= 20000+(70*60) ;70*120
-			MTFtimer = MTFtimer + FPSfactor
+			MTFtimer = MTFtimer + DeltaTime
 		ElseIf MTFtimer > 20000+(70*60) And MTFtimer < 25000
 			If PlayerInReachableRoom()
 				;If the player has an SCP in their inventory play special voice line.
@@ -9160,7 +9160,7 @@ Function UpdateMTF%()
 			MTFtimer = 25000
 			
 		ElseIf MTFtimer >= 25000 And MTFtimer <= 25000+(70*60) ;70*120
-			MTFtimer = MTFtimer + FPSfactor
+			MTFtimer = MTFtimer + DeltaTime
 		ElseIf MTFtimer > 25000+(70*60) And MTFtimer < 30000
 			If PlayerInReachableRoom()
 				PlayAnnouncement("SFX\Character\MTF\ThreatAnnouncFinal.ogg")
@@ -9199,7 +9199,7 @@ Function UpdateInfect()
 		If Infect < 93.0 Then
 			temp=Infect
 			If (Not I_427\Using And I_427\Timer < 70*360) Then
-				Infect = Min(Infect+FPSfactor*0.002,100)
+				Infect = Min(Infect+DeltaTime*0.002,100)
 			EndIf
 			
 			BlurTimer = Max(Infect*3*(2.0-CrouchState),BlurTimer)
@@ -9255,7 +9255,7 @@ Function UpdateInfect()
 		Else
 			
 			temp=Infect
-			Infect = Min(Infect+FPSfactor*0.004,100)
+			Infect = Min(Infect+DeltaTime*0.004,100)
 			
 			If teleportForInfect
 				If Infect < 94.7 Then
@@ -9365,22 +9365,22 @@ End Function
 
 
 Function CurveValue#(number#, old#, smooth#)
-	If FPSfactor = 0 Then Return old
+	If DeltaTime = 0 Then Return old
 	
 	If number < old Then
-		Return Max(old + (number - old) * (1.0 / smooth * FPSfactor), number)
+		Return Max(old + (number - old) * (1.0 / smooth * DeltaTime), number)
 	Else
-		Return Min(old + (number - old) * (1.0 / smooth * FPSfactor), number)
+		Return Min(old + (number - old) * (1.0 / smooth * DeltaTime), number)
 	EndIf
 End Function
 
 Function CurveAngle#(val#, old#, smooth#)
-	If FPSfactor = 0 Then Return old
+	If DeltaTime = 0 Then Return old
 	
    Local diff# = WrapAngle(val) - WrapAngle(old)
    If diff > 180 Then diff = diff - 360
    If diff < - 180 Then diff = diff + 360
-   Return WrapAngle(old + diff * (1.0 / smooth * FPSfactor))
+   Return WrapAngle(old + diff * (1.0 / smooth * DeltaTime))
 End Function
 
 
@@ -9475,7 +9475,7 @@ Function UpdateDecals()
 	Local d.Decals
 	For d.Decals = Each Decals
 		If d\SizeChange <> 0 Then
-			d\Size=d\Size + d\SizeChange * FPSfactor
+			d\Size=d\Size + d\SizeChange * DeltaTime
 			ScaleSprite(d\obj, d\Size, d\Size)
 			
 			Select d\ID
@@ -9489,7 +9489,7 @@ Function UpdateDecals()
 						;d\Timer = d\Timer + Rand(50,150)
 						d\Timer = Rand(50, 100)
 					Else
-						d\Timer= d\Timer-FPSfactor
+						d\Timer= d\Timer-DeltaTime
 					End If
 				;Case 6
 				;	EntityBlend d\obj, 2
@@ -9499,12 +9499,12 @@ Function UpdateDecals()
 		End If
 		
 		If d\AlphaChange <> 0 Then
-			d\Alpha = Min(d\Alpha + FPSfactor * d\AlphaChange, 1.0)
+			d\Alpha = Min(d\Alpha + DeltaTime * d\AlphaChange, 1.0)
 			EntityAlpha(d\obj, d\Alpha)
 		End If
 		
 		If d\lifetime > 0 Then
-			d\lifetime=Max(d\lifetime-FPSfactor,5)
+			d\lifetime=Max(d\lifetime-DeltaTime,5)
 		EndIf
 		
 		If d\Size <= 0 Or d\Alpha <= 0 Or d\lifetime=5.0  Then
@@ -9684,7 +9684,7 @@ Function RenderWorld2()
 		For i% = 0 To MaxItemAmount - 1
 			If (Inventory(i)<>Null) Then
 				If (WearingNightVision = 1 And Inventory(i)\itemtemplate\name = "nvgoggles") Or (WearingNightVision = 2 And Inventory(i)\itemtemplate\name = "supernv") Then
-					Inventory(i)\state = Inventory(i)\state - (FPSfactor * (0.02 * WearingNightVision))
+					Inventory(i)\state = Inventory(i)\state - (DeltaTime * (0.02 * WearingNightVision))
 					power%=Int(Inventory(i)\state)
 					If Inventory(i)\state<=0.0 Then ;this nvg can't be used
 						hasBattery = 0
@@ -9715,7 +9715,7 @@ Function RenderWorld2()
 	
 	If BlinkTimer < - 16 Or BlinkTimer > - 6
 		If WearingNightVision=2 And hasBattery<>0 Then ;show a HUD
-			NVTimer=NVTimer-FPSfactor
+			NVTimer=NVTimer-DeltaTime
 			
 			If NVTimer<=0.0 Then
 				For np.NPCs = Each NPCs
@@ -10011,7 +10011,7 @@ End Function
 Function UpdateDeafPlayer()
 	
 	If DeafTimer > 0
-		DeafTimer = DeafTimer-FPSfactor
+		DeafTimer = DeafTimer-DeltaTime
 		Config\Audio\SFXVolume# = 0.0
 		If Config\Audio\SFXVolume# > 0.0
 			ControlSoundVolume()
@@ -10020,7 +10020,7 @@ Function UpdateDeafPlayer()
 	Else
 		DeafTimer = 0
 		;If Config\Audio\SFXVolume# < PrevSFXVolume#
-		;	Config\Audio\SFXVolume# = Min(Config\Audio\SFXVolume# + (0.001*PrevSFXVolume)*FPSfactor,PrevSFXVolume#)
+		;	Config\Audio\SFXVolume# = Min(Config\Audio\SFXVolume# + (0.001*PrevSFXVolume)*DeltaTime,PrevSFXVolume#)
 		;	ControlSoundVolume()
 		;Else
 			Config\Audio\SFXVolume# = PrevSFXVolume#
@@ -10087,7 +10087,7 @@ End Function
 Function UpdateStreamSounds()
 	Local e.Events
 	
-	If FPSfactor > 0 Then
+	If DeltaTime > 0 Then
 		If IntercomStreamCHN <> 0 Then
 			SetStreamVolume_Strict(IntercomStreamCHN,Config\Audio\SFXVolume)
 		EndIf
@@ -10240,9 +10240,9 @@ Function Update096ElevatorEvent#(e.Events,EventState#,d.Doors,elevatorobj%)
 	EndIf
 	
 	If d\openstate = 0 And d\open = False Then
-		If Abs(EntityX(Collider)-EntityX(elevatorobj%,True))<=280.0*RoomScale+(0.015*FPSfactor) Then
-			If Abs(EntityZ(Collider)-EntityZ(elevatorobj%,True))<=280.0*RoomScale+(0.015*FPSfactor) Then
-				If Abs(EntityY(Collider)-EntityY(elevatorobj%,True))<=280.0*RoomScale+(0.015*FPSfactor) Then
+		If Abs(EntityX(Collider)-EntityX(elevatorobj%,True))<=280.0*RoomScale+(0.015*DeltaTime) Then
+			If Abs(EntityZ(Collider)-EntityZ(elevatorobj%,True))<=280.0*RoomScale+(0.015*DeltaTime) Then
+				If Abs(EntityY(Collider)-EntityY(elevatorobj%,True))<=280.0*RoomScale+(0.015*DeltaTime) Then
 					d\locked = True
 					If EventState = 0 Then
 						TeleportEntity(Curr096\Collider,EntityX(d\frameobj),EntityY(d\frameobj)+1.0,EntityZ(d\frameobj),Curr096\CollRadius)
@@ -10253,7 +10253,7 @@ Function Update096ElevatorEvent#(e.Events,EventState#,d.Doors,elevatorobj%)
 						Curr096\State = 6
 						SetNPCFrame(Curr096,0)
 						e\Sound = LoadSound_Strict("SFX\SCP\096\ElevatorSlam.ogg")
-						EventState = EventState + FPSfactor * 1.4
+						EventState = EventState + DeltaTime * 1.4
 					EndIf
 				EndIf
 			EndIf
@@ -10265,26 +10265,26 @@ Function Update096ElevatorEvent#(e.Events,EventState#,d.Doors,elevatorobj%)
 			e\SoundCHN = PlaySound_Strict(e\Sound)
 		EndIf
 		
-		If EventState > 70*1.9 And EventState < 70*2+FPSfactor
+		If EventState > 70*1.9 And EventState < 70*2+DeltaTime
 			CameraShake = 7
-		ElseIf EventState > 70*4.2 And EventState < 70*4.25+FPSfactor
+		ElseIf EventState > 70*4.2 And EventState < 70*4.25+DeltaTime
 			CameraShake = 1
-		ElseIf EventState > 70*5.9 And EventState < 70*5.95+FPSfactor
+		ElseIf EventState > 70*5.9 And EventState < 70*5.95+DeltaTime
 			CameraShake = 1
-		ElseIf EventState > 70*7.25 And EventState < 70*7.3+FPSfactor
+		ElseIf EventState > 70*7.25 And EventState < 70*7.3+DeltaTime
 			CameraShake = 1
 			d\fastopen = True
 			d\open = True
 			Curr096\State = 4
 			Curr096\LastSeen = 1
-		ElseIf EventState > 70*8.1 And EventState < 70*8.15+FPSfactor
+		ElseIf EventState > 70*8.1 And EventState < 70*8.15+DeltaTime
 			CameraShake = 1
 		EndIf
 		
 		If EventState <= 70*8.1 Then
 			d\openstate = Min(d\openstate,20)
 		EndIf
-		EventState = EventState + FPSfactor * 1.4
+		EventState = EventState + DeltaTime * 1.4
 	EndIf
 	Return EventState
 	

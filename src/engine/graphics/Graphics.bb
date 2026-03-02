@@ -42,7 +42,6 @@ Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 ;; ToDo End
 
-Global AspectRatioRatio#
 Global MenuScale#
 
 ;-----------------------------------------------------------------------------
@@ -103,7 +102,6 @@ Function Graphics_Init(config.GraphicsConfig)
     ; -------------------------
 	; Temp Global Assignment
 	; -------------------------
-    AspectRatioRatio = Gfx\AspectRatio
     MenuScale = Gfx\MenuScale
 
 End Function

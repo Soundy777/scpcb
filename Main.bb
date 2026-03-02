@@ -1997,7 +1997,7 @@ While IsRunning
 			CopyRect 0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight,1024-Config\Graphics\ScreenWidth/2,1024-Config\Graphics\ScreenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			SetBuffer BackBuffer()
 			ClsColor 0,0,0 : Cls
-			ScaleRender(0,0,2050.0 / Float(Config\Graphics\ScreenWidth) * AspectRatioRatio, 2050.0 / Float(Config\Graphics\ScreenWidth) * AspectRatioRatio)
+			ScaleRender(0,0,2050.0 / Float(Config\Graphics\ScreenWidth) * Gfx\AspectRatio, 2050.0 / Float(Config\Graphics\ScreenWidth) * Gfx\AspectRatio)
 			;might want to replace Float(Config\Graphics\ScreenWidth) with Max(Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight) if portrait sizes cause issues
 			;everyone uses landscape so it's probably a non-issue
 		EndIf
@@ -10102,7 +10102,7 @@ Function CheckTriggers$()
 End Function
 
 Function ScaledMouseX%()
-	Return Float(MouseX()-(Gfx\RealWidth*0.5*(1.0-AspectRatioRatio)))*Float(Config\Graphics\ScreenWidth)/Float(Gfx\RealWidth*AspectRatioRatio)
+	Return Float(MouseX()-(Gfx\RealWidth*0.5*(1.0-Gfx\AspectRatio)))*Float(Config\Graphics\ScreenWidth)/Float(Gfx\RealWidth*Gfx\AspectRatio)
 End Function
 
 Function ScaledMouseY%()

@@ -31,9 +31,9 @@ Global fresize_cam%
 Global WireframeState
 ;; ToDo End
 
-Global TextureDetails% = GetOptionInt("graphics", "texture details")
+;; ToDo:: extract to upcoming Graphics.bb system
 Global TextureFloat#
-Select TextureDetails%
+Select Config\Graphics\TextureDetails%
 	Case 0
 		TextureFloat# = 0.8
 	Case 1
@@ -45,6 +45,7 @@ Select TextureDetails%
 	Case 4
 		TextureFloat# = -0.8
 End Select
+;; ToDo End
 
 Global ConsoleOpening% = GetOptionInt("console", "auto opening")
 Global SFXVolume# = GetOptionFloat("audio", "sound volume")
@@ -6150,8 +6151,8 @@ Function DrawMenu()
 					
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Texlod)
-					TextureDetails = Slider5(x+270*MenuScale,y+6*MenuScale,100*MenuScale,TextureDetails,3,"0.8","0.4","0.0","-0.4","-0.8")
-					Select TextureDetails%
+					Config\Graphics\TextureDetails = Slider5(x+270*MenuScale,y+6*MenuScale,100*MenuScale,Config\Graphics\TextureDetails,3,"0.8","0.4","0.0","-0.4","-0.8")
+					Select Config\Graphics\TextureDetails%
 						Case 0
 							TextureFloat# = 0.8
 						Case 1
@@ -9671,7 +9672,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "graphics", "framelimit", Framelimit%)
 	PutINIValue(Paths\OptionsFile, "general", "achievement popup enabled", AchvMSGenabled%)
 	PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", Config\Launcher\LauncherEnabled%)
-	PutINIValue(Paths\OptionsFile, "graphics", "texture details", TextureDetails%)
+	PutINIValue(Paths\OptionsFile, "graphics", "texture details", Config\Graphics\TextureDetails%)
 	PutINIValue(Paths\OptionsFile, "console", "enabled", ConsoleEnabled%)
 	PutINIValue(Paths\OptionsFile, "console", "auto opening", ConsoleOpening%)
 	PutINIValue(Paths\OptionsFile, "general", "speed run mode", SpeedRunMode%)

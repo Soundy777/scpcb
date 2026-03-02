@@ -57,7 +57,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     ; AntiAliasing
     ; HUDEnabled
     config\RoomLightsEnabled = Config_ResolveIntSetting("graphics", "room lights enabled")
-    ; TextureDetails
+    config\TextureDetails = Config_ResolveIntSetting("graphics", "texture details")
     ; Bit16Mode
     ; ParticleAmount
     ; EnableVRam

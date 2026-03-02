@@ -693,8 +693,8 @@ Function UpdateMainMenu()
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_Texlod)
-					TextureDetails = Slider5(x+310*MenuScale,y+6*MenuScale,150*MenuScale,TextureDetails,3,"0.8","0.4","0.0","-0.4","-0.8")
-					Select TextureDetails%
+					Config\Graphics\TextureDetails = Slider5(x+310*MenuScale,y+6*MenuScale,150*MenuScale,Config\Graphics\TextureDetails,3,"0.8","0.4","0.0","-0.4","-0.8")
+					Select Config\Graphics\TextureDetails%
 						Case 0
 							TextureFloat# = 0.8
 						Case 1

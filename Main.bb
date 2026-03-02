@@ -1,4 +1,5 @@
 ; ===========================================================================
+; Welcome to the madness...
 ; Eventually game.bb will consist soley of those 5 lines
 ; ===========================================================================
 
@@ -15,21 +16,16 @@ Engine_Init()
 ; Everything below needs sorting out <3
 ; ===========================================================================
 
-;; ToDo:: Restarting & UpdateLoop Flags - migrate this when engine is ready
-Global IsRestart% = False
-.Start
-Global IsRunning% = True
-Global ShouldRestart% = False
-;; ToDo End
-
 ;; ToDo:: collection of non-config related stuff to sort
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 ;; ToDo End
 
+;; ToDo:: migrate this to a new time.bb system
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
 Local CheckFPS%, ElapsedLoops%, FPS%
 Global CurrFrameLimit# = (Config\Graphics\Framelimit%-19)/100.0
 
+;; ToDo:: group all HUD logic together
 Global HUDScale# = Max(MenuScale * Config\Graphics\HUDScaleFactor, 1)
 Global HUDStartX%, HUDEndX%, HUDStartY%, HUDEndY%
 UpdateHUDOffsets()
@@ -45,8 +41,10 @@ Function UpdateHUDOffsets()
 	EndIf
 End Function
 
+;; ToDo:: figure out what this shit is & where to better place it for now
 Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
 
+;; ToDo:: determine where the saving logic takes place & move this to it
 Global GameSaved%
 Global CanSave% = True
 
@@ -1503,6 +1501,7 @@ Global I_Zone.MapZones = New MapZones
 Global TotalVidMem = TotalVidMem()
 Global TotalPhysMem = TotalPhys()
 
+Global IsRunning% = True
 While IsRunning
 	SetErrorMsg(5, "GPU: " + GFXDriverName + " (" + (TotalVidMem - (AvailVidMem() / 1024)) + "MB/" + TotalVidMem + " MB)")
 	SetErrorMsg(6, "Global memory status: (" + (TotalPhysMem - (AvailPhys() / 1024)) + "MB/" + TotalPhysMem + " MB)")
@@ -2101,22 +2100,8 @@ While IsRunning
 	EndIf
 Wend
 
-If ShouldRestart Then
-	IsRestart = True
-	Goto Start
-EndIf
-
 If Flags\SteamActive Then Steam_Shutdown()
 If Flags\DiscordActive Then BlitzcordClearActivity()
-
-Function Restart()
-	Cls
-	StopStream_Strict(MusicCHN)
-	MusicCHN = 0
-	ClearLoadedINIFiles()
-	IsRunning = False
-	ShouldRestart = True
-End Function
 
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -10242,7 +10227,7 @@ Function PlayMovie(moviefile$)
 End Function
 
 Function PlayStartupVideos()
-	If GetOptionInt("general","play startup video") = 0 Lor IsRestart Lor HasCLIFlag("novid") Then Return
+	If GetOptionInt("general","play startup video") = 0 Lor HasCLIFlag("novid") Then Return
 
 	PlayMovie("GFX\menu\startup_Undertow")
 	PlayMovie("GFX\menu\startup_TSS")

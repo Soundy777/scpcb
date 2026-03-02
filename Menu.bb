@@ -283,7 +283,7 @@ Function UpdateMainMenu()
 					SerializeMods()
 					If ModsDirty Then
 						ModsDirty = False
-						Restart()
+						;; ToDo:: implement a more elegant reloading function to deal with the case where we need to fully reload all/some mods
 					Else
 						UpdateActiveMods()
 					EndIf
@@ -1375,7 +1375,7 @@ Function UpdateMainMenu()
 
 						If DrawButton(x + 10 * MenuScale, y + 40 * MenuScale, 150 * MenuScale, 30 * MenuScale, I_Loc\Mods_Reloadgame, False, False, UpdatingMod<>Null) Then
 							SerializeMods()
-							Restart()
+							;; ToDo:: Implement a more robust restarting logic to handle reloading all/some mods
 							Return
 						EndIf
 

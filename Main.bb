@@ -24,67 +24,13 @@ Global ShouldRestart% = False
 
 ;; ToDo:: collection of non-config related stuff to sort
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
-Dim ArrowIMG(4)
-Global fresize_image%, fresize_texture%, fresize_texture2%
-Global fresize_cam%
-Global WireframeState
 ;; ToDo End
-
-;; ToDo:: extract to upcoming Graphics.bb system ------------------------------------
-Global TextureFloat#
-Select Config\Graphics\TextureDetails%
-	Case 0
-		TextureFloat# = 0.8
-	Case 1
-		TextureFloat# = 0.4
-	Case 2
-		TextureFloat# = 0.0
-	Case 3
-		TextureFloat# = -0.4
-	Case 4
-		TextureFloat# = -0.8
-End Select
-;; ToDo End ---------------------------------------------------------------------
-
-;; ToDo:: extract this to graphics.bb ---------------------------------------------------------------------
-SetGfxDriver(Config\Graphics\SelectedGFXDriver)
-Global GFXDriverName$ = GFXDriverName(Config\Graphics\SelectedGFXDriver)
-Global RealGraphicWidth%,RealGraphicHeight%
-Global AspectRatioRatio#
-If Config\Graphics\BorderlessWindowed
-	Graphics3DExt DesktopWidth(), DesktopHeight(), 0, 4
-	
-	RealGraphicWidth = DesktopWidth()
-	RealGraphicHeight = DesktopHeight()
-	
-	AspectRatioRatio = (Float(Config\Graphics\ScreenWidth)/Float(Config\Graphics\ScreenHeight))/(Float(RealGraphicWidth)/Float(RealGraphicHeight))
-Else
-	AspectRatioRatio = 1.0
-	RealGraphicWidth = Config\Graphics\ScreenWidth
-	RealGraphicHeight = Config\Graphics\ScreenHeight
-	If Config\Graphics\Fullscreen Then
-		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, (16*Config\Graphics\Bit16Mode), 1)
-	Else
-		Graphics3DExt(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 0, 2)
-	End If
-EndIf
-
-Global MenuScale# = CalculateMenuScale()
-Global HUDScale# = Max(MenuScale * Config\Graphics\HUDScaleFactor, 1)
-Function CalculateMenuScale#()
-	Local short% = Min(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight)
-	If short > 1024 Then Return short / 1024.0
-	If short > 840 Then Return 1
-	Return short / 840.0
-End Function
-
-SetBuffer(BackBuffer()) ;; ToDo:: move this into our upcoming Graphics.bb Init
-;; ToDo End ---------------------------------------------------------------------
 
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
 Local CheckFPS%, ElapsedLoops%, FPS%
 Global CurrFrameLimit# = (Config\Graphics\Framelimit%-19)/100.0
 
+Global HUDScale# = Max(MenuScale * Config\Graphics\HUDScaleFactor, 1)
 Global HUDStartX%, HUDEndX%, HUDStartY%, HUDEndY%
 UpdateHUDOffsets()
 Function UpdateHUDOffsets()
@@ -241,6 +187,7 @@ Global AccessCode%, KeypadInput$, KeypadTimer#, KeypadMSG$
 Const HARPCODE% = 7816
 
 Global DrawHandIcon%
+Dim ArrowIMG(4)
 Dim DrawArrowIcon%(4)
 
 ;misc ---------------------------------------------------------------------------------------------------------------

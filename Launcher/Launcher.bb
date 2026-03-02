@@ -19,6 +19,7 @@
 ; If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Config\Graphics\Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Config\Graphics\Bit16Mode)) Then
 
 Dim GfxDrivers$(0)
+Dim ArrowIMG(4)
 Dim AspectRatioWidths%(0), AspectRatioHeights%(0)
 Dim GfxModeCountPerAspectRatio%(0)
 Dim GfxModeWidthsByAspectRatio%(0, 0), GfxModeHeightsByAspectRatio%(0, 0)

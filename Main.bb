@@ -5987,7 +5987,7 @@ Function DrawMenu()
 				SaveOptionsINI()
 				
 				AntiAlias Config\Graphics\AntiAliasing
-				TextureLodBias TextureFloat#
+				TextureLodBias Gfx\TextureLODBias#
 			EndIf
 			
 			Color 0,255,0
@@ -6050,17 +6050,17 @@ Function DrawMenu()
 					Config\Graphics\TextureDetails = Slider5(x+270*MenuScale,y+6*MenuScale,100*MenuScale,Config\Graphics\TextureDetails,3,"0.8","0.4","0.0","-0.4","-0.8")
 					Select Config\Graphics\TextureDetails%
 						Case 0
-							TextureFloat# = 0.8
+							Gfx\TextureLODBias# = 0.8
 						Case 1
-							TextureFloat# = 0.4
+							Gfx\TextureLODBias# = 0.4
 						Case 2
-							TextureFloat# = 0.0
+							Gfx\TextureLODBias# = 0.0
 						Case 3
-							TextureFloat# = -0.4
+							Gfx\TextureLODBias# = -0.4
 						Case 4
-							TextureFloat# = -0.8
+							Gfx\TextureLODBias# = -0.8
 					End Select
-					TextureLodBias TextureFloat
+					TextureLodBias Gfx\TextureLODBias
 					If (MouseOn(x+270*MenuScale,y-6*MenuScale,100*MenuScale+14,20) And OnSliderID=0) Or OnSliderID=3
 						DrawOptionsTooltip(tx,ty,tw,th+100*MenuScale,"texquality")
 					EndIf
@@ -7085,8 +7085,7 @@ Function LoadEntities()
 	
 	DrawLoading(37)
 
-	;TextureLodBias TextureBias
-	TextureLodBias TextureFloat#
+	TextureLodBias Gfx\TextureLODBias#
 	;Devil Particle System
 	;ParticleEffect[] numbers:
 	;	0 - electric spark

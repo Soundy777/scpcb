@@ -22,7 +22,7 @@ Type GraphicsState
 	Field AspectRatio#
 	
 	Field MenuScale#
-	Field TextureBias#
+	Field TextureLODBias#
 	
 	Field Wireframe%
 	
@@ -42,7 +42,6 @@ Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 ;; ToDo End
 
-Global TextureFloat#
 Global GFXDriverName$
 Global RealGraphicWidth%, RealGraphicHeight%
 Global AspectRatioRatio#
@@ -88,7 +87,7 @@ Function Graphics_Init(config.GraphicsConfig)
 	; -------------------------
 	; Texture Bias
 	; -------------------------
-	Gfx\TextureBias = Graphics_CalcTextureBias(config\TextureDetails)
+	Gfx\TextureLODBias = Graphics_CalcTextureBias(config\TextureDetails)
 
 	; -------------------------
 	; Menu Scale
@@ -106,7 +105,6 @@ Function Graphics_Init(config.GraphicsConfig)
     ; -------------------------
 	; Temp Global Assignment
 	; -------------------------
-    TextureFloat = Gfx\TextureBias
     GFXDriverName = Gfx\DriverName
     RealGraphicWidth = Gfx\RealWidth
     RealGraphicHeight = Gfx\RealHeight

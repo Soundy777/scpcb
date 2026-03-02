@@ -47,17 +47,16 @@ End Select
 ;; ToDo End ---------------------------------------------------------------------
 
 ; LOCALIZATION START ---------------------------------------------------------------------
-Const StringsFile$ = "Data\strings.ini"
 Include "Localization.bb"
 
 Global I_Loc.LocalizationTable
 If I_Loc <> Null Then Delete I_Loc ; Happens on reload
 I_Loc = New LocalizationTable
 For m.ActiveMods = Each ActiveMods
-	Local modPath$ = m\Path + StringsFile
+	Local modPath$ = m\Path + Paths\StringsFile
 	If FileType(modPath) = 1 Then LoadLocalization(I_Loc, modPath)
 Next
-LoadLocalization(I_Loc, StringsFile)
+LoadLocalization(I_Loc, Paths\StringsFile)
 ; LOCALIZATION END ---------------------------------------------------------------------
 
 ; LAUNCHER START ---------------------------------------------------------------------

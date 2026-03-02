@@ -59,8 +59,8 @@ Dim AchievementStrings$(MAXACHIEVEMENTS)
 Dim AchievementDescs$(MAXACHIEVEMENTS)
 Dim AchvIMG%(MAXACHIEVEMENTS)
 For i = 0 To MAXACHIEVEMENTS-1
-	AchievementStrings(i) = GetModdedINIString(StringsFile, "Achievement", AchvNames[i])
-	AchievementDescs(i) = GetModdedINIString(StringsFile, "Achievement Desc", AchvNames[i])
+	AchievementStrings(i) = GetModdedINIString(Paths\StringsFile, "Achievement", AchvNames[i])
+	AchievementDescs(i) = GetModdedINIString(Paths\StringsFile, "Achievement Desc", AchvNames[i])
 	
 	AchvIMG(i) = LoadImage_Strict("GFX\menu\achievements\Achv"+AchvNames[i]+".jpg")
 	AchvIMG(i) = ResizeImage2(AchvIMG(i),ImageWidth(AchvIMG(i))*Config\Graphics\ScreenHeight/768.0,ImageHeight(AchvIMG(i))*Config\Graphics\ScreenHeight/768.0)

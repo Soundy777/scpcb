@@ -106,7 +106,7 @@ Function CreateItemTemplate.ItemTemplates(name$, group$, displayname$, objpath$,
 	
 	it\group = group
 	it\name = name
-	it\displayname = GetModdedINIString(StringsFile, "Item", name)
+	it\displayname = GetModdedINIString(Paths\StringsFile, "Item", name)
 	If it\displayname = "" Then
 		it\displayname = displayname
 		If it\displayname = "" Then

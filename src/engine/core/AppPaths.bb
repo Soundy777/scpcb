@@ -3,6 +3,7 @@ Type AppPaths
     Field DefaultsFile$
     Field OptionsFile$
     Field ModsFile$
+    Field StringsFile$
 End Type
 
 Global Paths.AppPaths
@@ -17,6 +18,7 @@ Function AppPaths_Init()
     Paths\DefaultsFile = "defaults.ini"
     Paths\OptionsFile = Paths\DataDir + "\options.ini"
     Paths\ModsFile = Paths\DataDir + "\mods.ini"
+    Paths\StringsFile = "Data\strings.ini" ; "Data" here refers to the local Data folder of the game files & not the "DataDir" which is in %AppData%
 
 End Function
 

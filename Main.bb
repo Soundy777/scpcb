@@ -47,7 +47,6 @@ Select Config\Graphics\TextureDetails%
 End Select
 ;; ToDo End
 
-Global SFXVolume# = GetOptionFloat("audio", "sound volume")
 Global Bit16Mode = GetOptionInt("graphics", "16bit")
 Global HUDScaleFactor# = GetOptionFloat("graphics", "hud scale factor")
 
@@ -540,7 +539,7 @@ Global QuitMSG% = 0
 
 Global InFacility% = True
 
-Global PrevSFXVolume# = SFXVolume#
+Global PrevSFXVolume# = Config\Audio\SFXVolume#
 Global DeafPlayer% = False
 Global DeafTimer# = 0.0
 
@@ -2939,13 +2938,13 @@ Function MovePlayer()
 					temp = 0
 					If WearingGasMask>0 Or Wearing1499>0 Then temp=1
 					BreathCHN = PlaySound_Strict(BreathSFX((temp), Rand(1,3)))
-					ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*SFXVolume
+					ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*Config\Audio\SFXVolume
 				Else
 					If ChannelPlaying(BreathCHN)=False Then
 						temp = 0
 						If WearingGasMask>0 Or Wearing1499>0 Then temp=1
 						BreathCHN = PlaySound_Strict(BreathSFX((temp), Rand(1,3)))
-						ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*SFXVolume			
+						ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*Config\Audio\SFXVolume			
 					EndIf
 				EndIf
 			EndIf
@@ -3025,7 +3024,7 @@ Function MovePlayer()
 						tempchn% = PlaySound_Strict(StepSFX(0, 1, Rand(0, 7)))
 					End If
 				EndIf
-				If tempchn <> 0 Then ChannelVolume tempchn, (1.0-(Crouch*0.6))*SFXVolume#
+				If tempchn <> 0 Then ChannelVolume tempchn, (1.0-(Crouch*0.6))*Config\Audio\SFXVolume#
 			EndIf	
 		EndIf
 	Else ;noclip on
@@ -3185,7 +3184,7 @@ Function MovePlayer()
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(Injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound_Strict (DripSFX(Rand(0,2)))
-			ChannelVolume tempchn, Rnd(0.0,0.8)*SFXVolume
+			ChannelVolume tempchn, Rnd(0.0,0.8)*Config\Audio\SFXVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
 			FreeEntity pvt
@@ -3222,7 +3221,7 @@ Function MovePlayer()
 	If HeartBeatVolume > 0 Then
 		If HeartBeatTimer <= 0 Then
 			tempchn = PlaySound_Strict (HeartBeatSFX)
-			ChannelVolume tempchn, HeartBeatVolume*SFXVolume#
+			ChannelVolume tempchn, HeartBeatVolume*Config\Audio\SFXVolume#
 			
 			HeartBeatTimer = 70.0*(60.0/Max(HeartBeatRate,1.0))
 		Else
@@ -6215,8 +6214,8 @@ Function DrawMenu()
 					
 					y = y + 30*MenuScale
 					
-					PrevSFXVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, SFXVolume*100.0, 2)/100.0)
-					If (Not DeafPlayer) Then SFXVolume# = PrevSFXVolume#
+					PrevSFXVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, Config\Audio\SFXVolume*100.0, 2)/100.0)
+					If (Not DeafPlayer) Then Config\Audio\SFXVolume# = PrevSFXVolume#
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Soundvol)
 					If (MouseOn(x+250*MenuScale,y-4*MenuScale,100*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=2
@@ -7750,7 +7749,7 @@ Function NullGame(playbuttonsfx%=True)
 	QuitMSG% = -1
 	AchievementsMenu% = -1
 	
-	SFXVolume# = PrevSFXVolume
+	Config\Audio\SFXVolume# = PrevSFXVolume
 	DeafPlayer% = False
 	DeafTimer# = 0.0
 	
@@ -7792,7 +7791,7 @@ Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			soundchn% = PlaySound_Strict (SoundHandle)
 			
-			ChannelVolume(soundchn, volume# * (1 - dist#)*SFXVolume#)
+			ChannelVolume(soundchn, volume# * (1 - dist#)*Config\Audio\SFXVolume#)
 			ChannelPan(soundchn, panvalue)			
 		EndIf
 	EndIf
@@ -7816,7 +7815,7 @@ Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1
 				If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound_Strict (SoundHandle)
 			EndIf
 			
-			ChannelVolume(Chn, volume# * (1 - dist#)*SFXVolume#)
+			ChannelVolume(Chn, volume# * (1 - dist#)*Config\Audio\SFXVolume#)
 			ChannelPan(Chn, panvalue)
 		;EndIf
 	Else
@@ -8208,7 +8207,7 @@ Function UpdateSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 					
 					Local panvalue# = Sin(-DeltaYaw(cam,entity))
 					
-					ChannelVolume(Chn, volume# * (1 - dist#)*SFXVolume#)
+					ChannelVolume(Chn, volume# * (1 - dist#)*Config\Audio\SFXVolume#)
 					ChannelPan(Chn, panvalue)
 				Else
 					ChannelVolume (Chn, 0)
@@ -9208,7 +9207,7 @@ Function Use427()
 			de.Decals = CreateDecal(20, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\Size = Rnd(0.03,0.08)*2.0 : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\Size, de\Size
 			tempchn% = PlaySound_Strict (DripSFX(Rand(0,2)))
-			ChannelVolume tempchn, Rnd(0.0,0.8)*SFXVolume
+			ChannelVolume tempchn, Rnd(0.0,0.8)*Config\Audio\SFXVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			FreeEntity pvt
 			BlurTimer = 800
@@ -10138,9 +10137,9 @@ Function ControlSoundVolume()
 	For snd.Sound = Each Sound
 		For i=0 To 31
 			;If snd\channels[i]<>0 Then
-			;	ChannelVolume snd\channels[i],SFXVolume#
+			;	ChannelVolume snd\channels[i],Config\Audio\SFXVolume#
 			;Else
-				ChannelVolume snd\channels[i],SFXVolume#
+				ChannelVolume snd\channels[i],Config\Audio\SFXVolume#
 			;EndIf
 		Next
 	Next
@@ -10151,18 +10150,18 @@ Function UpdateDeafPlayer()
 	
 	If DeafTimer > 0
 		DeafTimer = DeafTimer-FPSfactor
-		SFXVolume# = 0.0
-		If SFXVolume# > 0.0
+		Config\Audio\SFXVolume# = 0.0
+		If Config\Audio\SFXVolume# > 0.0
 			ControlSoundVolume()
 		EndIf
 		DebugLog DeafTimer
 	Else
 		DeafTimer = 0
-		;If SFXVolume# < PrevSFXVolume#
-		;	SFXVolume# = Min(SFXVolume# + (0.001*PrevSFXVolume)*FPSfactor,PrevSFXVolume#)
+		;If Config\Audio\SFXVolume# < PrevSFXVolume#
+		;	Config\Audio\SFXVolume# = Min(Config\Audio\SFXVolume# + (0.001*PrevSFXVolume)*FPSfactor,PrevSFXVolume#)
 		;	ControlSoundVolume()
 		;Else
-			SFXVolume# = PrevSFXVolume#
+			Config\Audio\SFXVolume# = PrevSFXVolume#
 			If DeafPlayer Then ControlSoundVolume()
 			DeafPlayer = False
 		;EndIf
@@ -10219,7 +10218,7 @@ Function PlayAnnouncement(file$) ;This function streams the announcement current
 		StopStream_Strict(IntercomStreamCHN) : IntercomStreamCHN = 0
 	EndIf
 	
-	IntercomStreamCHN = StreamSound_Strict(file$,SFXVolume,0)
+	IntercomStreamCHN = StreamSound_Strict(file$,Config\Audio\SFXVolume,0)
 	
 End Function
 
@@ -10228,17 +10227,17 @@ Function UpdateStreamSounds()
 	
 	If FPSfactor > 0 Then
 		If IntercomStreamCHN <> 0 Then
-			SetStreamVolume_Strict(IntercomStreamCHN,SFXVolume)
+			SetStreamVolume_Strict(IntercomStreamCHN,Config\Audio\SFXVolume)
 		EndIf
 		For e = Each Events
 			If e\SoundCHN<>0 Then
 				If e\SoundCHN_isStream
-					SetStreamVolume_Strict(e\SoundCHN,SFXVolume)
+					SetStreamVolume_Strict(e\SoundCHN,Config\Audio\SFXVolume)
 				EndIf
 			EndIf
 			If e\SoundCHN2<>0 Then
 				If e\SoundCHN2_isStream
-					SetStreamVolume_Strict(e\SoundCHN2,SFXVolume)
+					SetStreamVolume_Strict(e\SoundCHN2,Config\Audio\SFXVolume)
 				EndIf
 			EndIf
 		Next
@@ -10315,7 +10314,7 @@ Function PlayMovie(moviefile$)
 
 	DebugLog(RealGraphicHeight)
 
-	Local SplashScreenAudio = StreamSound_Strict(moviefile$+".ogg",SFXVolume,0)
+	Local SplashScreenAudio = StreamSound_Strict(moviefile$+".ogg",Config\Audio\SFXVolume,0)
 	Repeat
 		Cls
 		DrawMovie(SplashScreenVideo, 0, (RealGraphicHeight/2-ScaledGraphicHeight/2), RealGraphicWidth, ScaledGraphicHeight)

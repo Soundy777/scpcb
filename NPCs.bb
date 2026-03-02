@@ -1325,14 +1325,14 @@ Function UpdateNPCs()
 							;		n\SoundChn2 = PlaySound_Strict (n\Sound2)
 							;	Else
 							;		If (Not ChannelPlaying(n\SoundChn2)) Then n\SoundChn2 = PlaySound_Strict(n\Sound2)
-							;		ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*SFXVolume#)
+							;		ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*Config\Audio\SFXVolume#)
 							;	EndIf
 							;EndIf
 							If n\SoundChn2 = 0
 								n\SoundChn2 = StreamSound_Strict("SFX\Music\096Chase.ogg",0)
 								n\SoundChn2_IsStream = True
 							Else
-								SetStreamVolume_Strict(n\SoundChn2,Min(Max(8.0-dist,0.6),1.0)*SFXVolume#)
+								SetStreamVolume_Strict(n\SoundChn2,Min(Max(8.0-dist,0.6),1.0)*Config\Audio\SFXVolume#)
 							EndIf
 						EndIf
 						

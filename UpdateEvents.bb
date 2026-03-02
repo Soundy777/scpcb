@@ -5791,7 +5791,7 @@ Function UpdateEvents()
 								If e\SoundCHN<>0
 									StopStream_Strict(e\SoundCHN) : e\SoundCHN=0 : e\SoundCHN_isStream = False
 								EndIf
-								e\SoundCHN = StreamSound_Strict("SFX\SCP\079\Speech.ogg",SFXVolume,0)
+								e\SoundCHN = StreamSound_Strict("SFX\SCP\079\Speech.ogg",Config\Audio\SFXVolume,0)
 								e\SoundCHN_isStream = True
 							EndIf							
 						;ElseIf e\EventState = 3
@@ -5824,7 +5824,7 @@ Function UpdateEvents()
 								If e\SoundCHN<>0
 									StopStream_Strict(e\SoundCHN) : e\SoundCHN=0 : e\SoundCHN_isStream = False
 								EndIf
-								e\SoundCHN = StreamSound_Strict("SFX\SCP\079\Refuse.ogg",SFXVolume,0)
+								e\SoundCHN = StreamSound_Strict("SFX\SCP\079\Refuse.ogg",Config\Audio\SFXVolume,0)
 								e\SoundCHN_isStream = True
 								;EntityTexture(e\room\Objects[1], OldAiPics(1))
 								;ShowEntity (e\room\Objects[1])
@@ -5859,7 +5859,7 @@ Function UpdateEvents()
 						If e\SoundCHN<>0
 							StopStream_Strict(e\SoundCHN) : e\SoundCHN=0 : e\SoundCHN_isStream = False
 						EndIf
-						e\SoundCHN = StreamSound_Strict("SFX\SCP\079\GateB.ogg",SFXVolume,0)
+						e\SoundCHN = StreamSound_Strict("SFX\SCP\079\GateB.ogg",Config\Audio\SFXVolume,0)
 						e\SoundCHN_isStream = True
 						e\EventState2 = 2
 						
@@ -9057,7 +9057,7 @@ Function UpdateEndings()
 								ElseIf e\EventState > 35.0*70 And e\EventState < 36.5*70	
 									CameraShake = 1.5		
 									If e\EventState-FPSfactor =< 35.0*70 Then
-										e\SoundCHN = StreamSound_Strict("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg",SFXVolume,0)
+										e\SoundCHN = StreamSound_Strict("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg",Config\Audio\SFXVolume,0)
 										e\SoundCHN_isStream = True
 									EndIf									
 								ElseIf e\EventState > 39.5*70 And e\EventState < 39.8*70		
@@ -9080,7 +9080,7 @@ Function UpdateEndings()
 							If e\EventState => 45.0*70 Then
 								If e\EventState < 75.0*70 Then
 									If e\SoundCHN2=0
-										e\SoundCHN2 = StreamSound_Strict("SFX\Ending\GateB\Siren.ogg",SFXVolume)
+										e\SoundCHN2 = StreamSound_Strict("SFX\Ending\GateB\Siren.ogg",Config\Audio\SFXVolume)
 										e\SoundCHN2_isStream = True
 									EndIf
 								Else

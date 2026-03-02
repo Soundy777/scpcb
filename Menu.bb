@@ -759,9 +759,9 @@ Function UpdateMainMenu()
 					
 					y = y + 40*MenuScale
 					
-					;SFXVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, SFXVolume*100.0)/100.0)
-					PrevSFXVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, SFXVolume*100.0, 2)/100.0)
-					SFXVolume = PrevSFXVolume
+					;Config\Audio\SFXVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, Config\Audio\SFXVolume*100.0)/100.0)
+					PrevSFXVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, Config\Audio\SFXVolume*100.0, 2)/100.0)
+					Config\Audio\SFXVolume = PrevSFXVolume
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_Soundvol)
 					If (MouseOn(x+310*MenuScale,y-4*MenuScale,150*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=2

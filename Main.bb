@@ -105,8 +105,6 @@ SetBuffer(BackBuffer()) ;; ToDo:: move this into our upcoming Graphics.bb Init
 
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
 Local CheckFPS%, ElapsedLoops%, FPS%
-Global Vsync% = Config\Graphics\Vsync
-Global Opt_AntiAlias = GetOptionInt("graphics", "antialias")
 Global CurrFrameLimit# = (Config\Graphics\Framelimit%-19)/100.0
 Global ScreenGamma# = GetOptionFloat("graphics", "screengamma")
 Global FOV% = GetOptionInt("graphics", "fov")
@@ -6082,7 +6080,7 @@ Function DrawMenu()
 				MouseHit1 = False
 				SaveOptionsINI()
 				
-				AntiAlias Opt_AntiAlias
+				AntiAlias Config\Graphics\AntiAliasing
 				TextureLodBias TextureFloat#
 			EndIf
 			
@@ -6125,7 +6123,7 @@ Function DrawMenu()
 					
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Antialias)
-					Opt_AntiAlias = DrawTick(x + 270 * MenuScale, y + MenuScale, Opt_AntiAlias%)
+					Config\Graphics\AntiAliasing = DrawTick(x + 270 * MenuScale, y + MenuScale, Config\Graphics\AntiAliasing%)
 					If MouseOn(x+270*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"antialias")
 					EndIf
@@ -9658,7 +9656,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "controls", "invert mouse y", InvertMouse)
 	PutINIValue(Paths\OptionsFile, "graphics", "HUD enabled", HUDenabled)
 	PutINIValue(Paths\OptionsFile, "graphics", "screengamma", ScreenGamma)
-	PutINIValue(Paths\OptionsFile, "graphics", "antialias", Opt_AntiAlias)
+	PutINIValue(Paths\OptionsFile, "graphics", "antialias", Config\Graphics\AntiAliasing)
 	PutINIValue(Paths\OptionsFile, "graphics", "vsync", Config\Graphics\Vsync)
 	PutINIValue(Paths\OptionsFile, "graphics", "show FPS", Config\Graphics\ShowFPS)
 	PutINIValue(Paths\OptionsFile, "graphics", "framelimit", Config\Graphics\Framelimit%)

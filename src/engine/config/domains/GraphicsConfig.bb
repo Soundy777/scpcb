@@ -54,7 +54,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     config\Vsync = Config_ResolveIntSetting("graphics", "vsync")
     ; BumpMapEnabled
     ; Anisotropy
-    ; AntiAliasing
+    config\AntiAliasing = Config_ResolveIntSetting("graphics", "antialias")
     ; HUDEnabled
     config\RoomLightsEnabled = Config_ResolveIntSetting("graphics", "room lights enabled")
     config\TextureDetails = Config_ResolveIntSetting("graphics", "texture details")

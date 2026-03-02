@@ -270,7 +270,7 @@ Function UpdateMainMenu()
 					UserTrackCheck% = 0
 					UserTrackCheck2% = 0
 					
-					AntiAlias Opt_AntiAlias
+					AntiAlias Config\Graphics\AntiAliasing
 					UpdateHUDOffsets()
 					MainMenuTab = 0
 				Case 4 ;move back to the "new game" tab
@@ -674,7 +674,7 @@ Function UpdateMainMenu()
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_Antialias)
-					Opt_AntiAlias = DrawTick(x + 310 * MenuScale, y + MenuScale, Opt_AntiAlias%)
+					Config\Graphics\AntiAliasing = DrawTick(x + 310 * MenuScale, y + MenuScale, Config\Graphics\AntiAliasing%)
 					If MouseOn(x+310*MenuScale,y+MenuScale,20*MenuScale,20*MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"antialias")
 					EndIf

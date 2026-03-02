@@ -97,7 +97,7 @@ Function PlaySound_Strict%(sndHandle%)
 					If snd\internalHandle = 0 Then
 						If FileType(snd\name) <> 1 Then
 							CreateConsoleMsg("Sound " + Chr(34) + snd\name + Chr(34) + " not found.")
-							If ConsoleOpening
+							If Config\Console\ConsoleAutoOpen
 								ConsoleOpen = True
 							EndIf
 						Else
@@ -105,7 +105,7 @@ Function PlaySound_Strict%(sndHandle%)
 						EndIf
 						If snd\internalHandle = 0 Then
 							CreateConsoleMsg("Failed to load Sound: " + Chr(34) + snd\name + Chr(34))
-							If ConsoleOpening
+							If Config\Console\ConsoleAutoOpen
 								ConsoleOpen = True
 							EndIf
 						EndIf
@@ -123,7 +123,7 @@ Function PlaySound_Strict%(sndHandle%)
 				If snd\internalHandle = 0 Then
 					If FileType(snd\name) <> 1 Then
 						CreateConsoleMsg("Sound " + Chr(34) + snd\name + Chr(34) + " not found.")
-						If ConsoleOpening
+						If Config\Console\ConsoleAutoOpen
 							ConsoleOpen = True
 						EndIf
 					Else
@@ -132,7 +132,7 @@ Function PlaySound_Strict%(sndHandle%)
 						
 					If snd\internalHandle = 0 Then
 						CreateConsoleMsg("Failed to load Sound: " + Chr(34) + snd\name + Chr(34))
-						If ConsoleOpening
+						If Config\Console\ConsoleAutoOpen
 							ConsoleOpen = True
 						EndIf
 					EndIf
@@ -186,7 +186,7 @@ Function StreamSound_Strict(file$,volume#=1.0,custommode=2)
 	file = DetermineModdedPath(file)
 	If FileType(file$)<>1
 		CreateConsoleMsg("Sound " + Chr(34) + file$ + Chr(34) + " not found.")
-		If ConsoleOpening
+		If Config\Console\ConsoleAutoOpen
 			ConsoleOpen = True
 		EndIf
 		Return 0
@@ -198,7 +198,7 @@ Function StreamSound_Strict(file$,volume#=1.0,custommode=2)
 	
 	If st\chn = -1
 		CreateConsoleMsg("Failed to stream Sound (returned -1): " + Chr(34) + file$ + Chr(34))
-		If ConsoleOpening
+		If Config\Console\ConsoleAutoOpen
 			ConsoleOpen = True
 		EndIf
 		Return -1

@@ -47,7 +47,6 @@ Select Config\Graphics\TextureDetails%
 End Select
 ;; ToDo End
 
-Global ConsoleOpening% = GetOptionInt("console", "auto opening")
 Global SFXVolume# = GetOptionFloat("audio", "sound volume")
 Global Bit16Mode = GetOptionInt("graphics", "16bit")
 Global HUDScaleFactor# = GetOptionFloat("graphics", "hud scale factor")
@@ -9674,7 +9673,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", Config\Launcher\LauncherEnabled%)
 	PutINIValue(Paths\OptionsFile, "graphics", "texture details", Config\Graphics\TextureDetails%)
 	PutINIValue(Paths\OptionsFile, "console", "enabled", ConsoleEnabled%)
-	PutINIValue(Paths\OptionsFile, "console", "auto opening", ConsoleOpening%)
+	PutINIValue(Paths\OptionsFile, "console", "auto opening", Config\Console\ConsoleAutoOpen%)
 	PutINIValue(Paths\OptionsFile, "general", "speed run mode", SpeedRunMode%)
 	PutINIValue(Paths\OptionsFile, "general", "numeric seeds", Config\Gameplay\UseNumericSeeds%)
 	PutINIValue(Paths\OptionsFile, "graphics", "enable vram", EnableVRam)

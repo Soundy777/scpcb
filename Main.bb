@@ -7512,7 +7512,7 @@ Function NullGame(playbuttonsfx%=True)
 
 	GodMode = 0
 	NoClip = 0
-	WireframeState = 0
+	Gfx\Wireframe = 0
 	WireFrame 0
 	WearingGasMask = 0
 	WearingHazmat = 0
@@ -9890,7 +9890,7 @@ Function ScaleRender(x#,y#,hscale#=1.0,vscale#=1.0)
 	RenderWorld()
 	HideEntity fresize_cam
 	HideEntity fresize_image
-	WireFrame WireframeState
+	WireFrame Gfx\Wireframe
 	If Camera<>0 Then ShowEntity Camera
 End Function
 

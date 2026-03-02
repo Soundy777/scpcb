@@ -42,7 +42,6 @@ Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 ;; ToDo End
 
-Global WireframeState
 Global TextureFloat#
 Global GFXDriverName$
 Global RealGraphicWidth%, RealGraphicHeight%
@@ -107,7 +106,6 @@ Function Graphics_Init(config.GraphicsConfig)
     ; -------------------------
 	; Temp Global Assignment
 	; -------------------------
-    WireframeState = Gfx\Wireframe
     TextureFloat = Gfx\TextureBias
     GFXDriverName = Gfx\DriverName
     RealGraphicWidth = Gfx\RealWidth

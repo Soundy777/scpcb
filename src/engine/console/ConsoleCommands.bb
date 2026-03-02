@@ -402,7 +402,7 @@ Function Cmd_DebugMode(args$)
         GodMode = 1
         NoClip = 1
         WireFrame 1
-        WireframeState=1
+        Gfx\Wireframe=1
         CameraFogNear = 15
         CameraFogFar = 20
 
@@ -505,16 +505,16 @@ Function Cmd_Wireframe(args$)
     Select args$
         Case "on", "1", "true"
             WireFrame 1
-            WireframeState=1					
+            Gfx\Wireframe=1					
         Case "off", "0", "false"
             WireFrame 0
-            WireframeState=0
+            Gfx\Wireframe=0
         Default
-            WireframeState = 1 - WireframeState
-            WireFrame WireframeState
+            Gfx\Wireframe = 1 - Gfx\Wireframe
+            WireFrame Gfx\Wireframe
     End Select
 
-    if WireframeState = 1 Then
+    if Gfx\Wireframe = 1 Then
         CreateConsoleMsg("Wireframe mode enabled.")
     Else
         CreateConsoleMsg("Wireframe mode disabled.")

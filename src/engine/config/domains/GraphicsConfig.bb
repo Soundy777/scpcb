@@ -48,7 +48,7 @@ Function GraphicsConfig_Load.GraphicsConfig()
     End If
 
     config\SelectedGFXDriver = Min(Max(Config_ResolveIntSetting("graphics", "gfx driver"), 1), CountGfxDrivers())
-    ; ScreenGamma
+    config\ScreenGamma = Config_ResolveFloatSetting("graphics", "screengamma")
     config\ShowFPS = Config_ResolveIntSetting("graphics", "show FPS")
     config\Framelimit = Config_ResolveIntSetting("graphics", "framelimit")
     config\Vsync = Config_ResolveIntSetting("graphics", "vsync")

@@ -583,8 +583,8 @@ End Function
 
 Function Cmd_Gamma(args$)
 
-    ScreenGamma = Int(args$)
-    CreateConsoleMsg("Gamma set to " + ScreenGamma)
+    Config\Graphics\ScreenGamma = Int(args$)
+    CreateConsoleMsg("Gamma set to " + Config\Graphics\ScreenGamma)
 
 End Function
 

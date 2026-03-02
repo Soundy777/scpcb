@@ -106,7 +106,6 @@ SetBuffer(BackBuffer()) ;; ToDo:: move this into our upcoming Graphics.bb Init
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
 Local CheckFPS%, ElapsedLoops%, FPS%
 Global CurrFrameLimit# = (Config\Graphics\Framelimit%-19)/100.0
-Global ScreenGamma# = GetOptionFloat("graphics", "screengamma")
 Global FOV% = GetOptionInt("graphics", "fov")
 Const DEFAULT_FOV% = 59
 
@@ -2085,16 +2084,16 @@ While IsRunning
 
 	;not by any means a perfect solution
 	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
-	If ScreenGamma>1.0 Then
+	If Config\Graphics\ScreenGamma>1.0 Then
 		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
 		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
 		EntityFX fresize_image,1+32
 		EntityBlend fresize_image,3
-		EntityAlpha fresize_image,ScreenGamma-1.0
+		EntityAlpha fresize_image,Config\Graphics\ScreenGamma-1.0
 		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-	ElseIf ScreenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
+	ElseIf Config\Graphics\ScreenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
 		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
@@ -2103,7 +2102,7 @@ While IsRunning
 		EntityBlend fresize_image,2
 		EntityAlpha fresize_image,1.0
 		SetBuffer TextureBuffer(fresize_texture2)
-		ClsColor 255*ScreenGamma,255*ScreenGamma,255*ScreenGamma
+		ClsColor 255*Config\Graphics\ScreenGamma,255*Config\Graphics\ScreenGamma,255*Config\Graphics\ScreenGamma
 		Cls
 		SetBuffer BackBuffer()
 		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
@@ -6130,11 +6129,11 @@ Function DrawMenu()
 					
 					y=y+30*MenuScale
 					
-					ScreenGamma = (SlideBar(x + 270*MenuScale, y+6*MenuScale, 100*MenuScale, ScreenGamma*50.0, 1)/50.0)
+					Config\Graphics\ScreenGamma = (SlideBar(x + 270*MenuScale, y+6*MenuScale, 100*MenuScale, Config\Graphics\ScreenGamma*50.0, 1)/50.0)
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_Gamma)
 					If (MouseOn(x+270*MenuScale,y+6*MenuScale,100*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=1
-						DrawOptionsTooltip(tx,ty,tw,th,"gamma",ScreenGamma)
+						DrawOptionsTooltip(tx,ty,tw,th,"gamma",Config\Graphics\ScreenGamma)
 					EndIf
 					
 					y=y+50*MenuScale
@@ -9655,7 +9654,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "controls", "mouse sensitivity", MouseSens)
 	PutINIValue(Paths\OptionsFile, "controls", "invert mouse y", InvertMouse)
 	PutINIValue(Paths\OptionsFile, "graphics", "HUD enabled", HUDenabled)
-	PutINIValue(Paths\OptionsFile, "graphics", "screengamma", ScreenGamma)
+	PutINIValue(Paths\OptionsFile, "graphics", "screengamma", Config\Graphics\ScreenGamma)
 	PutINIValue(Paths\OptionsFile, "graphics", "antialias", Config\Graphics\AntiAliasing)
 	PutINIValue(Paths\OptionsFile, "graphics", "vsync", Config\Graphics\Vsync)
 	PutINIValue(Paths\OptionsFile, "graphics", "show FPS", Config\Graphics\ShowFPS)

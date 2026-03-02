@@ -731,13 +731,13 @@ Function UpdateMainMenu()
 
 					y=y+50*MenuScale
 					
-					Local SlideBarFOV# = FOV-40
+					Local SlideBarFOV# = Config\Graphics\FOV-40
 					SlideBarFOV = (SlideBar(x + 310*MenuScale, y+6*MenuScale,150*MenuScale, SlideBarFOV*2.0, 4)/2.0)
-					FOV = Int(SlideBarFOV+40)
+					Config\Graphics\FOV = Int(SlideBarFOV+40)
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, I_Loc\OptionName_fov)
 					Color 255,255,0
-					Text(x + 25 * MenuScale, y + 25 * MenuScale, FOV+"°")
+					Text(x + 25 * MenuScale, y + 25 * MenuScale, Config\Graphics\FOV+"°")
 					If (MouseOn(x+310*MenuScale,y+6*MenuScale,150*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=4
 						DrawOptionsTooltip(tx,ty,tw,th,"fov")
 					EndIf
@@ -2440,7 +2440,7 @@ Function DrawOptionsTooltip(x%,y%,width%,height%,option$,value#=0,ingame%=False)
 			R = 255
 			G = 255
 			B = 255
-			txt2 = Format(I_Loc\Option_HintDefault, "°", Str(FOV), Str(DEFAULT_FOV))
+			txt2 = Format(I_Loc\Option_HintDefault, "°", Str(Config\Graphics\FOV), Str(Config\Graphics\DefaultFOV))
 			;[End Block]
 		;Sound options
 			;[Block]

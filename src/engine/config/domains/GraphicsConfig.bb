@@ -18,6 +18,7 @@ Type GraphicsConfig
     Field ParticleAmount#
     Field EnableVRam%
     Field FOV%
+    Field DefaultFOV%
     Field HUDOffset#
     Field HUDScaleFactor#
 End Type
@@ -61,7 +62,8 @@ Function GraphicsConfig_Load.GraphicsConfig()
     config\Bit16Mode = Config_ResolveIntSetting("graphics", "16bit")
     ; ParticleAmount
     ; EnableVRam
-    ; FOV
+    config\FOV = Config_ResolveIntSetting("graphics", "fov")
+    config\DefaultFOV = 59
     ; HUDOffset
     config\HUDScaleFactor = Config_ResolveFloatSetting("graphics", "hud scale factor")
 

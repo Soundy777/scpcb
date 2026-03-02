@@ -569,7 +569,7 @@ End Function
 
 Function Cmd_FOV(args$)
 
-    FOV = Int(args$)
+    Config\Graphics\FOV = Int(args$)
 
 End Function
 

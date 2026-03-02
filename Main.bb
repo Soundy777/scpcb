@@ -106,8 +106,6 @@ SetBuffer(BackBuffer()) ;; ToDo:: move this into our upcoming Graphics.bb Init
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#, PrevFPSFactor#
 Local CheckFPS%, ElapsedLoops%, FPS%
 Global CurrFrameLimit# = (Config\Graphics\Framelimit%-19)/100.0
-Global FOV% = GetOptionInt("graphics", "fov")
-Const DEFAULT_FOV% = 59
 
 Global HUDStartX%, HUDEndX%, HUDStartY%, HUDEndY%
 Global HUDOffsetScale# = GetOptionFloat("graphics", "hud offset")
@@ -3235,7 +3233,7 @@ Function MouseLook()
 	CameraShake = Max(CameraShake - (FPSfactor / 10), 0)
 	
 	;CameraZoomTemp = CurveValue(CurrCameraZoom,CameraZoomTemp, 5.0)
-	ZoomCamera(FOV)
+	ZoomCamera(Config\Graphics\FOV)
 	CurrCameraZoom = Max(CurrCameraZoom - FPSfactor, 0)
 	
 	If KillTimer >= 0 And FallTimer >=0 Then
@@ -3610,7 +3608,7 @@ Function DrawGUI()
 		SelectedItem = Null
 		
 		If shouldDrawHUD Then
-			ZoomCamera(DEFAULT_FOV)
+			ZoomCamera(Config\Graphics\DefaultFOV)
 			pvt = CreatePivot()
 			PositionEntity pvt, EntityX(ClosestButton,True),EntityY(ClosestButton,True),EntityZ(ClosestButton,True)
 			RotateEntity pvt, 0, EntityYaw(ClosestButton,True)-180,0
@@ -6178,18 +6176,18 @@ Function DrawMenu()
 
 					y=y+50*MenuScale
 
-					Local SlideBarFOV# = FOV-40
+					Local SlideBarFOV# = Config\Graphics\FOV-40
 					SlideBarFOV = SlideBar(x + 270*MenuScale, y+6*MenuScale,100*MenuScale, SlideBarFOV*2.0, 4)/2.0
-					FOV = Int(SlideBarFOV+40)
+					Config\Graphics\FOV = Int(SlideBarFOV+40)
 					Color 255,255,255
 					Text(x, y, I_Loc\OptionName_fov)
 					Color 255,255,0
-					Text(x + 5 * MenuScale, y + 25 * MenuScale, FOV+"°")
+					Text(x + 5 * MenuScale, y + 25 * MenuScale, Config\Graphics\FOV+"°")
 					Color 255,255,255
 					If (MouseOn(x+270*MenuScale,y+6*MenuScale,100*MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=4
 						DrawOptionsTooltip(tx,ty,tw,th,"fov")
 					EndIf
-					ZoomCamera(FOV)
+					ZoomCamera(Config\Graphics\FOV)
 					;[End Block]
 				Case 2 ;Audio
 					SetFont Font1
@@ -9669,7 +9667,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "graphics", "enable vram", EnableVRam)
 	PutINIValue(Paths\OptionsFile, "controls", "mouse smoothing", MouseSmooth)
 	PutINIValue(Paths\OptionsFile, "graphics", "hud offset", HUDOffsetScale)
-	PutINIValue(Paths\OptionsFile, "graphics", "fov", FOV)
+	PutINIValue(Paths\OptionsFile, "graphics", "fov", Config\Graphics\FOV)
 	
 	PutINIValue(Paths\OptionsFile, "audio", "music volume", MusicVolume)
 	PutINIValue(Paths\OptionsFile, "audio", "sound volume", PrevSFXVolume)

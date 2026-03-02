@@ -1,5 +1,5 @@
 ; ===========================================================================
-; Eventually game.bb will consist soley of those 4 lines
+; Eventually game.bb will consist soley of those 5 lines
 ; ===========================================================================
 
 Include "src/engine/core/Engine.bb"
@@ -45,13 +45,6 @@ Select Config\Graphics\TextureDetails%
 		TextureFloat# = -0.8
 End Select
 ;; ToDo End ---------------------------------------------------------------------
-
-; LAUNCHER START ---------------------------------------------------------------------
-; Exclusive fullscreen ONLY supports the reported resolutions
-If (Config\Launcher\LauncherEnabled Lor HasCLIFlag("launcher")) And (Not IsRestart) And (Not HasCLIFlag("nolauncher")) Lor Config\Graphics\Fullscreen And (Not GfxMode3DExists(Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 32-16*Config\Graphics\Bit16Mode)) Then
-	UpdateLauncher()
-EndIf
-;LAUNCHER END ---------------------------------------------------------------------
 
 ;; ToDo:: extract this to graphics.bb ---------------------------------------------------------------------
 SetGfxDriver(Config\Graphics\SelectedGFXDriver)

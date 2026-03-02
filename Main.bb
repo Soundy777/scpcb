@@ -25,7 +25,6 @@ Global ShouldRestart% = False
 ;; ToDo:: collection of non-config related stuff to sort
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 Dim ArrowIMG(4)
-Global Depth% = 0
 Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 Global WireframeState

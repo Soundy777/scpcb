@@ -8,6 +8,7 @@ Include "src/engine/core/Engine.bb"
 AppTitle "SCP - Containment Breach v" + GAME_VERSION
 
 Engine_Init()
+Startup_PlayVideos()
 ;Game_Init()
 
 ;While Engine_IsRunning()
@@ -29,14 +30,7 @@ Engine_Init()
 ; Everything below needs sorting out <3
 ; ===========================================================================
 
-;; ToDo:: collection of non-config related stuff to sort
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
-;; ToDo End
-
-; Move this to a new Startup system within src/engine/
-; Disabled startup videos while iterating
-;; ReEnable these when we've finished cleaning everything up
-;PlayStartupVideos()
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Refactoring Checkpoint #1
@@ -10143,44 +10137,6 @@ Function TeleportEntity(entity%,x#,y#,z#,customradius#=0.3,isglobal%=False,pickr
 	ResetEntity entity
 	DebugLog "Teleported entity to: "+EntityX(entity)+"/"+EntityY(entity)+"/"+EntityZ(entity)
 	
-End Function
-
-Function PlayMovie(moviefile$)
-
-	Local ScaledGraphicHeight%
-	Local Ratio# = Float(Gfx\RealWidth)/Float(Gfx\RealHeight)
-	If Ratio>1.76 And Ratio<1.78
-		ScaledGraphicHeight = Gfx\RealHeight
-		DebugLog "Not Scaled"
-	Else
-		ScaledGraphicHeight% = Float(Gfx\RealWidth)/(16.0/9.0)
-		DebugLog "Scaled: "+ScaledGraphicHeight
-	EndIf
-
-	Local SplashScreenVideo = OpenMovie(moviefile$+".avi")
-	If SplashScreenVideo = 0 Then Return
-
-	DebugLog(Gfx\RealHeight)
-
-	Local SplashScreenAudio = StreamSound_Strict(moviefile$+".ogg",Config\Audio\SFXVolume,0)
-	Repeat
-		Cls
-		DrawMovie(SplashScreenVideo, 0, (Gfx\RealHeight/2-ScaledGraphicHeight/2), Gfx\RealWidth, ScaledGraphicHeight)
-		Flip
-	Until (GetKey() Or (Not IsStreamPlaying_Strict(SplashScreenAudio)))
-	StopStream_Strict(SplashScreenAudio)
-	CloseMovie(SplashScreenVideo)
-	
-	Cls
-	Flip
-
-End Function
-
-Function PlayStartupVideos()
-	If GetOptionInt("general","play startup video") = 0 Lor HasCLIFlag("novid") Then Return
-
-	PlayMovie("GFX\menu\startup_Undertow")
-	PlayMovie("GFX\menu\startup_TSS")
 End Function
 
 Function CanUseItem(canUseWithHazmat%, canUseWithGasMask%, canUseWithEyewear%)

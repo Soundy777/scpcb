@@ -7,6 +7,7 @@ Include "src/engine/infastructure/Blitz_File_FileName.bb"
 Include "src/engine/infastructure/ErrorHandling.bb"
 
 include "src/engine/core/AppPaths.bb"
+include "src/engine/startup/StartupVideos.bb"
 
 Include "StrictLoads.bb"    ;; ToDo:: this will become part of our resource management system
 Include "KeyName.bb"        ;; ToDo:: this will become part of our input management system

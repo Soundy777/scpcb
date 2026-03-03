@@ -14,6 +14,7 @@ Include "KeyName.bb"        ;; ToDo:: this will become part of our input managem
 Include "src/engine/config/ConfigManager.bb"
 Include "src/engine/core/Time.bb"
 Include "src/engine/graphics/Graphics.bb"
+Include "src/engine/graphics/Viewport.bb"
 
 Include "src/engine/integrations/SteamIntegration.bb"
 Include "src/engine/integrations/DiscordIntegration.bb"
@@ -41,6 +42,7 @@ Function Engine_Init()
 
     Time_Init()
     Graphics_Init(Config\Graphics)
+    Viewport_Init()
 
     Flags\SteamActive = SteamIntegration_Init()
     Flags\DiscordActive = DiscordIntegration_Init()
@@ -72,3 +74,4 @@ End Function
 Function Engine_Shutdown()
 
 End Function
+

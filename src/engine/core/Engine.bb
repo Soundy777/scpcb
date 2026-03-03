@@ -17,9 +17,9 @@ Function Engine_Init()
     Time_Init()
     Graphics_Init(Config\Graphics)
     Viewport_Init()
-    ;; ToDo:: init AudioSystem
 
-    ;; ToDo:: init ResourceManager
+    Resource_Init()
+    ;; ToDo:: init AudioSystem
     ;; ToDo:: init InputManager
 
     Flags\SteamActive = SteamIntegration_Init()

@@ -969,7 +969,7 @@ Function GenForestGrid(fr.Forest)
 				i=i-1
 			Next
 
-			If Config\Graphics\Fullscreen Then DrawImage(CursorIMG,ScaledMouseX(),ScaledMouseY())
+			If Config\Graphics\Fullscreen Then DrawImage(Resource_GetTexture(TEX_CURSOR),ScaledMouseX(),ScaledMouseY())
 			Color(255, 255, 255)
 			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 25 * Viewport_GetScale(), I_Loc\Menu_Pressany, True, True)
 			
@@ -6256,7 +6256,7 @@ Function UpdateScreens()
 						s\img = LoadImage_Strict("GFX\screens\"+s\imgpath)
 						s\img = ResizeImage2(s\img, ImageWidth(s\img) * Gfx\MenuScale, ImageHeight(s\img) * Gfx\MenuScale)
 						MaskImage s\img, 255,0,255
-						PlaySound_Strict ButtonSFX
+						PlaySFX(SFX_INTERACT_BUTTON_1)
 						MouseUp1=False
 					EndIf
 				EndIf
@@ -7617,7 +7617,7 @@ Function CreateMap(loadingstart,loadingcount#)
 				Next
 			Next
 
-			If Config\Graphics\Fullscreen Then DrawImage(CursorIMG,ScaledMouseX(),ScaledMouseY())
+			If Config\Graphics\Fullscreen Then DrawImage(Resource_GetTexture(TEX_CURSOR),ScaledMouseX(),ScaledMouseY())
 			Color 255, 255, 255
 			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 25 * Viewport_GetScale(), I_Loc\Menu_Pressany, True, True)
 			

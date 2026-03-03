@@ -3,13 +3,13 @@
 ; ===========================================================================
 
 Include "src/engine/core/Engine.bb"
-;Include "src/game/core/Game.bb"
+Include "src/game/core/Game.bb"
 
 AppTitle "SCP - Containment Breach v" + GAME_VERSION
 
 Engine_Init()
 Startup_PlayVideos()
-;Game_Init()
+Game_Init()
 
 ;While Engine_IsRunning()
 	
@@ -30,14 +30,9 @@ Startup_PlayVideos()
 ; Everything below needs sorting out <3
 ; ===========================================================================
 
-Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
-
 ;---------------------------------------------------------------------------------------------------------------------
 ; Refactoring Checkpoint #1
 ;---------------------------------------------------------------------------------------------------------------------
-
-Global CursorIMG% = LoadImage_Strict("GFX\cursor.png")
-
 Global SelectedLoadingScreen.LoadingScreens, LoadingScreenAmount% = 0, LoadingScreenText%
 Global LoadingBack% = LoadImage_Strict("Loadingscreens\loadingback.jpg")
 InitLoadingScreens()
@@ -1429,8 +1424,8 @@ Global MTF_CameraCheckDetected% = False
 Include "menu.bb"
 MainMenuOpen = True
 
-;; Note:: moving this vertically upwards will require first refactoring every other include to be self contained & initable as they're all jank at the moment
-Include "src/game/core/Game.bb"
+;; Note:: SaveSystem.bb is dependant upon several other earlier includes. To move this we'll need to refactor out those first
+Include "src/game/systems/SaveSystem.bb"
 
 ;---------------------------------------------------------------------------------------------------
 
@@ -2554,7 +2549,7 @@ Function DrawEnding()
 		
 	EndIf
 	
-	If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 	
 	SetFont Font1
 End Function
@@ -3401,7 +3396,7 @@ Function DrawGUI()
 				If ClosestDoor\Code <> "" Then
 					SelectedDoor = ClosestDoor
 				ElseIf Playable Then
-					PlaySound2(ButtonSFX, Camera, ClosestButton)
+					PlaySound2(Resource_GetSound(SFX_INTERACT_BUTTON_1), Camera, ClosestButton)
 					UseDoor(ClosestDoor,True)				
 				EndIf
 			EndIf
@@ -3513,7 +3508,7 @@ Function DrawGUI()
 					temp = False
 					If MouseOn(xtemp,ytemp, 54*scale,65*scale) And KeypadMSG = "" Then
 						If MouseUp1 Then 
-							PlaySound_Strict ButtonSFX
+							PlaySFX(SFX_INTERACT_BUTTON_1)
 							
 							Select (n+1)+(i*4)
 								Case 1,2,3
@@ -3558,7 +3553,7 @@ Function DrawGUI()
 				Next
 			Next
 			
-			If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+			If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 			
 			If MouseHit2 Then
 				SelectedDoor = Null
@@ -3807,7 +3802,7 @@ Function DrawGUI()
 			EndIf
 		EndIf
 		
-		If Config\Graphics\Fullscreen Then DrawImage CursorIMG,ScaledMouseX(),ScaledMouseY()
+		If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR),ScaledMouseX(),ScaledMouseY()
 		If (closedInv) And (Not InvOpen) Then 
 			OtherOpen=Null
 			UpdateMenuState()
@@ -4158,7 +4153,7 @@ Function DrawGUI()
 			End If
 		End If
 		
-		If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 		
 		If InvOpen = False Then 
 			UpdateMenuState()
@@ -6513,7 +6508,7 @@ Function DrawMenu()
 			If KillTimer < 0 Then RowText(DeathMSG$, x, y + 80*Gfx\MenuScale, 390*Gfx\MenuScale, 600*Gfx\MenuScale)
 		EndIf
 		
-		If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 		
 	End If
 	
@@ -7366,7 +7361,7 @@ Function NullGame(playbuttonsfx%=True)
 	Local wp.WayPoints, twp.TempWayPoints, r.Rooms, it.Items
 	
 	KillSounds()
-	If playbuttonsfx Then PlaySound_Strict ButtonSFX
+	If playbuttonsfx Then PlaySFX(SFX_INTERACT_BUTTON_1)
 	
 	FreeParticles()
 	
@@ -8817,7 +8812,7 @@ Function Use294()
 	x = Config\Graphics\ScreenWidth/2 - (ImageWidth(Panel294)/2)
 	y = Config\Graphics\ScreenHeight/2 - (ImageHeight(Panel294)/2)
 	DrawImage Panel294, x, y
-	If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 	
 	temp = True
 	If PlayerRoom\SoundCHN<>0 Then temp = False
@@ -8834,7 +8829,7 @@ Function Use294()
 			
 			If ytemp => 0 And ytemp < Keyboard294Height Then
 				If xtemp => 0 And xtemp < Keyboard294Width Then
-					PlaySound_Strict ButtonSFX
+					PlaySFX(SFX_INTERACT_BUTTON_1)
 
 					Local oldLayer = Keyboard294ActiveLayer
 

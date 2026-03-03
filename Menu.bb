@@ -402,7 +402,7 @@ Function UpdateMainMenu()
 							Else
 								SelectedDifficulty\otherFactors = EASY
 							EndIf
-							PlaySound_Strict(ButtonSFX)
+							PlaySFX(SFX_INTERACT_BUTTON_1)
 						EndIf
 					EndIf
 					Color 255,255,255
@@ -1407,7 +1407,7 @@ Function UpdateMainMenu()
 	
 	;DrawTiledImageRect(MenuBack, 985 * Gfx\MenuScale, 860 * Gfx\MenuScale, 200 * Gfx\MenuScale, 20 * Gfx\MenuScale, 1200 * Gfx\MenuScale, 866 * Gfx\MenuScale, 300, 20 * Gfx\MenuScale)
 	
-	If Config\Graphics\Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 	
 	SetFont Font1
 End Function
@@ -1919,7 +1919,7 @@ Function DrawButton%(x%, y%, width%, height%, txt$, bigfont% = True, waitForMous
 		Color(30, 30, 30)
 		If (MouseHit1 And (Not waitForMouseUp)) Or (MouseUp1 And waitForMouseUp) Then 
 			clicked = True
-			PlaySound_Strict(ButtonSFX)
+			PlaySFX(SFX_INTERACT_BUTTON_1)
 		EndIf
 		Rect(x + 4, y + 4, width - 8, height - 8)
 	EndIf
@@ -1942,7 +1942,7 @@ Function DrawButton2%(x%, y%, width%, height%, txt$, bigfont% = True)
 	Local hit% = MouseHit(1)
 	If MouseOn(x, y, width, height) Then
 		Color(30, 30, 30)
-		If hit Then clicked = True : PlaySound_Strict(ButtonSFX)
+		If hit Then clicked = True : PlaySFX(SFX_INTERACT_BUTTON_1)
 		Rect(x + 4, y + 4, width - 8, height - 8)	
 	Else
 		Color(0, 0, 0)
@@ -1966,7 +1966,7 @@ Function DrawTick%(x%, y%, selected%, locked% = False)
 	
 	If Highlight Then
 		Color(50, 50, 50)
-		If MouseHit1 Then selected = (Not selected) : PlaySound_Strict (ButtonSFX)
+		If MouseHit1 Then selected = (Not selected) : PlaySFX(SFX_INTERACT_BUTTON_1)
 	Else
 		Color(0, 0, 0)		
 	End If
@@ -2696,7 +2696,7 @@ Function Button%(x,y,width,height,txt$, disabled%=False)
 	
 	Color 0,0,0
 	
-	If Pushed And MouseHit1 Then PlaySound_Strict ButtonSFX : Return True
+	If Pushed And MouseHit1 Then PlaySFX(SFX_INTERACT_BUTTON_1) : Return True
 End Function
 
 

@@ -9,13 +9,15 @@ Include "src/engine/infastructure/ErrorHandling.bb"
 include "src/engine/core/AppPaths.bb"
 include "src/engine/startup/StartupVideos.bb"
 
-Include "StrictLoads.bb"    ;; ToDo:: this will become part of our resource management system
 Include "KeyName.bb"        ;; ToDo:: this will become part of our input management system
 
 Include "src/engine/config/ConfigManager.bb"
 Include "src/engine/core/Time.bb"
 Include "src/engine/graphics/Graphics.bb"
 Include "src/engine/graphics/Viewport.bb"
+
+Include "src/engine/resources/ResourcesManager.bb"
+Include "src/engine/audio/Audio.bb"
 
 Include "src/engine/physics/Physics.bb"
 

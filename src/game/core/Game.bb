@@ -11,6 +11,11 @@ Include "src/game/core/GameIncludes.bb"
 
 Function Game_Init()
 
+    Game_RegisterSounds()
+    Game_RegisterTextures()
+
+    Game_Preload()
+
 End Function
 
 Function Game_Update()

@@ -30,17 +30,15 @@ Game_Init()
 ; ===========================================================================
 
 ;---------------------------------------------------------------------------------------------------------------------
-; Refactoring Checkpoint #1
+; Loading Zone 1
 ;---------------------------------------------------------------------------------------------------------------------
 ;; ToDo:: Eventually move this into the GameStateManager once we've refactored everything down to the main loop below
 Loading_Init()
-; Load Fonts
-; Load & Scale BlinkMeterIMG
 
-;For some reason, Blitz3D doesn't load fonts that have filenames that
-;don't match their "internal name" (i.e. their display name in applications
-;like Word and such). As a workaround, I moved the files and renamed them so they
-;can load without FastText.
+;; Previous Loading Logic
+; 1) Load Fonts
+; 2) Load & Scale BlinkMeterIMG
+
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Font1% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * Gfx\MenuScale))
 Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * Gfx\MenuScale))
@@ -48,9 +46,9 @@ Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * Gfx\MenuSca
 Font4% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * Gfx\MenuScale))
 Font5% = LoadFont_Strict("GFX\font\Journal\Journal.ttf", Int(58 * Gfx\MenuScale))
 
-SetFont Font2
-Console\ConsoleFont% = Font1
+SetFont GameFonts\UI_Large
 
+;; ToDo:: Find a more suitable point to setup this core UI Texture
 ; This blink meter image is used everywhere for several different purposes
 ; It appears on the HUD
 ; It is used on the loading screen
@@ -60,6 +58,9 @@ ScaleImage(BlinkMeterIMG, Viewport_GetScale(), Viewport_GetScale())
 
 Loading_Render(0, True)
 
+;---------------------------------------------------------------------------------------------------------------------
+; Loading Zone 2
+;---------------------------------------------------------------------------------------------------------------------
 ; - -Viewport.
 Global viewport_center_x% = Gfx\RealWidth / 2, viewport_center_y% = Gfx\RealHeight / 2
 
@@ -1917,7 +1918,7 @@ While IsRunning
 		End If
 		
 		Color 255, 255, 255
-		If Config\Graphics\ShowFPS Then SetFont Console\ConsoleFont : Text 20, 20, Format(I_Loc\HUD_Fps, Time_GetFPS()) : SetFont Font1
+		If Config\Graphics\ShowFPS Then SetFont GameFonts\Console : Text 20, 20, Format(I_Loc\HUD_Fps, Time_GetFPS()) : SetFont Font1
 		
 		If EndingTimer < 0 Then
 			If SelectedEnding <> "" Then DrawEnding()
@@ -5650,7 +5651,7 @@ Function DrawHUD()
 
 	If DebugHUD Then
 		Color 255, 255, 255
-		SetFont Console\ConsoleFont
+		SetFont GameFonts\Console
 		
 		;Text x + 250, 50, "Zone: " + (EntityZ(Collider)/8.0)
 		Text x - 50, 50, "Player Position: (" + f2s(EntityX(Collider), 3) + ", " + f2s(EntityY(Collider), 3) + ", " + f2s(EntityZ(Collider), 3) + ")"

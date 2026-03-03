@@ -4,7 +4,7 @@
 
 Function Console_Render(layout.ConsoleLayout)
 
-	SetFont Console\ConsoleFont
+	SetFont GameFonts\Console
 	ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
 
     Console_RenderBackground(layout)

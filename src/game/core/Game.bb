@@ -13,6 +13,7 @@ Function Game_Init()
 
     Game_RegisterSounds()
     Game_RegisterTextures()
+    Game_RegisterFonts()
 
     Game_Preload()
 

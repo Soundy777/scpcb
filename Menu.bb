@@ -271,7 +271,7 @@ Function UpdateMainMenu()
 					UserTrackCheck2% = 0
 					
 					AntiAlias Config\Graphics\AntiAliasing
-					UpdateHUDOffsets()
+					Viewport_Recalculate()
 					MainMenuTab = 0
 				Case 4 ;move back to the "new game" tab
 					MainMenuTab = 1

@@ -43,18 +43,16 @@ Function Engine_Init()
     Time_Init()
     Graphics_Init(Config\Graphics)
     Viewport_Init()
+    ;; ToDo:: init AudioSystem
+
+    ;; ToDo:: init ResourceManager
+    ;; ToDo:: init InputManager
 
     Flags\SteamActive = SteamIntegration_Init()
     Flags\DiscordActive = DiscordIntegration_Init()
     Flags\ModsEnabled = ModManager_Init()
 
     Localization_Init()
-
-    ;; ToDo:: init RenderSystem
-    ;; ToDo:: init AudioSystem
-
-    ;; ToDo:: init ResourceManager
-    ;; ToDo:: init InputManager
 
     Console_Init()
 

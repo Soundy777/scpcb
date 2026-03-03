@@ -20,21 +20,12 @@ Engine_Init()
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 ;; ToDo End
 
-;; ToDo:: group all HUD logic together
-Global HUDScale# = Max(Gfx\MenuScale * Config\Graphics\HUDScaleFactor, 1)
-Global HUDStartX%, HUDEndX%, HUDStartY%, HUDEndY%
-UpdateHUDOffsets()
-Function UpdateHUDOffsets()
-	If Config\Graphics\ScreenWidth > Config\Graphics\ScreenHeight Then
-		HUDStartY = 0 : HUDEndY = Config\Graphics\ScreenHeight
-		HUDStartX = Int(Config\Graphics\HUDOffset * Config\Graphics\ScreenWidth / 2)
-		HUDEndX = Config\Graphics\ScreenWidth - HUDStartX
-	Else
-		HUDStartX = 0 : HUDEndX = Config\Graphics\ScreenWidth
-		HUDStartY = Int(Config\Graphics\HUDOffset * Config\Graphics\ScreenHeight / 2)
-		HUDEndY = Config\Graphics\ScreenHeight - HUDStartY
-	EndIf
-End Function
+;; ToDo:: remove globals in favor of direct viewport function calls
+Global HUDScale# = Viewport_GetScale()
+Global HUDStartX% = Viewport_GetStartX()
+Global HUDEndX% = Viewport_GetEndX()
+Global HUDStartY% = Viewport_GetStartY()
+Global HUDEndY% = Viewport_GetEndY()
 
 ;; ToDo:: figure out what this shit is & where to better place it for now
 Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
@@ -6052,7 +6043,7 @@ Function DrawMenu()
 					If (MouseOn(x+270*Gfx\MenuScale,y+6*Gfx\MenuScale,100*Gfx\MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=5
 						DrawOptionsTooltip(tx,ty,tw,th,"hudoffset")
 					EndIf
-					UpdateHUDOffsets()
+					Viewport_Recalculate()
 
 					y=y+50*Gfx\MenuScale
 

@@ -33,9 +33,6 @@ Engine_Init()
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 ;; ToDo End
 
-; Collision Types
-Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
-
 ; Move this to a new Startup system within src/engine/
 ; Disabled startup videos while iterating
 ;; ReEnable these when we've finished cleaning everything up

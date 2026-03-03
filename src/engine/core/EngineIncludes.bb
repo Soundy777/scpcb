@@ -16,6 +16,8 @@ Include "src/engine/core/Time.bb"
 Include "src/engine/graphics/Graphics.bb"
 Include "src/engine/graphics/Viewport.bb"
 
+Include "src/engine/physics/Physics.bb"
+
 Include "src/engine/integrations/SteamIntegration.bb"
 Include "src/engine/integrations/DiscordIntegration.bb"
 

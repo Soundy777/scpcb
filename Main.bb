@@ -36,8 +36,6 @@ Global CanSave% = True
 ; Refactoring Checkpoint #1
 ;---------------------------------------------------------------------------------------------------------------------
 
-;[Block]
-
 Global CursorIMG% = LoadImage_Strict("GFX\cursor.png")
 
 Global SelectedLoadingScreen.LoadingScreens, LoadingScreenAmount% = 0, LoadingScreenText%
@@ -95,6 +93,9 @@ Global Mesh_MinX#, Mesh_MinY#, Mesh_MinZ#
 Global Mesh_MaxX#, Mesh_MaxY#, Mesh_MaxZ#
 Global Mesh_MagX#, Mesh_MagY#, Mesh_MagZ#
 
+;---------------------------------------------------------------------------------------------------------------------
+; Refactoring Checkpoint #2
+;---------------------------------------------------------------------------------------------------------------------
 ;player stats -------------------------------------------------------------------------------------------------------
 Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
 Global Sanity#, ForceMove#, ForceAngle#
@@ -189,11 +190,6 @@ Global InfiniteStamina% = False
 Global NVBlink%
 Global IsNVGBlinking% = False
 
-;[End block]
-
-
-
-
 Global DebugHUD%
 
 Global BlurVolume#, BlurTimer#
@@ -219,9 +215,10 @@ Include "dreamfilter.bb"
 
 Dim LightSpriteTex(10)
 
+;---------------------------------------------------------------------------------------------------------------------
+; Refactoring Checkpoint #3
+;---------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------  Sounds -----------------------------------------------------
-
-;[Block]
 
 Global SoundEmitter%
 Global TempSounds%[10]
@@ -257,10 +254,8 @@ Music(23) = "Ending"
 Music(24) = "Credits"
 Music(25) = "SaveMeFrom"
 
-Global MusicVolume# = GetOptionFloat("audio", "music volume")
-;Global MusicCHN% = StreamSound_Strict("SFX\Music\"+Music(2)+".ogg", MusicVolume, CurrMusicStream)
-
 Global CurrMusicStream, MusicCHN
+Global MusicVolume# = GetOptionFloat("audio", "music volume")
 MusicCHN = StreamSound_Strict("SFX\Music\"+Music(2)+".ogg",MusicVolume)
 
 Global CurrMusicVolume# = 1.0, NowPlaying%=2, ShouldPlay%=11
@@ -347,10 +342,6 @@ DrawLoading(25, True)
 
 Dim IntroSFX%(20)
 
-;IntroSFX(13) = LoadSound_Strict("SFX\intro\shoot1.ogg")
-;IntroSFX(14) = LoadSound_Strict("SFX\intro\shoot2.ogg")
-
-
 Dim AlarmSFX%(5)
 
 Dim CommotionState%(25)
@@ -361,7 +352,6 @@ Global VomitSFX%
 
 Dim BreathSFX(2,5)
 Global BreathCHN%
-
 
 Dim NeckSnapSFX(3)
 
@@ -381,13 +371,7 @@ Dim Step2SFX(6)
 
 DrawLoading(30, True)
 
-;[End block]
-
 ;New Sounds and Meshes/Other things in SCP:CB 1.3 - ENDSHN
-;[Block]
-;Global NTF_1499EnterSFX% = LoadSound_Strict("SFX\SCP\1499\Enter.ogg")
-;Global NTF_1499LeaveSFX% = LoadSound_Strict("SFX\SCP\1499\Exit.ogg")
-
 Global PlayCustomMusic% = False, CustomMusic% = 0
 
 Global Monitor2, Monitor3, MonitorTexture2, MonitorTexture3, MonitorTexture4, MonitorTextureOff
@@ -465,7 +449,6 @@ Global ClerkOBJ
 Global IntercomStreamCHN%
 
 Global ForestNPC,ForestNPCTex,ForestNPCData#[3]
-;[End Block]
 
 ;-----------------------------------------  Images ----------------------------------------------------------
 
@@ -483,6 +466,9 @@ Global Panel294, Using294%, Input294$
 
 DrawLoading(35, True)
 
+;---------------------------------------------------------------------------------------------------------------------
+; Refactoring Checkpoint #4
+;---------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------  Items  -----------------------------------------------------
 
 Include "Items.bb"
@@ -1082,7 +1068,6 @@ Function UseDoor(d.Doors, showmsg%=True, playsfx%=True)
 	
 End Function
 
-
 Global KeyCardMsgCooldown% = 0
 Function ActiveKeyCardMsgCooldown()
 	KeyCardMsgCooldown = MilliSecs() + 4000
@@ -1116,6 +1101,9 @@ End Function
 
 DrawLoading(40,True)
 
+;---------------------------------------------------------------------------------------------------------------------
+; Refactoring Checkpoint #5
+;---------------------------------------------------------------------------------------------------------------------
 Global DebugMapGen% = GetOptionInt("debug", "show map gen")
 Global DebugForestGen% = GetOptionInt("debug", "show forest gen")
 
@@ -1435,8 +1423,9 @@ Global Save_MSG_Y# = 0.0
 Global MTF_CameraCheckTimer# = 0.0
 Global MTF_CameraCheckDetected% = False
 
-;---------------------------------------------------------------------------------------------------
-
+;---------------------------------------------------------------------------------------------------------------------
+; Refactoring Checkpoint #6
+;---------------------------------------------------------------------------------------------------------------------
 Include "menu.bb"
 MainMenuOpen = True
 
@@ -1446,8 +1435,6 @@ FlushKeys()
 FlushMouse()
 
 DrawLoading(100, True)
-
-LoopDelay = MilliSecs()
 
 Global UpdateParticles_Time# = 0.0
 
@@ -1472,6 +1459,9 @@ End Type
 
 Global I_Zone.MapZones = New MapZones
 
+;---------------------------------------------------------------------------------------------------------------------
+; Refactoring Checkpoint #7
+;---------------------------------------------------------------------------------------------------------------------
 
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------       		MAIN LOOP                 ---------------------------------------------------------------
@@ -1479,12 +1469,13 @@ Global I_Zone.MapZones = New MapZones
 Global IsRunning% = True
 While IsRunning
 
-	Cls
+	Cls ; Clear the screen? 
 	
 	Time_Update()
 	ErrorHandling_Update()
 	
-	;; ToDo:: eventually find a more sensible place to track playtime
+	;; Used to increase the total time played in seconds counter
+	;; Move this somewhere more sensible
 	If (SpeedRunMode Lor (Not (MainMenuOpen Lor MenuOpen))) And SelectedEnding="" And TimerStopped=0 Then PlayTime = PlayTime + Time_GetElapsedTime()
 	
 	If Input_ResetTime<=0.0

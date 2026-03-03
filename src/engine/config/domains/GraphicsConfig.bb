@@ -19,6 +19,8 @@ Type GraphicsConfig
     Field EnableVRam%
     Field FOV%
     Field DefaultFOV%
+
+    ;; ToDo:: Eventually rename these to be ViewportOffset & ViewportScaleFactor
     Field HUDOffset#
     Field HUDScaleFactor#
 End Type

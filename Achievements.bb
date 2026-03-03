@@ -110,21 +110,6 @@ Function DrawAchvIMG(x%, y%, achvno%)
 	Local row%
 	Local scale# = Config\Graphics\ScreenHeight/768.0
 	Local SeparationConst2 = 76 * scale
-;	If achvno >= 0 And achvno < 4 Then 
-;		row = achvno
-;	ElseIf achvno >= 3 And achvno <= 6 Then
-;		row = achvno-3
-;	ElseIf achvno >= 7 And achvno <= 10 Then
-;		row = achvno-7
-;	ElseIf achvno >= 11 And achvno <= 14 Then
-;		row = achvno-11
-;	ElseIf achvno >= 15 And achvno <= 18 Then
-;		row = achvno-15
-;	ElseIf achvno >= 19 And achvno <= 22 Then
-;		row = achvno-19
-;	ElseIf achvno >= 24 And achvno <= 26 Then
-;		row = achvno-24
-;	EndIf
 	row = achvno Mod 4
 	Color 0,0,0
 	Rect((x+((row)*SeparationConst2)), y, 64*scale, 64*scale, True)
@@ -208,10 +193,3 @@ Function UpdateAchievementMsg()
 	Next
 	
 End Function
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#31#48
-;~C#Blitz3D

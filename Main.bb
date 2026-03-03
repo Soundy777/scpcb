@@ -1,14 +1,27 @@
 ; ===========================================================================
 ; Welcome to the madness...
-; Eventually game.bb will consist soley of those 5 lines
 ; ===========================================================================
 
 Include "src/engine/core/Engine.bb"
+;Include "src/game/core/Game.bb"
 
 AppTitle "SCP - Containment Breach v" + GAME_VERSION
 
 Engine_Init()
-;Engine_Run()
+;Game_Init()
+
+;While Engine_IsRunning()
+	
+	;Engine_BeginFrame()
+
+	;Game_Update()
+	;Game_Render()
+
+	;Engine_EndFrame()
+
+;Wend
+
+;Game_Shutdown()
 ;Engine_Shutdown()
 
 ; ===========================================================================
@@ -20,12 +33,8 @@ Engine_Init()
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 ;; ToDo End
 
-;; ToDo:: figure out what this shit is & where to better place it for now
+; Collision Types
 Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
-
-;; ToDo:: determine where the saving logic takes place & move this to it
-Global GameSaved%
-Global CanSave% = True
 
 ; Move this to a new Startup system within src/engine/
 ; Disabled startup videos while iterating
@@ -1428,6 +1437,9 @@ Global MTF_CameraCheckDetected% = False
 ;---------------------------------------------------------------------------------------------------------------------
 Include "menu.bb"
 MainMenuOpen = True
+
+;; Note:: moving this vertically upwards will require first refactoring every other include to be self contained & initable as they're all jank at the moment
+Include "src/game/core/Game.bb"
 
 ;---------------------------------------------------------------------------------------------------
 
@@ -7617,8 +7629,6 @@ Function NullGame(playbuttonsfx%=True)
 	
 	CatchErrors("NullGame")
 End Function
-
-Include "save.bb"
 
 ;--------------------------------------- music & sounds ----------------------------------------------
 

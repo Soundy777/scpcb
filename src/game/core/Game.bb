@@ -7,4 +7,20 @@
 
 ;    See Credits.txt for a list of contributors
 
-Include "Main.bb"
+Include "src/game/core/GameIncludes.bb"
+
+Function Game_Init()
+
+End Function
+
+Function Game_Update()
+
+End Function
+
+Function Game_Render()
+
+End Function
+
+Function Game_Shutdown()
+
+End Function

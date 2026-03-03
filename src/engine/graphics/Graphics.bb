@@ -12,6 +12,8 @@
 ; Wireframe state
 ; Back buffer selection
 ; ===========================================================================
+Include "src/engine/graphics/FrameCompositor.bb"
+; ===========================================================================
 
 Type GraphicsState
 	Field DriverIndex%
@@ -34,13 +36,6 @@ Type GraphicsState
 End Type
 
 Global Gfx.GraphicsState = new GraphicsState
-
-;-----------------------------------------------------------------------------
-
-;; ToDo These still need looking at seperately
-Global fresize_image%, fresize_texture%, fresize_texture2%
-Global fresize_cam%
-;; ToDo End
 
 ;-----------------------------------------------------------------------------
 

@@ -34,25 +34,27 @@ Game_Init()
 ;---------------------------------------------------------------------------------------------------------------------
 ;; ToDo:: Eventually move this into the GameStateManager once we've refactored everything down to the main loop below
 Loading_Init()
+; Load Fonts
+; Load & Scale BlinkMeterIMG
 
 ;For some reason, Blitz3D doesn't load fonts that have filenames that
 ;don't match their "internal name" (i.e. their display name in applications
 ;like Word and such). As a workaround, I moved the files and renamed them so they
 ;can load without FastText.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
-Global ConsoleFont%
 Font1% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * Gfx\MenuScale))
 Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * Gfx\MenuScale))
 Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * Gfx\MenuScale))
 Font4% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * Gfx\MenuScale))
 Font5% = LoadFont_Strict("GFX\font\Journal\Journal.ttf", Int(58 * Gfx\MenuScale))
 
-Global CreditsFont%,CreditsFont2%
-
-ConsoleFont% = Font1
-
 SetFont Font2
+Console\ConsoleFont% = Font1
 
+; This blink meter image is used everywhere for several different purposes
+; It appears on the HUD
+; It is used on the loading screen
+; Several other random calls make use of it
 Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 ScaleImage(BlinkMeterIMG, Viewport_GetScale(), Viewport_GetScale())
 
@@ -1915,7 +1917,7 @@ While IsRunning
 		End If
 		
 		Color 255, 255, 255
-		If Config\Graphics\ShowFPS Then SetFont ConsoleFont : Text 20, 20, Format(I_Loc\HUD_Fps, Time_GetFPS()) : SetFont Font1
+		If Config\Graphics\ShowFPS Then SetFont Console\ConsoleFont : Text 20, 20, Format(I_Loc\HUD_Fps, Time_GetFPS()) : SetFont Font1
 		
 		If EndingTimer < 0 Then
 			If SelectedEnding <> "" Then DrawEnding()
@@ -2533,6 +2535,7 @@ End Type
 
 Global CreditsTimer# = 0.0
 Global CreditsScreen%
+Global CreditsFont%,CreditsFont2%
 
 Function InitCredits()
 	Local cl.CreditsLine
@@ -5647,7 +5650,7 @@ Function DrawHUD()
 
 	If DebugHUD Then
 		Color 255, 255, 255
-		SetFont ConsoleFont
+		SetFont Console\ConsoleFont
 		
 		;Text x + 250, 50, "Zone: " + (EntityZ(Collider)/8.0)
 		Text x - 50, 50, "Player Position: (" + f2s(EntityX(Collider), 3) + ", " + f2s(EntityY(Collider), 3) + ", " + f2s(EntityZ(Collider), 3) + ")"

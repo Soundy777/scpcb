@@ -1402,7 +1402,7 @@ Function UpdateMainMenu()
 	EndIf
 
 	Color 255,255,255
-	SetFont ConsoleFont
+	SetFont Console\ConsoleFont
 	Text 20,Config\Graphics\ScreenHeight-30,"v"+VersionNumber
 	
 	;DrawTiledImageRect(MenuBack, 985 * Gfx\MenuScale, 860 * Gfx\MenuScale, 200 * Gfx\MenuScale, 20 * Gfx\MenuScale, 1200 * Gfx\MenuScale, 866 * Gfx\MenuScale, 300, 20 * Gfx\MenuScale)

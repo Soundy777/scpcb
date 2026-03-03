@@ -38,6 +38,7 @@ Type ConsoleState
 	Field ScrollDragging%
 	Field ScrollGrabOffset#
 	Field HistoryCursor.ConsoleHistoryEntry
+	Field ConsoleFont
 End Type
 
 ; ---------------------------------------------------------------------------

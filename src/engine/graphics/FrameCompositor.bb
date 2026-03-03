@@ -24,7 +24,7 @@ Type TFrameCompositor
 	Field BufferSize%
 End Type
 
-Global gFrameCompositor.TFrameCompositor
+Global FrameCompositor.TFrameCompositor
 
 Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
@@ -35,20 +35,20 @@ Global fresize_cam%
 
 Function FrameCompositor_Init()
 
-	gFrameCompositor = New TFrameCompositor
-	gFrameCompositor\BufferSize = FRAMECOMPOSITOR_BUFFER_SIZE
+	FrameCompositor = New TFrameCompositor
+	FrameCompositor\BufferSize = FRAMECOMPOSITOR_BUFFER_SIZE
 
 	; --- Create orthographic camera ---
-	gFrameCompositor\Camera = CreateCamera()
-	CameraProjMode gFrameCompositor\Camera, 2
-	CameraZoom gFrameCompositor\Camera, 0.1
-	CameraClsMode gFrameCompositor\Camera, 0, 0
-	CameraRange gFrameCompositor\Camera, 0.1, 1.5
-	MoveEntity gFrameCompositor\Camera, 0, 0, -10000
-	HideEntity gFrameCompositor\Camera
+	FrameCompositor\Camera = CreateCamera()
+	CameraProjMode FrameCompositor\Camera, 2
+	CameraZoom FrameCompositor\Camera, 0.1
+	CameraClsMode FrameCompositor\Camera, 0, 0
+	CameraRange FrameCompositor\Camera, 0.1, 1.5
+	MoveEntity FrameCompositor\Camera, 0, 0, -10000
+	HideEntity FrameCompositor\Camera
 
 	; --- Create fullscreen quad ---
-	Local quad% = CreateMesh(gFrameCompositor\Camera)
+	Local quad% = CreateMesh(FrameCompositor\Camera)
 	Local surf% = CreateSurface(quad)
 
 	AddVertex surf, -1,  1, 0, 0, 0
@@ -65,25 +65,27 @@ Function FrameCompositor_Init()
 	PositionEntity quad, 0, 0, 1.0001
 
 	; Scale quad to buffer size
-	ScaleEntity quad, Float(gFrameCompositor\BufferSize) / Float(Gfx\RealWidth), Float(gFrameCompositor\BufferSize) / Float(Gfx\RealHeight), 1
+	ScaleEntity quad, Float(FrameCompositor\BufferSize) / Float(Gfx\RealWidth), Float(FrameCompositor\BufferSize) / Float(Gfx\RealHeight), 1
 
-	gFrameCompositor\Quad = quad
+	FrameCompositor\Quad = quad
 
 	; --- Create render textures ---
-	gFrameCompositor\MainBuffer = CreateTexture(gFrameCompositor\BufferSize, gFrameCompositor\BufferSize, 1+256)
-	gFrameCompositor\OverlayBuffer = CreateTexture(gFrameCompositor\BufferSize, gFrameCompositor\BufferSize, 1+256)
+	FrameCompositor\MainBuffer = CreateTexture(FrameCompositor\BufferSize, FrameCompositor\BufferSize, 1+256)
+	FrameCompositor\OverlayBuffer = CreateTexture(FrameCompositor\BufferSize, FrameCompositor\BufferSize, 1+256)
 
-	TextureBlend gFrameCompositor\OverlayBuffer, 3
+	TextureBlend FrameCompositor\OverlayBuffer, 3
 
 	; Clear overlay buffer once
-	SetBuffer(TextureBuffer(gFrameCompositor\OverlayBuffer))
+	SetBuffer(TextureBuffer(FrameCompositor\OverlayBuffer))
 	ClsColor 0,0,0
 	Cls
 	SetBuffer(BackBuffer())
 
 	; Attach textures to quad
-	EntityTexture quad, gFrameCompositor\MainBuffer, 0, 0
-	EntityTexture quad, gFrameCompositor\OverlayBuffer, 0, 1
+	EntityTexture quad, FrameCompositor\MainBuffer, 0, 0
+	EntityTexture quad, FrameCompositor\OverlayBuffer, 0, 1
+
+
 
 End Function
 
@@ -96,9 +98,9 @@ End Function
 
 Function FrameCompositor_Apply(borderless%, screenWidth%, screenHeight%, gamma#)
 
-	If gFrameCompositor = Null Then Return
+	If FrameCompositor = Null Then Return
 
-	Local bufferSize% = gFrameCompositor\BufferSize
+	Local bufferSize% = FrameCompositor\BufferSize
 
 	; ------------------------------------------------------------
 	; Borderless Resolution Scaling
@@ -106,15 +108,15 @@ Function FrameCompositor_Apply(borderless%, screenWidth%, screenHeight%, gamma#)
 	If borderless Then
 		If (Gfx\RealWidth <> screenWidth) Or (Gfx\RealHeight <> screenHeight) Then
 
-			SetBuffer TextureBuffer(gFrameCompositor\MainBuffer)
+			SetBuffer TextureBuffer(FrameCompositor\MainBuffer)
 			ClsColor 0,0,0 : Cls
 
-			CopyRect 0,0,screenWidth,screenHeight, bufferSize/2 - screenWidth/2, bufferSize/2 - screenHeight/2, BackBuffer(), TextureBuffer(gFrameCompositor\MainBuffer)
+			CopyRect 0,0,screenWidth,screenHeight, bufferSize/2 - screenWidth/2, bufferSize/2 - screenHeight/2, BackBuffer(), TextureBuffer(FrameCompositor\MainBuffer)
 
 			SetBuffer BackBuffer()
 			ClsColor 0,0,0 : Cls
 
-			ScaleRender(0, 0, Float(bufferSize+2) / Float(screenWidth) * Gfx\AspectRatio, Float(bufferSize+2) / Float(screenWidth) * Gfx\AspectRatio)
+			FrameCompositor_ScaleRender(0, 0, Float(bufferSize+2) / Float(screenWidth) * Gfx\AspectRatio, Float(bufferSize+2) / Float(screenWidth) * Gfx\AspectRatio)
 
 		EndIf
 	EndIf
@@ -125,46 +127,85 @@ Function FrameCompositor_Apply(borderless%, screenWidth%, screenHeight%, gamma#)
 	; ------------------------------------------------------------
 	If gamma <> 1.0 Then
 
-		; Copy current frame into main buffer
-		CopyRect 0,0,Gfx\RealWidth,Gfx\RealHeight, bufferSize/2 - Gfx\RealWidth/2, bufferSize/2 - Gfx\RealHeight/2, BackBuffer(), TextureBuffer(gFrameCompositor\MainBuffer)
+        ; --- Copy current frame into main buffer ---
+        CopyRect 0,0,Gfx\RealWidth,Gfx\RealHeight, bufferSize/2 - Gfx\RealWidth/2, bufferSize/2 - Gfx\RealHeight/2, BackBuffer(), TextureBuffer(FrameCompositor\MainBuffer)
 
-		EntityBlend gFrameCompositor\Quad, 1
-		ClsColor 0,0,0 : Cls
+        EntityBlend FrameCompositor\Quad, 1
+        ClsColor 0,0,0 : Cls
 
-		Local scale# = Float(bufferSize) / Float(Gfx\RealWidth)
+        Local scale# = Float(bufferSize) / Float(Gfx\RealWidth)
 
-		ScaleRender(-1.0/Float(Gfx\RealWidth), 1.0/Float(Gfx\RealWidth), scale, scale)
+        ; --- Draw first pass (normal) ---
+        FrameCompositor_ScaleRender(-1.0/Float(Gfx\RealWidth), 1.0/Float(Gfx\RealWidth), scale, scale)
+        EntityFX FrameCompositor\Quad, 1+32
 
-		EntityFX gFrameCompositor\Quad, 1+32
+        If gamma > 1.0 Then
+            ; --- Brightening pass ---
+            EntityBlend FrameCompositor\Quad, 3   ; additive
+            EntityAlpha FrameCompositor\Quad, gamma - 1.0
+            FrameCompositor_ScaleRender(-1.0/Float(Gfx\RealWidth), 1.0/Float(Gfx\RealWidth), scale, scale)
 
-		If gamma > 1.0 Then
-			EntityBlend gFrameCompositor\Quad, 3
-			EntityAlpha gFrameCompositor\Quad, gamma - 1.0
-		Else
-			EntityBlend gFrameCompositor\Quad, 2
-			EntityAlpha gFrameCompositor\Quad, 1.0
+        Else
+            ; --- Darkening pass ---
+            EntityBlend FrameCompositor\Quad, 2   ; modulate
+            EntityAlpha FrameCompositor\Quad, 1.0
 
-			SetBuffer TextureBuffer(gFrameCompositor\OverlayBuffer)
-			ClsColor 255*gamma,255*gamma,255*gamma
-			Cls
-			SetBuffer BackBuffer()
-		EndIf
+            SetBuffer TextureBuffer(FrameCompositor\OverlayBuffer)
+            ClsColor 255*gamma, 255*gamma, 255*gamma
+            Cls
+            SetBuffer BackBuffer()
 
-		ScaleRender(-1.0/Float(Gfx\RealWidth), 1.0/Float(Gfx\RealWidth), scale, scale)
+            FrameCompositor_ScaleRender(-1.0/Float(Gfx\RealWidth), 1.0/Float(Gfx\RealWidth), scale, scale)
 
-	EndIf
+            SetBuffer TextureBuffer(FrameCompositor\OverlayBuffer)
+		    ClsColor 0,0,0
+		    Cls
+		    SetBuffer(BackBuffer())
+        EndIf
 
+    EndIf
 
 	; ------------------------------------------------------------
 	; Restore Defaults
 	; ------------------------------------------------------------
-	EntityFX gFrameCompositor\Quad, 1
-	EntityBlend gFrameCompositor\Quad, 1
-	EntityAlpha gFrameCompositor\Quad, 1.0
+	EntityFX FrameCompositor\Quad, 1
+	EntityBlend FrameCompositor\Quad, 1
+	EntityAlpha FrameCompositor\Quad, 1.0
 
 End Function
 
+; ------------------------------------------------------------
+; Internal helper: render the FrameCompositor quad with scale & position
+; ------------------------------------------------------------
+Function FrameCompositor_ScaleRender(x#, y#, hscale#=1.0, vscale#=1.0)
 
+	If FrameCompositor = Null Then Return
+
+	; Hide any external camera
+	If Camera<>0 Then HideEntity Camera
+
+	WireFrame 0
+
+	; Show quad + compositor camera
+	ShowEntity FrameCompositor\Quad
+	ShowEntity FrameCompositor\Camera
+
+	; Transform quad
+	ScaleEntity FrameCompositor\Quad, hscale#, vscale#, 1.0
+	PositionEntity FrameCompositor\Quad, x#, y#, 1.0001
+
+	; Render quad to current buffer
+	RenderWorld()
+
+	; Restore state
+	HideEntity FrameCompositor\Camera
+	HideEntity FrameCompositor\Quad
+
+	WireFrame Gfx\Wireframe
+
+	If Camera<>0 Then ShowEntity Camera
+
+End Function
 
 ; ============================================================
 ; Cleanup
@@ -172,14 +213,14 @@ End Function
 
 Function FrameCompositor_Free()
 
-	If gFrameCompositor = Null Then Return
+	If FrameCompositor = Null Then Return
 
-	FreeTexture gFrameCompositor\MainBuffer
-	FreeTexture gFrameCompositor\OverlayBuffer
-	FreeEntity gFrameCompositor\Quad
-	FreeEntity gFrameCompositor\Camera
+	FreeTexture FrameCompositor\MainBuffer
+	FreeTexture FrameCompositor\OverlayBuffer
+	FreeEntity FrameCompositor\Quad
+	FreeEntity FrameCompositor\Camera
 
-	Delete gFrameCompositor
-	gFrameCompositor = Null
+	Delete FrameCompositor
+	FrameCompositor = Null
 
 End Function

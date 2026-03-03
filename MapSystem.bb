@@ -6254,7 +6254,7 @@ Function UpdateScreens()
 						SelectedScreen=s
 						SelectedItem = Null
 						s\img = LoadImage_Strict("GFX\screens\"+s\imgpath)
-						s\img = ResizeImage2(s\img, ImageWidth(s\img) * Gfx\MenuScale, ImageHeight(s\img) * Gfx\MenuScale)
+						s\img = Image_ScaleGPU(s\img, ImageWidth(s\img) * Gfx\MenuScale, ImageHeight(s\img) * Gfx\MenuScale)
 						MaskImage s\img, 255,0,255
 						PlaySFX(SFX_INTERACT_BUTTON_1)
 						MouseUp1=False

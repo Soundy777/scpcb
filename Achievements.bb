@@ -63,11 +63,11 @@ For i = 0 To MAXACHIEVEMENTS-1
 	AchievementDescs(i) = GetModdedINIString(Paths\StringsFile, "Achievement Desc", AchvNames[i])
 	
 	AchvIMG(i) = LoadImage_Strict("GFX\menu\achievements\Achv"+AchvNames[i]+".jpg")
-	AchvIMG(i) = ResizeImage2(AchvIMG(i),ImageWidth(AchvIMG(i))*Config\Graphics\ScreenHeight/768.0,ImageHeight(AchvIMG(i))*Config\Graphics\ScreenHeight/768.0)
+	AchvIMG(i) = Image_ScaleGPU(AchvIMG(i),ImageWidth(AchvIMG(i))*Config\Graphics\ScreenHeight/768.0,ImageHeight(AchvIMG(i))*Config\Graphics\ScreenHeight/768.0)
 Next
 
 Global AchvLocked = LoadImage_Strict("GFX\menu\achievements\achvlocked.jpg")
-AchvLocked = ResizeImage2(AchvLocked,ImageWidth(AchvLocked)*Config\Graphics\ScreenHeight/768.0,ImageHeight(AchvLocked)*Config\Graphics\ScreenHeight/768.0)
+AchvLocked = Image_ScaleGPU(AchvLocked,ImageWidth(AchvLocked)*Config\Graphics\ScreenHeight/768.0,ImageHeight(AchvLocked)*Config\Graphics\ScreenHeight/768.0)
 
 Function GiveAchievement(achvname%, showMessage%=True)
 	If Achievements(achvname)<>True Then

@@ -13,6 +13,7 @@
 ; Back buffer selection
 ; ===========================================================================
 Include "src/engine/graphics/FrameCompositor.bb"
+Include "src/engine/graphics/ImageScaler.bb"
 ; ===========================================================================
 
 Type GraphicsState
@@ -92,6 +93,9 @@ Function Graphics_Init(config.GraphicsConfig)
 	
 	SetBuffer BackBuffer()
 
+	FrameCompositor_Init()
+	ImageScaler_Init()
+
 End Function
 
 ;-----------------------------------------------------------------------------
@@ -117,8 +121,9 @@ End Function
 Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 
 	Graphics3D width, height, depth, mode
-	InitFastResize()
+
 	AntiAlias Config\Graphics\AntiAliasing
+	
 	;TextureAnisotropy% (GetOptionInt("graphics","anisotropy"),-1) ; Look into why this might have been disabled
 
 End Function

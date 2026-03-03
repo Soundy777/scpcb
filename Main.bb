@@ -1930,51 +1930,7 @@ While IsRunning
 		;UpdateSaveMSG()
 	End If
 	
-	If Config\Graphics\BorderlessWindowed Then
-		If (Gfx\RealWidth<>Config\Graphics\ScreenWidth) Or (Gfx\RealHeight<>Config\Graphics\ScreenHeight) Then
-			SetBuffer TextureBuffer(fresize_texture)
-			ClsColor 0,0,0 : Cls
-			CopyRect 0,0,Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight,1024-Config\Graphics\ScreenWidth/2,1024-Config\Graphics\ScreenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-			SetBuffer BackBuffer()
-			ClsColor 0,0,0 : Cls
-			ScaleRender(0,0,2050.0 / Float(Config\Graphics\ScreenWidth) * Gfx\AspectRatio, 2050.0 / Float(Config\Graphics\ScreenWidth) * Gfx\AspectRatio)
-			;might want to replace Float(Config\Graphics\ScreenWidth) with Max(Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight) if portrait sizes cause issues
-			;everyone uses landscape so it's probably a non-issue
-		EndIf
-	EndIf
-
-	;not by any means a perfect solution
-	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
-	If Config\Graphics\ScreenGamma>1.0 Then
-		CopyRect 0,0,Gfx\RealWidth,Gfx\RealHeight,1024-Gfx\RealWidth/2,1024-Gfx\RealHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-		EntityBlend fresize_image,1
-		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
-		EntityFX fresize_image,1+32
-		EntityBlend fresize_image,3
-		EntityAlpha fresize_image,Config\Graphics\ScreenGamma-1.0
-		ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
-	ElseIf Config\Graphics\ScreenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-		CopyRect 0,0,Gfx\RealWidth,Gfx\RealHeight,1024-Gfx\RealWidth/2,1024-Gfx\RealHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-		EntityBlend fresize_image,1
-		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
-		EntityFX fresize_image,1+32
-		EntityBlend fresize_image,2
-		EntityAlpha fresize_image,1.0
-		SetBuffer TextureBuffer(fresize_texture2)
-		ClsColor 255*Config\Graphics\ScreenGamma,255*Config\Graphics\ScreenGamma,255*Config\Graphics\ScreenGamma
-		Cls
-		SetBuffer BackBuffer()
-		ScaleRender(-1.0/Float(Gfx\RealWidth),1.0/Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth),2048.0 / Float(Gfx\RealWidth))
-		SetBuffer(TextureBuffer(fresize_texture2))
-		ClsColor 0,0,0
-		Cls
-		SetBuffer(BackBuffer())
-	EndIf
-	EntityFX fresize_image,1
-	EntityBlend fresize_image,1
-	EntityAlpha fresize_image,1.0
+	FrameCompositor_Apply(Config\Graphics\BorderlessWindowed, Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, Config\Graphics\ScreenGamma)
 	
 	CatchErrors("Main loop / uncaught")
 
@@ -2042,7 +1998,6 @@ Wend
 
 If Flags\SteamActive Then Steam_Shutdown()
 If Flags\DiscordActive Then BlitzcordClearActivity()
-
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -4460,7 +4415,7 @@ Function DrawGUI()
 					If SelectedItem\itemtemplate\img=0 Then
 						SelectedItem\state = Rand(0,5)
 						SelectedItem\itemtemplate\img=LoadImage_Strict("GFX\items\1025\1025_"+Int(SelectedItem\state)+".jpg")	
-						SelectedItem\itemtemplate\img = ResizeImage2(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
+						SelectedItem\itemtemplate\img = Image_ScaleGPU(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
 						
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
@@ -5403,6 +5358,8 @@ Function DrawGUI()
 					;[Block]
 					If SelectedItem\itemtemplate\img=0 Then
 						SelectedItem\itemtemplate\img=LoadImage_Strict(SelectedItem\itemtemplate\imgpath)	
+
+						; ToDo:: God knows why this was disabled... but it wasn't me that did it. Seems it was always disabled
 						;SelectedItem\itemtemplate\img = ResizeImage2(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
 						
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
@@ -5436,7 +5393,7 @@ Function DrawGUI()
 					;[Block]
 					If SelectedItem\itemtemplate\img = 0 Then
 						SelectedItem\itemtemplate\img = LoadImage_Strict(SelectedItem\itemtemplate\imgpath)	
-						SelectedItem\itemtemplate\img = ResizeImage2(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
+						SelectedItem\itemtemplate\img = Image_ScaleGPU(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
 						
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
@@ -5515,7 +5472,7 @@ Function DrawGUI()
 									SetBuffer BackBuffer()
 								Case "doc372"
 									SelectedItem\itemtemplate\img = LoadImage_Strict(SelectedItem\itemtemplate\imgpath)
-									SelectedItem\itemtemplate\img = ResizeImage2(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
+									SelectedItem\itemtemplate\img = Image_ScaleGPU(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
 									
 									SetBuffer ImageBuffer(SelectedItem\itemtemplate\img)
 									Color 37,45,137
@@ -5540,7 +5497,7 @@ Function DrawGUI()
 									SelectedItem\itemtemplate\img=LoadImage_Strict(SelectedItem\itemtemplate\imgpath)
 								Default 
 									SelectedItem\itemtemplate\img=LoadImage_Strict(SelectedItem\itemtemplate\imgpath)
-									SelectedItem\itemtemplate\img = ResizeImage2(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
+									SelectedItem\itemtemplate\img = Image_ScaleGPU(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * Gfx\MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * Gfx\MenuScale)
 							End Select
 							
 							MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
@@ -7610,7 +7567,9 @@ Function NullGame(playbuttonsfx%=True)
 	ark_blur_cam = 0
 	Collider = 0
 	Sky = 0
-	InitFastResize()
+
+	; We need to reinitialize this because the fucking "ClearWorld" destroys everything!?!?!?!?
+	FrameCompositor_Init()
 	
 	CatchErrors("NullGame")
 End Function
@@ -9605,25 +9564,6 @@ Function EntityScaleZ#(entity%, globl% = False)
 	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
 End Function 
 
-
-
-Function ResizeImage2(image%,width%,height%)
-    img% = CreateImage(width,height)
-	
-	oldWidth% = ImageWidth(image)
-	oldHeight% = ImageHeight(image)
-	CopyRect 0,0,oldWidth,oldHeight,1024-oldWidth/2,1024-oldHeight/2,ImageBuffer(image),TextureBuffer(fresize_texture)
-	SetBuffer BackBuffer()
-	ScaleRender(0,0,2048.0 / Float(Gfx\RealWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(Gfx\RealWidth) * Float(height) / Float(oldHeight))
-	;might want to replace Float(Config\Graphics\ScreenWidth) with Max(Config\Graphics\ScreenWidth,Config\Graphics\ScreenHeight) if portrait sizes cause issues
-	;everyone uses landscape so it's probably a non-issue
-	CopyRect Gfx\RealWidth/2-width/2,Gfx\RealHeight/2-height/2,width,height,0,0,BackBuffer(),ImageBuffer(img)
-	
-    FreeImage image
-    Return img
-End Function
-
-
 Function RenderWorld2()
 	CatchErrors("Uncaught (RenderWorld2)")
 
@@ -9793,63 +9733,6 @@ Function RenderWorld2()
 	EndIf
 
 	CatchErrors("RenderWorld2")
-End Function
-
-
-Function ScaleRender(x#,y#,hscale#=1.0,vscale#=1.0)
-	If Camera<>0 Then HideEntity Camera
-	WireFrame 0
-	ShowEntity fresize_image
-	ScaleEntity fresize_image,hscale,vscale,1.0
-	PositionEntity fresize_image, x, y, 1.0001
-	ShowEntity fresize_cam
-	RenderWorld()
-	HideEntity fresize_cam
-	HideEntity fresize_image
-	WireFrame Gfx\Wireframe
-	If Camera<>0 Then ShowEntity Camera
-End Function
-
-Function InitFastResize()
-    ;Create Camera
-	Local cam% = CreateCamera()
-	CameraProjMode cam, 2
-	CameraZoom cam, 0.1
-	CameraClsMode cam, 0, 0
-	CameraRange cam, 0.1, 1.5
-	MoveEntity cam, 0, 0, -10000
-	
-	fresize_cam = cam
-	
-    ;Create sprite
-	Local spr% = CreateMesh(cam)
-	Local sf% = CreateSurface(spr)
-	AddVertex sf, -1, 1, 0, 0, 0
-	AddVertex sf, 1, 1, 0, 1, 0
-	AddVertex sf, -1, -1, 0, 0, 1
-	AddVertex sf, 1, -1, 0, 1, 1
-	AddTriangle sf, 0, 1, 2
-	AddTriangle sf, 3, 2, 1
-	EntityFX spr, 17
-	ScaleEntity spr, 2048.0 / Float(Gfx\RealWidth), 2048.0 / Float(Gfx\RealHeight), 1
-	PositionEntity spr, 0, 0, 1.0001
-	EntityOrder spr, -100001
-	EntityBlend spr, 1
-	fresize_image = spr
-	
-    ;Create texture
-	fresize_texture = CreateTexture(2048, 2048, 1+256)
-	fresize_texture2 = CreateTexture(2048, 2048, 1+256)
-	TextureBlend fresize_texture2,3
-	SetBuffer(TextureBuffer(fresize_texture2))
-	ClsColor 0,0,0
-	Cls
-	SetBuffer(BackBuffer())
-	;TextureAnisotropy(fresize_texture)
-	EntityTexture spr, fresize_texture,0,0
-	EntityTexture spr, fresize_texture2,0,1
-	
-	HideEntity fresize_cam
 End Function
 
 ;--------------------------------------- Some new 1.3 -functions -------------------------------------------------------
@@ -10215,12 +10098,3 @@ Function Update096ElevatorEvent#(e.Events,EventState#,d.Doors,elevatorobj%)
 	Return EventState
 	
 End Function
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#39#D8#DCD#162D#242C#2B2A
-;~B#11E0#145E#1C07
-;~C#Blitz3D

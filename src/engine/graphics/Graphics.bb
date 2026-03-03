@@ -118,3 +118,12 @@ Function Graphics_CalcMenuScale#()
 	If short > 840 Then Return 1
 	Return short / 840.0
 End Function
+
+Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
+
+	Graphics3D width, height, depth, mode
+	InitFastResize()
+	AntiAlias Config\Graphics\AntiAliasing
+	;TextureAnisotropy% (GetOptionInt("graphics","anisotropy"),-1) ; Look into why this might have been disabled
+
+End Function

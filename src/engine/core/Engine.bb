@@ -9,7 +9,6 @@ Function Engine_Init()
     AppPaths_Init()
     ErrorHandling_Init(GAME_VERSION$)
     ;; ToDo:: init Logger
-    ;; ToDo:: init Time
 
     Config_Init()
     Config = Config_Load()
@@ -19,7 +18,6 @@ Function Engine_Init()
     Viewport_Init()
 
     Resource_Init()
-    ;; ToDo:: init AudioSystem
     ;; ToDo:: init InputManager
 
     Flags\SteamActive = SteamIntegration_Init()
@@ -32,6 +30,8 @@ Function Engine_Init()
 
     ;; ToDo:: init EventBus
     ;; ToDo:: init GameStateManager
+
+    Startup_PlayVideos()
 
     ;; ToDo:: Game_RegisterStates() <-- Its at this point the actual game layer has control passed to it by the Engine
 

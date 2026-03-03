@@ -16,7 +16,7 @@ Function Console_Render(layout.ConsoleLayout)
 	If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 
 	Color 255,255,255
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 
 End Function
 

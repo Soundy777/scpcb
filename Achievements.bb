@@ -88,7 +88,7 @@ Function AchievementTooltip(achvno%)
     
     SetFont Font3
     Local width = StringWidth(AchievementStrings(achvno))
-    SetFont Font1
+    SetFont GameFonts\UI_Small
     If (StringWidth(AchievementDescs(achvno))>width) Then
         width = StringWidth(AchievementDescs(achvno))
     EndIf
@@ -102,7 +102,7 @@ Function AchievementTooltip(achvno%)
     Rect(ScaledMouseX()+(20*Gfx\MenuScale),ScaledMouseY()+(20*Gfx\MenuScale),width,height,False)
     SetFont Font3
     Text(ScaledMouseX()+(20*Gfx\MenuScale)+(width/2),ScaledMouseY()+(35*Gfx\MenuScale), AchievementStrings(achvno), True, True)
-    SetFont Font1
+    SetFont GameFonts\UI_Small
     Text(ScaledMouseX()+(20*Gfx\MenuScale)+(width/2),ScaledMouseY()+(55*Gfx\MenuScale), AchievementDescs(achvno), True, True)
 End Function
 
@@ -171,7 +171,7 @@ Function UpdateAchievementMsg()
 			Color 50,50,50
 			Rect(x+10*scale,y+10*scale,64*scale,64*scale,False)
 			Color 255,255,255
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 			RowText(Format(I_Loc\HUD_AchvUnlocked, amsg\txt),x+84*scale,y+10*scale,width-94*scale,y-20*scale)
 			If amsg\msgtime > 0.0 And amsg\msgtime < 70*7
 				amsg\msgtime = amsg\msgtime + RawDeltaTime

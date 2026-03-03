@@ -124,20 +124,20 @@ Function Loading_Render(percent%, shortloading=False)
 			For i = 0 To Rand(10,15);temp
 				strtemp$ = Replace(CurrentLoadingScreen\txt[0],Mid(CurrentLoadingScreen\txt[0],Rand(1,Len(strtemp)-1),1),RandomDefaultWidthChar(130,250,"?"))
 			Next		
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 			RowText(strtemp, Config\Graphics\ScreenWidth / 2-200*Gfx\MenuScale, Config\Graphics\ScreenHeight / 2 +120*Gfx\MenuScale,400*Gfx\MenuScale,300*Gfx\MenuScale,True)		
 		Else
 			
 			Color 0,0,0
 			SetFont Font2
 			Text(Config\Graphics\ScreenWidth / 2 + Max(1, Gfx\MenuScale), Config\Graphics\ScreenHeight / 2 + 80*Gfx\MenuScale+Max(1, Gfx\MenuScale), CurrentLoadingScreen\title, True, True)
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 			RowText(CurrentLoadingScreen\txt[LoadingScreenTextHandle], Config\Graphics\ScreenWidth / 2-200*Gfx\MenuScale+Max(1, Gfx\MenuScale), Config\Graphics\ScreenHeight / 2 +120*Gfx\MenuScale+Max(1, Gfx\MenuScale),400*Gfx\MenuScale,300*Gfx\MenuScale,True)
 			
 			Color 255,255,255
 			SetFont Font2
 			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 +80*Gfx\MenuScale, CurrentLoadingScreen\title, True, True)
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 			RowText(CurrentLoadingScreen\txt[LoadingScreenTextHandle], Config\Graphics\ScreenWidth / 2-200*Gfx\MenuScale, Config\Graphics\ScreenHeight / 2 +120*Gfx\MenuScale,400*Gfx\MenuScale,300*Gfx\MenuScale,True)
 			
 		EndIf

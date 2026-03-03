@@ -104,7 +104,7 @@ Function UpdateMainMenu()
 		MenuBlinkDuration(0) = Rand(200, 500)
 	End If
 	
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 	
 	MenuBlinkTimer(1)=MenuBlinkTimer(1)-DeltaTime
 	If MenuBlinkTimer(1) < MenuBlinkDuration(1) Then
@@ -312,7 +312,7 @@ Function UpdateMainMenu()
 				
 				DrawFrame(x, y, width, height)				
 				
-				SetFont Font1
+				SetFont GameFonts\UI_Small
 				
 				Text (x + 20 * Gfx\MenuScale, y + 20 * Gfx\MenuScale, I_Loc\NewGame_Name)
 				CurrSave = InputBox(x + 150 * Gfx\MenuScale, y + 15 * Gfx\MenuScale, 200 * Gfx\MenuScale, 30 * Gfx\MenuScale, CurrSave, 1)
@@ -488,7 +488,7 @@ Function UpdateMainMenu()
 				width = 580 * Gfx\MenuScale
 				height = 296 * Gfx\MenuScale
 				
-				;SetFont Font1	
+				;SetFont GameFonts\UI_Small	
 				
 				SetFont Font2
 				
@@ -515,7 +515,7 @@ Function UpdateMainMenu()
 				
 				Text(x+(width/2.0),y+PagingFrameHeight+26*Gfx\MenuScale,Format(I_Loc\Menu_Page, Int(Max((CurrLoadGamePage+1),1)), Int(Max((Int(Ceil(Float(SaveGameAmount)/EntriesPerPage))),1))),True,True)
 				
-				SetFont Font1
+				SetFont GameFonts\UI_Small
 				
 				If CurrLoadGamePage > Ceil(Float(SaveGameAmount)/EntriesPerPage)-1 Then
 					CurrLoadGamePage = CurrLoadGamePage - 1
@@ -640,7 +640,7 @@ Function UpdateMainMenu()
 				If DrawButton(x+300*Gfx\MenuScale,y+15*Gfx\MenuScale,width/5,height/2, I_Loc\Option_Controls, False) Then MainMenuTab = 6
 				If DrawButton(x+440*Gfx\MenuScale,y+15*Gfx\MenuScale,width/5,height/2, I_Loc\Option_Advanced, False) Then MainMenuTab = 7
 				
-				SetFont Font1
+				SetFont GameFonts\UI_Small
 				y = y + 70 * Gfx\MenuScale
 				
 				If MainMenuTab <> 5
@@ -1104,13 +1104,13 @@ Function UpdateMainMenu()
 				
 				Text(x+(width/2.0),y+PagingFrameHeight+26*Gfx\MenuScale,Format(I_Loc\Menu_Page, Int(Max((CurrLoadGamePage+1),1)), Int(Max((Int(Ceil(Float(SavedMapsAmount)/EntriesPerPage))),1))),True,True)
 				
-				SetFont Font1
+				SetFont GameFonts\UI_Small
 				
 				If CurrLoadGamePage > Ceil(Float(SavedMapsAmount)/EntriesPerPage)-1 Then
 					CurrLoadGamePage = CurrLoadGamePage - 1
 				EndIf
 				
-				SetFont Font1
+				SetFont GameFonts\UI_Small
 				
 				If SavedMaps(0)="" Then 
 					Text (x + 20 * Gfx\MenuScale, y + 20 * Gfx\MenuScale, I_Loc\LoadMap_Nomaps)
@@ -1186,7 +1186,7 @@ Function UpdateMainMenu()
 				
 				Text(x+(width/2.0),y+PagingFrameHeight+26*Gfx\MenuScale,Format(I_Loc\Menu_Page, Int(Max((CurrLoadGamePage+1),1)), Int(Max((Int(Ceil(Float(ModCount)/entriesPerPage))),1))),True,True)
 				
-				SetFont Font1
+				SetFont GameFonts\UI_Small
 				
 				If CurrLoadGamePage > Ceil(Float(ModCount)/EntriesPerPage)-1 Then
 					CurrLoadGamePage = CurrLoadGamePage - 1
@@ -1409,7 +1409,7 @@ Function UpdateMainMenu()
 	
 	If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 	
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 End Function
 
 Const TAG_COUNT = 8
@@ -1615,7 +1615,7 @@ Function DrawButton%(x%, y%, width%, height%, txt$, bigfont% = True, waitForMous
 	Else
 		Color (255, 255, 255)
 	EndIf
-	If bigfont Then SetFont Font2 Else SetFont Font1
+	If bigfont Then SetFont Font2 Else SetFont GameFonts\UI_Small
 	Text(x + width / 2, y + height / 2, txt, True, True)
 	
 	Return clicked
@@ -1635,7 +1635,7 @@ Function DrawButton2%(x%, y%, width%, height%, txt$, bigfont% = True)
 	EndIf
 	
 	Color (255, 255, 255)
-	If bigfont Then SetFont Font2 Else SetFont Font1
+	If bigfont Then SetFont Font2 Else SetFont GameFonts\UI_Small
 	Text(x + width / 2, y + height / 2, txt, True, True)
 	
 	Return clicked
@@ -1787,7 +1787,7 @@ Function DrawTooltip(message$)
 	Rect(ScaledMouseX()+20,ScaledMouseY(),width,19*scale,True)
 	Color 150,150,150
 	Rect(ScaledMouseX()+20,ScaledMouseY(),width,19*scale,False)
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 	Text(ScaledMouseX()+(20*Gfx\MenuScale)+(width/2),ScaledMouseY()+(12*Gfx\MenuScale), message$, True, True)
 End Function
 
@@ -1818,7 +1818,7 @@ Function DrawOptionsTooltip(x%,y%,width%,height%,option$,value#=0,ingame%=False)
 	Local txt2$ = "", R% = 0, G% = 0, B% = 0
 	Local extraspace% = 0
 	
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 	Color 255,255,255
 	Select Lower(option$)
 		;Graphic options
@@ -1959,7 +1959,7 @@ Function DrawMapCreatorTooltip(x%,y%,width%,height%,mapname$)
 	Local fh# = height-40*Gfx\MenuScale
 	Local lines% = 0
 	
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 	Color 255,255,255
 	
 	Local txt$[6]

@@ -39,8 +39,12 @@ Loading_Init()
 ; 1) Load Fonts
 ; 2) Load & Scale BlinkMeterIMG
 
-Global Font1%, Font2%, Font3%, Font4%, Font5%
-Font1% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * Gfx\MenuScale))
+;Global Font1%
+Global Font2%
+Global Font3%
+Global Font4%
+Global Font5%
+;Font1 = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * Gfx\MenuScale))
 Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * Gfx\MenuScale))
 Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * Gfx\MenuScale))
 Font4% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * Gfx\MenuScale))
@@ -1918,7 +1922,7 @@ While IsRunning
 		End If
 		
 		Color 255, 255, 255
-		If Config\Graphics\ShowFPS Then SetFont GameFonts\Console : Text 20, 20, Format(I_Loc\HUD_Fps, Time_GetFPS()) : SetFont Font1
+		If Config\Graphics\ShowFPS Then SetFont GameFonts\Console : Text 20, 20, Format(I_Loc\HUD_Fps, Time_GetFPS()) : SetFont GameFonts\UI_Small
 		
 		If EndingTimer < 0 Then
 			If SelectedEnding <> "" Then DrawEnding()
@@ -2415,7 +2419,7 @@ Function DrawEnding()
 				Color(255, 255, 255)
 				SetFont Font2
 				Text(x + width / 2 + 40*Gfx\MenuScale, y + 20*Gfx\MenuScale, I_Loc\Menu_End, True)
-				SetFont Font1
+				SetFont GameFonts\UI_Small
 				
 				If AchievementsMenu=0 Then 
 					x = x+132*Gfx\MenuScale
@@ -2507,7 +2511,7 @@ Function DrawEnding()
 	
 	If Config\Graphics\Fullscreen Then DrawImage Resource_GetTexture(TEX_CURSOR), ScaledMouseX(),ScaledMouseY()
 	
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 End Function
 
 Function UpdateMenuState()
@@ -3452,7 +3456,7 @@ Function DrawGUI()
 				Text Config\Graphics\ScreenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 			
 			x = x+44*scale
 			y = y+249*scale
@@ -3610,7 +3614,7 @@ Function DrawGUI()
 			If OtherOpen\Inventory\Items[n] <> Null And SelectedItem <> OtherOpen\Inventory\Items[n] Then
 			;drawimage(OtherOpen\Inventory\Items[n].InvIMG, x + width / 2 - 32 * Viewport_GetScale(), y + height / 2 - 32 * Viewport_GetScale())
 				If isMouseOn Then
-					SetFont Font1
+					SetFont GameFonts\UI_Small
 					Color 0,0,0
 					Text(x + width / 2 + 1, y + height + spacing - 15 + 1, OtherOpen\Inventory\Items[n]\itemtemplate\displayname, True)
 					Color 255, 255, 255	
@@ -3865,7 +3869,7 @@ Function DrawGUI()
 							
 						EndIf
 						
-						SetFont Font1
+						SetFont GameFonts\UI_Small
 						Color 0,0,0
 						Text(x + width / 2 + 1, y + height + spacing - 15 + 1, Inventory(n)\displayname, True)							
 						Color 255, 255, 255	
@@ -4886,7 +4890,7 @@ Function DrawGUI()
 								Text(x+32, y+33, strtemp)
 							EndIf
 							
-							SetFont Font1
+							SetFont GameFonts\UI_Small
 							
 						EndIf
 						
@@ -5269,7 +5273,7 @@ Function DrawGUI()
 						EndIf
 					EndIf
 
-					SetFont Font1
+					SetFont GameFonts\UI_Small
 					;[End Block]
 				;new Items in SCP:CB 1.3
 				Case "scp1499","super1499"
@@ -5469,7 +5473,7 @@ Function DrawGUI()
 									SelectedItem\itemtemplate\img = LoadImage_Strict("GFX\items\bn.it")
 									SetBuffer ImageBuffer(SelectedItem\itemtemplate\img)
 									Color 0,0,0
-									SetFont Font1
+									SetFont GameFonts\UI_Small
 									Text 277, 469, AccessCode, True, True
 									Color 255,255,255
 									SetBuffer BackBuffer()
@@ -5725,7 +5729,7 @@ Function DrawHUD()
 			Text x, 310, "Current monitor: NULL"
 		EndIf
 		
-		SetFont Font1
+		SetFont GameFonts\UI_Small
 	EndIf
 End Function
 
@@ -5755,7 +5759,7 @@ Function DrawTimer()
 		EndIf
 	EndIf
 	Text(x, y, durText)
-	SetFont(Font1)
+	SetFont(GameFonts\UI_Small)
 End Function
 
 Function PadLeft$(txt$, padding$, targetLen%)
@@ -5852,23 +5856,23 @@ Function DrawMenu()
 		If AchievementsMenu > 0 Then
 			SetFont Font2
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_AchievementsUpper,False,True)
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 		ElseIf OptionsMenu > 0 Then
 			SetFont Font2
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_OptionsUpper,False,True)
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 		ElseIf QuitMSG > 0 Then
 			SetFont Font2
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_QuitQuestion,False,True)
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 		ElseIf KillTimer >= 0 Then
 			SetFont Font2
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_Pause,False,True)
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 		Else
 			SetFont Font2
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_Dead,False,True)
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 		End If		
 		
 		Local AchvXIMG% = (x + (22*Gfx\MenuScale))
@@ -5877,7 +5881,7 @@ Function DrawMenu()
 		Local imgsize% = 64
 		
 		If AchievementsMenu <= 0 And OptionsMenu <= 0 And QuitMSG <= 0
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 			Text x, y, I_Loc\Menu_Difficulty+" "+SelectedDifficulty\localName
 			Text x, y+20*Gfx\MenuScale, I_Loc\Menu_Save+" "+CurrSave
 			Text x, y+40*Gfx\MenuScale, GetSeedString()
@@ -5917,7 +5921,7 @@ Function DrawMenu()
 			Color 255,255,255
 			Select OptionsMenu
 				Case 1 ;Graphics
-					SetFont Font1
+					SetFont GameFonts\UI_Small
 					;[Block]
 					y=y+50*Gfx\MenuScale
 					
@@ -6002,7 +6006,7 @@ Function DrawMenu()
 					ZoomCamera(Config\Graphics\FOV)
 					;[End Block]
 				Case 2 ;Audio
-					SetFont Font1
+					SetFont GameFonts\UI_Small
 					;[Block]
 					y = y + 50*Gfx\MenuScale
 					
@@ -6061,7 +6065,7 @@ Function DrawMenu()
 					EndIf
 					;[End Block]
 				Case 3 ;Controls
-					SetFont Font1
+					SetFont GameFonts\UI_Small
 					;[Block]
 					y = y + 50*Gfx\MenuScale
 					
@@ -6152,7 +6156,7 @@ Function DrawMenu()
 					EndIf
 					;[End Block]
 				Case 4 ;Advanced
-					SetFont Font1
+					SetFont GameFonts\UI_Small
 					;[Block]
 					y = y + 50*Gfx\MenuScale
 					
@@ -6352,7 +6356,7 @@ Function DrawMenu()
 							LoadGameQuick(SavePath + CurrSave)
 							
 							MoveMouse viewport_center_x,viewport_center_y
-							SetFont Font1
+							SetFont GameFonts\UI_Small
 							HidePointer ()
 							
 							FlushKeys()
@@ -6407,7 +6411,7 @@ Function DrawMenu()
 						LoadGameQuick(SavePath + CurrSave)
 						
 						MoveMouse viewport_center_x,viewport_center_y
-						SetFont Font1
+						SetFont GameFonts\UI_Small
 						HidePointer ()
 						
 						FlushKeys()
@@ -6463,7 +6467,7 @@ Function DrawMenu()
 				EndIf
 			EndIf
 			
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 			If KillTimer < 0 Then RowText(DeathMSG$, x, y + 80*Gfx\MenuScale, 390*Gfx\MenuScale, 600*Gfx\MenuScale)
 		EndIf
 		
@@ -6471,7 +6475,7 @@ Function DrawMenu()
 		
 	End If
 	
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 	
 	CatchErrors("DrawMenu")
 End Function
@@ -7191,7 +7195,7 @@ Function InitNewGame()
 		EndIf
 	Next
 		
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 	
 	HidePointer()
 	
@@ -7253,7 +7257,7 @@ Function InitLoadGame()
 	
 	Loading_Render(90)
 		
-	SetFont Font1
+	SetFont GameFonts\UI_Small
 	
 	HidePointer ()
 	
@@ -9690,7 +9694,7 @@ Function RenderWorld2()
 				EndIf
 			Next
 			
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 			
 			FreeEntity (temp) : FreeEntity (temp2)
 			
@@ -9731,7 +9735,7 @@ Function RenderWorld2()
 			
 			Text Config\Graphics\ScreenWidth/2,20*Gfx\MenuScale,I_Loc\HUD_NvgBatlow,True,False
 			Color 255,255,255
-			SetFont Font1
+			SetFont GameFonts\UI_Small
 		EndIf
 	EndIf
 

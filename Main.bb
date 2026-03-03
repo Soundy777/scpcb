@@ -1,5 +1,5 @@
 ; ===========================================================================
-; Welcome to the madness...
+; Welcome to the madness that SCP CB's codebase...
 ; ===========================================================================
 
 Include "src/engine/core/Engine.bb"

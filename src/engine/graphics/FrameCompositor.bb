@@ -26,9 +26,6 @@ End Type
 
 Global FrameCompositor.TFrameCompositor
 
-Global fresize_image%, fresize_texture%, fresize_texture2%
-Global fresize_cam%
-
 ; ============================================================
 ; Initialisation
 ; ============================================================

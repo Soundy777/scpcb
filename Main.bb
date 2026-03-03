@@ -32,9 +32,8 @@ Game_Init()
 ;---------------------------------------------------------------------------------------------------------------------
 ; Refactoring Checkpoint #1
 ;---------------------------------------------------------------------------------------------------------------------
-Global SelectedLoadingScreen.LoadingScreens, LoadingScreenAmount% = 0, LoadingScreenText%
-Global LoadingBack% = LoadImage_Strict("Loadingscreens\loadingback.jpg")
-InitLoadingScreens()
+;; ToDo:: Eventually move this into the GameStateManager once we've refactored everything down to the main loop below
+Loading_Init()
 
 ;For some reason, Blitz3D doesn't load fonts that have filenames that
 ;don't match their "internal name" (i.e. their display name in applications
@@ -57,7 +56,7 @@ SetFont Font2
 Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 ScaleImage(BlinkMeterIMG, Viewport_GetScale(), Viewport_GetScale())
 
-DrawLoading(0, True)
+Loading_Render(0, True)
 
 ; - -Viewport.
 Global viewport_center_x% = Gfx\RealWidth / 2, viewport_center_y% = Gfx\RealHeight / 2
@@ -255,7 +254,7 @@ MusicCHN = StreamSound_Strict("SFX\Music\"+Music(2)+".ogg",MusicVolume)
 Global CurrMusicVolume# = 1.0, NowPlaying%=2, ShouldPlay%=11
 Global CurrMusic% = 1
 
-DrawLoading(10, True)
+Loading_Render(10, True)
 
 Dim OpenDoorSFX%(3,3), CloseDoorSFX%(3,3)
 
@@ -292,7 +291,7 @@ Dim DecaySFX%(5)
 
 Global BurstSFX 
 
-DrawLoading(20, True)
+Loading_Render(20, True)
 
 Dim RustleSFX%(3)
 
@@ -332,7 +331,7 @@ Dim Scp173SFX%(3)
 Dim HorrorSFX%(20)
 
 
-DrawLoading(25, True)
+Loading_Render(25, True)
 
 Dim IntroSFX%(20)
 
@@ -363,7 +362,7 @@ Dim StepSFX%(5, 2, 8) ;(normal/metal, walk/run, id)
 
 Dim Step2SFX(6)
 
-DrawLoading(30, True)
+Loading_Render(30, True)
 
 ;New Sounds and Meshes/Other things in SCP:CB 1.3 - ENDSHN
 Global PlayCustomMusic% = False, CustomMusic% = 0
@@ -458,7 +457,7 @@ Global StaminaMeterIMG%
 
 Global Panel294, Using294%, Input294$
 
-DrawLoading(35, True)
+Loading_Render(35, True)
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Refactoring Checkpoint #4
@@ -1093,7 +1092,7 @@ Function RemoveDoor(d.Doors)
 	Delete d
 End Function
 
-DrawLoading(40,True)
+Loading_Render(40,True)
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Refactoring Checkpoint #5
@@ -1103,7 +1102,7 @@ Global DebugForestGen% = GetOptionInt("debug", "show forest gen")
 
 Include "MapSystem.bb"
 
-DrawLoading(80,True)
+Loading_Render(80,True)
 
 Include "NPCs.bb"
 
@@ -1374,7 +1373,7 @@ Collisions HIT_178, HIT_MAP, 2, 2
 Collisions HIT_178, HIT_178, 1, 3
 Collisions HIT_DEAD, HIT_MAP, 2, 2
 
-DrawLoading(90, True)
+Loading_Render(90, True)
 
 ;----------------------------------- meshes and textures ----------------------------------------------------------------
 
@@ -1431,7 +1430,7 @@ Include "src/game/systems/SaveSystem.bb"
 FlushKeys()
 FlushMouse()
 
-DrawLoading(100, True)
+Loading_Render(100, True)
 
 Global UpdateParticles_Time# = 0.0
 
@@ -6343,7 +6342,7 @@ Function DrawMenu()
 				If (Not SelectedDifficulty\permaDeath) Then
 					If GameSaved Then
 						If DrawButton(x, y, 390*Gfx\MenuScale, 60*Gfx\MenuScale, I_Loc\Menu_Load) Then
-							DrawLoading(0)
+							Loading_Render(0)
 							
 							MenuOpen = False
 							LoadGameQuick(SavePath + CurrSave)
@@ -6371,7 +6370,7 @@ Function DrawMenu()
 								End If
 							Next
 							
-							DrawLoading(100)
+							Loading_Render(100)
 							
 							DropSpeed=0
 							
@@ -6398,7 +6397,7 @@ Function DrawMenu()
 				y = y+104*Gfx\MenuScale
 				If GameSaved And (Not SelectedDifficulty\permaDeath) Then
 					If DrawButton(x, y, 390*Gfx\MenuScale, 60*Gfx\MenuScale, I_Loc\Menu_Load) Then
-						DrawLoading(0)
+						Loading_Render(0)
 						
 						MenuOpen = False
 						LoadGameQuick(SavePath + CurrSave)
@@ -6426,7 +6425,7 @@ Function DrawMenu()
 							End If
 						Next
 						
-						DrawLoading(100)
+						Loading_Render(100)
 						
 						DropSpeed=0
 						
@@ -6503,7 +6502,7 @@ End Function
 Include "LoadAllSounds.bb"
 Function LoadEntities()
 	CatchErrors("Uncaught (LoadEntities)")
-	DrawLoading(0)
+	Loading_Render(0)
 	
 	Local i%
 	
@@ -6618,7 +6617,7 @@ Function LoadEntities()
 	
 	FogNVTexture = LoadTexture_Strict("GFX\fogNV.jpg", 1)
 	
-	DrawLoading(5)
+	Loading_Render(5)
 	
 	DarkTexture = CreateTexture(1024, 1024, 1 + 2)
 	SetBuffer TextureBuffer(DarkTexture)
@@ -6743,7 +6742,7 @@ Function LoadEntities()
 	LightSpriteTex(1) = LoadTexture_Strict("GFX\light2.jpg", 1)
 	LightSpriteTex(2) = LoadTexture_Strict("GFX\lightsprite.jpg",1)
 	
-	DrawLoading(10)
+	Loading_Render(10)
 	
 	DoorOBJ = LoadMesh_Strict("GFX\map\door01.x")
 	HideEntity DoorOBJ
@@ -6795,7 +6794,7 @@ Function LoadEntities()
 	;	EndIf
 	;Next
 	
-	DrawLoading(15)
+	Loading_Render(15)
 	
 	For i = 0 To 5
 		GorePics(i) = LoadTexture_Strict("GFX\895pics\pic" + (i + 1) + ".jpg")
@@ -6804,7 +6803,7 @@ Function LoadEntities()
 	OldAiPics(0) = LoadTexture_Strict("GFX\AIface.jpg")
 	OldAiPics(1) = LoadTexture_Strict("GFX\AIface2.jpg")	
 	
-	DrawLoading(20)
+	Loading_Render(20)
 	
 	For i = 0 To 6
 		DecalTextures(i) = LoadTexture_Strict("GFX\decal" + (i + 1) + ".png", 1 + 2)
@@ -6824,7 +6823,7 @@ Function LoadEntities()
 	DecalTextures(19) = LoadTexture_Strict("GFX\decal19.png", 1 + 2)
 	DecalTextures(20) = LoadTexture_Strict("GFX\decal427.png", 1 + 2)
 	
-	DrawLoading(24)
+	Loading_Render(24)
 	
 	Monitor = LoadMesh_Strict("GFX\map\monitor.b3d")
 	HideEntity Monitor
@@ -6907,11 +6906,11 @@ Function LoadEntities()
 	EndIf
 	If EnableUserTracks Then DebugLog "User Tracks found: "+UserTrackMusicAmount
 	
-	DrawLoading(25)
+	Loading_Render(25)
 
 	InitItemTemplates()
 	
-	DrawLoading(35)
+	Loading_Render(35)
 
 	ParticleTextures(0) = LoadTexture_Strict("GFX\smoke.png", 1 + 2)
 	ParticleTextures(1) = LoadTexture_Strict("GFX\flash.jpg", 1 + 2)
@@ -6983,7 +6982,7 @@ Function LoadEntities()
 	OBJTunnel(6)=LoadRMesh("GFX\map\mt_generator.rmesh",Null)
 	HideEntity OBJTunnel(6)
 	
-	DrawLoading(37)
+	Loading_Render(37)
 
 	TextureLodBias Gfx\TextureLODBias#
 	;Devil Particle System
@@ -7048,7 +7047,7 @@ Function LoadEntities()
 	CameraZoom(Room2slCam, 0.8)
 	HideEntity(Room2slCam)
 	
-	DrawLoading(40)
+	Loading_Render(40)
 	
 	CatchErrors("LoadEntities")
 End Function
@@ -7057,7 +7056,7 @@ Function InitNewGame()
 	CatchErrors("Uncaught (InitNewGame)")
 	Local i%, de.Decals, d.Doors, it.Items, r.Rooms, sc.SecurityCams, e.Events
 
-	DrawLoading(45)
+	Loading_Render(45)
 	
 	PlayTime = 0
 	TimerStopped = False
@@ -7077,10 +7076,10 @@ Function InitNewGame()
 	Else
 		LoadMap(SavedMapsPath(SelectedMap), 50, 19)
 	EndIf
-	DrawLoading(70)
+	Loading_Render(70)
 	InitWayPoints(71, 9)
 	
-	DrawLoading(79)
+	Loading_Render(79)
 	
 	Curr173 = CreateNPC(NPCtype173, 0, -30.0, 0)
 	Curr106 = CreateNPC(NPCtypeOldMan, 0, -30.0, 0)
@@ -7104,7 +7103,7 @@ Function InitNewGame()
 		EntityParent(it\collider, 0)
 	Next
 	
-	DrawLoading(81)
+	Loading_Render(81)
 	For sc.SecurityCams= Each SecurityCams
 		sc\angle = EntityYaw(sc\obj) + sc\angle
 		EntityParent(sc\obj, 0)
@@ -7206,13 +7205,13 @@ Function InitNewGame()
 		UpdateWorld()
 		;Cls
 		If (Int(Float(i)*0.27)<>Int(Float(i-1)*0.27)) Then
-			DrawLoading(80+Int(Float(i)*0.27))
+			Loading_Render(80+Int(Float(i)*0.27))
 		EndIf
 	Next
 	Playable = True
 	
 	FreeTextureCache
-	DrawLoading(100)
+	Loading_Render(100)
 
 	MoveMouse viewport_center_x,viewport_center_y
 
@@ -7228,7 +7227,7 @@ Function InitLoadGame()
 	CatchErrors("Uncaught (InitLoadGame)")
 	Local d.Doors, sc.SecurityCams, rt.RoomTemplates, e.Events
 
-	DrawLoading(80)
+	Loading_Render(80)
 	
 	For d.Doors = Each Doors
 		EntityParent(d\obj, 0)
@@ -7248,7 +7247,7 @@ Function InitLoadGame()
 	
 	;InitEvents()
 	
-	DrawLoading(90)
+	Loading_Render(90)
 		
 	SetFont Font1
 	
@@ -7266,19 +7265,19 @@ Function InitLoadGame()
 		If e\EventName = "dimension1499"
 			If e\EventState = 2
 				;[Block]
-				DrawLoading(91)
+				Loading_Render(91)
 				e\room\Objects[0] = LoadMesh_Strict("GFX\map\dimension1499\1499plane.b3d")
 				HideEntity(e\room\Objects[0])
-				DrawLoading(92)
+				Loading_Render(92)
 				NTF_1499Sky = sky_CreateSky("GFX\map\sky\1499sky")
-				DrawLoading(93)
+				Loading_Render(93)
 				For i = 1 To 15
 					e\room\Objects[i] = LoadMesh_Strict("GFX\map\dimension1499\1499object"+i+".b3d")
 					HideEntity e\room\Objects[i]
 				Next
-				DrawLoading(96)
+				Loading_Render(96)
 				CreateChunkParts(e\room)
-				DrawLoading(97)
+				Loading_Render(97)
 				x# = EntityX(e\room\obj)
 				z# = EntityZ(e\room\obj)
 				Local ch.Chunk
@@ -7286,7 +7285,7 @@ Function InitLoadGame()
 					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#,True)
 					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#-40,True)
 				Next
-				DrawLoading(98)
+				Loading_Render(98)
 				UpdateChunks(e\room,15,False)
 				;MoveEntity Collider,0,10,0
 				;ResetEntity Collider
@@ -7300,7 +7299,7 @@ Function InitLoadGame()
 	Next
 	
 	FreeTextureCache
-	DrawLoading(100)
+	Loading_Render(100)
 
 	MoveMouse viewport_center_x,viewport_center_y
 	

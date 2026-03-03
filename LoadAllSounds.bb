@@ -50,7 +50,7 @@ Next
 
 BurstSFX = LoadSound_Strict("SFX\Room\TunnelBurst.ogg")
 
-;DrawLoading(20, True)
+;Loading_Render(20, True)
 
 ;Dim RustleSFX%(3)
 For i = 0 To 2
@@ -124,7 +124,7 @@ For i = 14 To 15
 	HorrorSFX(i) = LoadSound_Strict("SFX\Horror\Horror" + i + ".ogg")
 Next
 
-;DrawLoading(25, True)
+;Loading_Render(25, True)
 
 ;Dim IntroSFX%(20)
 

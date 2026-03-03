@@ -5910,7 +5910,7 @@ Function InitWayPoints(loadingstart,loadingcount#)
 		number = number + 1
 		iter = iter + 1
 		If iter = 20 Then 
-			DrawLoading(loadingstart+Floor((loadingcount/amount)*number)) 
+			Loading_Render(loadingstart+Floor((loadingcount/amount)*number)) 
 			iter = 0
 		EndIf
 		
@@ -7421,7 +7421,7 @@ Function CreateMap(loadingstart,loadingcount#)
 	temp = 0
 	Local r.Rooms, spacing# = 8.0
 	For y = MapHeight - 1 To 1 Step - 1
-		DrawLoading(loadingstart + Float(MapHeight - 1 - y) / (MapHeight - 1) * loadingcount)
+		Loading_Render(loadingstart + Float(MapHeight - 1 - y) / (MapHeight - 1) * loadingcount)
 		
 		;zone% = GetZone(y)
 		

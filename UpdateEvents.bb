@@ -8921,7 +8921,7 @@ Function UpdateEndings()
 						;Curr106\Idle = True
 						
 						If e\EventState = 0 Then
-							DrawLoading(0,True)
+							Loading_Render(0,True)
 							
 							For i = 0 To MaxRoomLights-1
 								If e\room\LightSprites[i]<>0 Then 
@@ -8941,9 +8941,9 @@ Function UpdateEndings()
 							SecondaryLightOn = True
 							
 							;Music(5) = LoadSound_Strict("SFX\Music\GateB1.ogg")
-							DrawLoading(60,True)
+							Loading_Render(60,True)
 							;Music(6) = LoadSound_Strict("SFX\Music\GateB2.ogg")
-							DrawLoading(90,True)
+							Loading_Render(90,True)
 							
 							e\room\NPC[0] = CreateNPC(NPCtypeApache, e\room\x, 100.0, e\room\z)
 							e\room\NPC[0]\State = 1
@@ -8976,7 +8976,7 @@ Function UpdateEndings()
 								EndIf
 							Next
 							
-							DrawLoading(100,True)
+							Loading_Render(100,True)
 						Else
 							
 							UpdateSky()
@@ -9350,7 +9350,7 @@ Function UpdateEndings()
 					ShowEntity e\room\obj
 					
 					If e\EventState = 0 Then
-						DrawLoading(0)
+						Loading_Render(0)
 						e\room\Objects[0] = LoadMesh_Strict("GFX\MAP\gateatunnel.b3d")
 						PositionEntity e\room\Objects[0], EntityX(e\room\obj,True),EntityY(e\room\obj,True),EntityZ(e\room\obj,True)
 						ScaleEntity (e\room\Objects[0],RoomScale,RoomScale,RoomScale)
@@ -9358,7 +9358,7 @@ Function UpdateEndings()
 						EntityPickMode e\room\Objects[0], 3
 						EntityParent(e\room\Objects[0],e\room\obj)
 						
-						DrawLoading(30)
+						Loading_Render(30)
 						
 						For i = 0 To e\room\MaxLights
 							If e\room\LightSprites[i]<>0 Then 
@@ -9390,7 +9390,7 @@ Function UpdateEndings()
 						Sky = sky_CreateSky("GFX\map\sky\sky")
 						RotateEntity Sky,0,e\room\angle,0
 						
-						DrawLoading(60)
+						Loading_Render(60)
 						
 						For i = 0 To 1
 							e\room\NPC[i] = CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[i+5],True),EntityY(e\room\Objects[i+5],True),EntityZ(e\room\Objects[i+5],True))
@@ -9452,7 +9452,7 @@ Function UpdateEndings()
 						
 						If (Not Contained106) Then PlaySound_Strict LoadTempSound("SFX\Ending\GateA\106Escape.ogg") 
 						
-						DrawLoading(100)
+						Loading_Render(100)
 					Else
 						
 						ShouldPlay = 17

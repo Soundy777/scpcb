@@ -486,7 +486,7 @@ Function LoadGame(file$)
 	CatchErrors("Uncaught (LoadGame)")
 	DebugLog "---------------------------------------------------------------------------"
 	
-	DrawLoading(45)
+	Loading_Render(45)
 
 	DropSpeed=0.0
 	
@@ -749,11 +749,11 @@ Function LoadGame(file$)
 		I_Zone\HasCustomMT = ReadByte(f)
 	EndIf
 	
-	DrawLoading(50)
+	Loading_Render(50)
 
 	temp = ReadInt(f)
 	For i = 1 To temp
-		DrawLoading(50 + Float(i) / temp * 19)
+		Loading_Render(50 + Float(i) / temp * 19)
 		Local roomtemplateID% = ReadInt(f)
 		Local angle% = ReadInt(f)
 		x = ReadFloat(f)
@@ -860,7 +860,7 @@ Function LoadGame(file$)
 		
 	Next
 	
-	DrawLoading(70)
+	Loading_Render(70)
 
 	For r.Rooms = Each Rooms
 		If r\x = r1499_x# And r\z = r1499_z#
@@ -2246,7 +2246,7 @@ Function LoadMap(file$, loadingstart, loadingcount#)
 		
 		;Facility rooms
 		For i = 0 To roomamount-1
-			DrawLoading(loadingstart + Float(i) / (roomamount-1) * loadingcount)
+			Loading_Render(loadingstart + Float(i) / (roomamount-1) * loadingcount)
 
 			x = ReadByte(f)
 			y = ReadByte(f)

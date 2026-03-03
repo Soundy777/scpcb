@@ -20,13 +20,6 @@ Engine_Init()
 Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
 ;; ToDo End
 
-;; ToDo:: remove globals in favor of direct viewport function calls
-Global HUDScale# = Viewport_GetScale()
-Global HUDStartX% = Viewport_GetStartX()
-Global HUDEndX% = Viewport_GetEndX()
-Global HUDStartY% = Viewport_GetStartY()
-Global HUDEndY% = Viewport_GetEndY()
-
 ;; ToDo:: figure out what this shit is & where to better place it for now
 Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
 
@@ -70,7 +63,7 @@ ConsoleFont% = Font1
 SetFont Font2
 
 Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
-ScaleImage(BlinkMeterIMG, HUDScale, HUDScale)
+ScaleImage(BlinkMeterIMG, Viewport_GetScale(), Viewport_GetScale())
 
 DrawLoading(0, True)
 
@@ -3406,7 +3399,7 @@ Function DrawGUI()
 		
 		FreeEntity (temp)
 		
-		DrawImage(HandIcon, Config\Graphics\ScreenWidth / 2 + Sin(yawvalue) * (Config\Graphics\ScreenWidth / 3) - 32 * HUDScale, Config\Graphics\ScreenHeight / 2 - Sin(pitchvalue) * (Config\Graphics\ScreenHeight / 3) - 32 * HUDScale)
+		DrawImage(HandIcon, Config\Graphics\ScreenWidth / 2 + Sin(yawvalue) * (Config\Graphics\ScreenWidth / 3) - 32 * Viewport_GetScale(), Config\Graphics\ScreenHeight / 2 - Sin(pitchvalue) * (Config\Graphics\ScreenHeight / 3) - 32 * Viewport_GetScale())
 		
 		If MouseUp1 Then
 			MouseUp1 = False
@@ -3429,28 +3422,28 @@ Function DrawGUI()
 		If pitchvalue > 90 And pitchvalue <= 180 Then pitchvalue = 90
 		If pitchvalue > 180 And pitchvalue < 270 Then pitchvalue = 270
 		
-		DrawImage(HandIcon2, Config\Graphics\ScreenWidth / 2 + Sin(yawvalue) * (Config\Graphics\ScreenWidth / 3) - 32 * HUDScale, Config\Graphics\ScreenHeight / 2 - Sin(pitchvalue) * (Config\Graphics\ScreenHeight / 3) - 32 * HUDScale)
+		DrawImage(HandIcon2, Config\Graphics\ScreenWidth / 2 + Sin(yawvalue) * (Config\Graphics\ScreenWidth / 3) - 32 * Viewport_GetScale(), Config\Graphics\ScreenHeight / 2 - Sin(pitchvalue) * (Config\Graphics\ScreenHeight / 3) - 32 * Viewport_GetScale())
 	EndIf
 	
-	If DrawHandIcon Then DrawImage(HandIcon, Config\Graphics\ScreenWidth / 2 - 32 * HUDScale, Config\Graphics\ScreenHeight / 2 - 32 * HUDScale)
+	If DrawHandIcon Then DrawImage(HandIcon, Config\Graphics\ScreenWidth / 2 - 32 * Viewport_GetScale(), Config\Graphics\ScreenHeight / 2 - 32 * Viewport_GetScale())
 	For i = 0 To 3
 		If DrawArrowIcon(i) Then
-			x = Config\Graphics\ScreenWidth / 2 - 32 * HUDScale
-			y = Config\Graphics\ScreenHeight / 2 - 32 * HUDScale	
+			x = Config\Graphics\ScreenWidth / 2 - 32 * Viewport_GetScale()
+			y = Config\Graphics\ScreenHeight / 2 - 32 * Viewport_GetScale()	
 			Select i
 				Case 0
-					y = y - 64 * HUDScale - 5
+					y = y - 64 * Viewport_GetScale() - 5
 				Case 1
-					x = x + 64 * HUDScale + 5
+					x = x + 64 * Viewport_GetScale() + 5
 				Case 2
-					y = y + 64 * HUDScale + 5
+					y = y + 64 * Viewport_GetScale() + 5
 				Case 3
-					x = x - 5 - 64 * HUDScale
+					x = x - 5 - 64 * Viewport_GetScale()
 			End Select
 			DrawImage(HandIcon, x, y)
 			Color 0, 0, 0
-			Rect(x + 4, y + 4, 64 * HUDScale - 8, 64 * HUDScale - 8)
-			DrawImage(ArrowIMG(i), x + 21 * HUDScale, y + 21 * HUDScale)
+			Rect(x + 4, y + 4, 64 * Viewport_GetScale() - 8, 64 * Viewport_GetScale() - 8)
+			DrawImage(ArrowIMG(i), x + 21 * Viewport_GetScale(), y + 21 * Viewport_GetScale())
 			DrawArrowIcon(i) = False
 		End If
 	Next
@@ -3639,9 +3632,9 @@ Function DrawGUI()
 		SelectedDoor = Null
 		Local tempX% = 0
 		
-		width% = 70 * HUDScale
-		height% = 70 * HUDScale
-		spacing% = 35 * HUDScale
+		width% = 70 * Viewport_GetScale()
+		height% = 70 * Viewport_GetScale()
+		spacing% = 35 * Viewport_GetScale()
 		
 		x = Config\Graphics\ScreenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
 		y = Config\Graphics\ScreenHeight / 2 - (height * OtherSize /5 + height * (OtherSize / 5 - 1)) / 2;height
@@ -3661,15 +3654,15 @@ Function DrawGUI()
 				Rect(x - 1, y - 1, width + 2, height + 2)
 			EndIf
 			
-			DrawFrame(x, y, width, height, (x Mod 64 * HUDScale), (x Mod 64 * HUDScale))
+			DrawFrame(x, y, width, height, (x Mod 64 * Viewport_GetScale()), (x Mod 64 * Viewport_GetScale()))
 			
 			If OtherOpen = Null Then Exit
 			
 			If OtherOpen\Inventory\Items[n] <> Null Then
-				If (SelectedItem <> OtherOpen\Inventory\Items[n] Or isMouseOn) Then DrawImage(OtherOpen\Inventory\Items[n]\invimg, x + width / 2 - 32 * HUDScale, y + height / 2 - 32 * HUDScale)
+				If (SelectedItem <> OtherOpen\Inventory\Items[n] Or isMouseOn) Then DrawImage(OtherOpen\Inventory\Items[n]\invimg, x + width / 2 - 32 * Viewport_GetScale(), y + height / 2 - 32 * Viewport_GetScale())
 			EndIf
 			If OtherOpen\Inventory\Items[n] <> Null And SelectedItem <> OtherOpen\Inventory\Items[n] Then
-			;drawimage(OtherOpen\Inventory\Items[n].InvIMG, x + width / 2 - 32 * HUDScale, y + height / 2 - 32 * HUDScale)
+			;drawimage(OtherOpen\Inventory\Items[n].InvIMG, x + width / 2 - 32 * Viewport_GetScale(), y + height / 2 - 32 * Viewport_GetScale())
 				If isMouseOn Then
 					SetFont Font1
 					Color 0,0,0
@@ -3830,9 +3823,9 @@ Function DrawGUI()
 	Else If InvOpen Then
 		SelectedDoor = Null
 		
-		width% = 70 * HUDScale
-		height% = 70 * HUDScale
-		spacing% = 35 * HUDScale
+		width% = 70 * Viewport_GetScale()
+		height% = 70 * Viewport_GetScale()
+		spacing% = 35 * Viewport_GetScale()
 		
 		x = Config\Graphics\ScreenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
 		y = Config\Graphics\ScreenHeight / 2 - (height * MaxItemAmount /5 + height * (MaxItemAmount / 5 - 1)) / 2
@@ -3896,16 +3889,16 @@ Function DrawGUI()
 			EndIf
 			
 			Color 255, 255, 255
-			DrawFrame(x, y, width, height, (x Mod 64 * HUDScale), (x Mod 64 * HUDScale))
+			DrawFrame(x, y, width, height, (x Mod 64 * Viewport_GetScale()), (x Mod 64 * Viewport_GetScale()))
 			
 			If Inventory(n) <> Null Then
 				If (SelectedItem <> Inventory(n) Or isMouseOn) Then 
-					DrawImage(Inventory(n)\invimg, x + width / 2 - 32 * HUDScale, y + height / 2 - 32 * HUDScale)
+					DrawImage(Inventory(n)\invimg, x + width / 2 - 32 * Viewport_GetScale(), y + height / 2 - 32 * Viewport_GetScale())
 				EndIf
 			EndIf
 			
 			If Inventory(n) <> Null And SelectedItem <> Inventory(n) Then
-				;drawimage(Inventory(n).InvIMG, x + width / 2 - 32 * HUDScale, y + height / 2 - 32 * HUDScale)
+				;drawimage(Inventory(n).InvIMG, x + width / 2 - 32 * Viewport_GetScale(), y + height / 2 - 32 * Viewport_GetScale())
 				If isMouseOn Then
 					If SelectedItem = Null Then
 						If MouseHit1 Then
@@ -4368,7 +4361,7 @@ Function DrawGUI()
 							
 							DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 							
-							DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
+							DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * Viewport_GetScale(), 300 * Viewport_GetScale(), SelectedItem\state / 100.0, True)
 							
 							SelectedItem\state = Min(SelectedItem\state+(DeltaTime/5.0),100)			
 							
@@ -4652,8 +4645,8 @@ Function DrawGUI()
 					
 					strtemp$ = ""
 					
-					x = HUDEndX - ImageWidth(SelectedItem\itemtemplate\img) ;+ 120
-					y = HUDEndY - ImageHeight(SelectedItem\itemtemplate\img) ;- 30
+					x = Viewport_GetEndX() - ImageWidth(SelectedItem\itemtemplate\img) ;+ 120
+					y = Viewport_GetEndY() - ImageHeight(SelectedItem\itemtemplate\img) ;- 30
 					
 					DrawImage(SelectedItem\itemtemplate\img, x, y)
 					
@@ -5031,7 +5024,7 @@ Function DrawGUI()
 						
 						DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 						
-						DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
+						DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * Viewport_GetScale(), 300 * Viewport_GetScale(), SelectedItem\state / 100.0, True)
 						
 						SelectedItem\state = Min(SelectedItem\state+(DeltaTime/4.0),100)
 						
@@ -5066,7 +5059,7 @@ Function DrawGUI()
 					
 					DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 					
-					DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
+					DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * Viewport_GetScale(), 300 * Viewport_GetScale(), SelectedItem\state / 100.0, True)
 
 					SelectedItem\state = Min(SelectedItem\state+(DeltaTime/(2.0+(0.5*(SelectedItem\itemtemplate\name="finevest")))),100)
 					
@@ -5132,8 +5125,8 @@ Function DrawGUI()
 					
 					If SelectedItem\state <= 100 Then SelectedItem\state = Max(0, SelectedItem\state - DeltaTime * 0.005)
 					
-					x = HUDEndX - ImageWidth(SelectedItem\itemtemplate\img)*0.5+20
-					y = HUDEndY - ImageHeight(SelectedItem\itemtemplate\img)*0.4-85
+					x = Viewport_GetEndX() - ImageWidth(SelectedItem\itemtemplate\img)*0.5+20
+					y = Viewport_GetEndY() - ImageHeight(SelectedItem\itemtemplate\img)*0.4-85
 					width = 287
 					height = 256
 					
@@ -5224,8 +5217,8 @@ Function DrawGUI()
 							If SelectedItem\itemtemplate\name = "snav" Then Color(100, 0, 0)
 							Rect xx+80,yy+70,270,230,False
 							
-							x = HUDEndX - ImageWidth(SelectedItem\itemtemplate\img)*0.5+20
-							y = HUDEndY - ImageHeight(SelectedItem\itemtemplate\img)*0.4-85
+							x = Viewport_GetEndX() - ImageWidth(SelectedItem\itemtemplate\img)*0.5+20
+							y = Viewport_GetEndY() - ImageHeight(SelectedItem\itemtemplate\img)*0.4-85
 							
 							If SelectedItem\itemtemplate\name = "snav" Then 
 								Color(100, 0, 0)
@@ -5346,7 +5339,7 @@ Function DrawGUI()
 					
 					DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 					
-					DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * HUDScale, 300 * HUDScale, SelectedItem\state / 100.0, True)
+					DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 + 80 * Viewport_GetScale(), 300 * Viewport_GetScale(), SelectedItem\state / 100.0, True)
 					
 					SelectedItem\state = Min(SelectedItem\state+(DeltaTime),100)
 					
@@ -5676,36 +5669,36 @@ Function DrawHUD()
 
 	If SpeedRunMode Then DrawTimer()
 
-	Local width% = 204 * HUDScale
-	x% = HUDStartX + 80 * HUDScale
-	y% = HUDEndY - 95 * HUDScale
+	Local width% = 204 * Viewport_GetScale()
+	x% = Viewport_GetStartX() + 80 * Viewport_GetScale()
+	y% = Viewport_GetEndY() - 95 * Viewport_GetScale()
 
 	DrawBar(BlinkMeterIMG, x, y, width, BlinkTimer / BLINKFREQ)
 	Color 0, 0, 0
-	Rect(x - 50 * HUDScale, y, 30 * HUDScale, 30 * HUDScale)
+	Rect(x - 50 * Viewport_GetScale(), y, 30 * Viewport_GetScale(), 30 * Viewport_GetScale())
 	
 	If EyeIrritation > 0 Then
 		Color 200, 0, 0
-		Rect(x - 50 * HUDScale - 3, y - 3, 30 * HUDScale + 6, 30 * HUDScale + 6)
+		Rect(x - 50 * Viewport_GetScale() - 3, y - 3, 30 * Viewport_GetScale() + 6, 30 * Viewport_GetScale() + 6)
 	End If
 	
 	Color 255, 255, 255
-	Rect(x - 50 * HUDScale - 1, y - 1, 30 * HUDScale + 2, 30 * HUDScale + 2, False)
+	Rect(x - 50 * Viewport_GetScale() - 1, y - 1, 30 * Viewport_GetScale() + 2, 30 * Viewport_GetScale() + 2, False)
 	
-	DrawImage BlinkIcon, x - 50 * HUDScale, y
+	DrawImage BlinkIcon, x - 50 * Viewport_GetScale(), y
 	
-	y = HUDEndY - 55 * HUDScale
+	y = Viewport_GetEndY() - 55 * Viewport_GetScale()
 	DrawBar(StaminaMeterIMG, x, y, width, Stamina / 100.0)
 	
 	Color 0, 0, 0
-	Rect(x - 50 * HUDScale, y, 30 * HUDScale, 30 * HUDScale)
+	Rect(x - 50 * Viewport_GetScale(), y, 30 * Viewport_GetScale(), 30 * Viewport_GetScale())
 	
 	Color 255, 255, 255
-	Rect(x - 50 * HUDScale - 1, y - 1, 30 * HUDScale + 2, 30 * HUDScale + 2, False)
+	Rect(x - 50 * Viewport_GetScale() - 1, y - 1, 30 * Viewport_GetScale() + 2, 30 * Viewport_GetScale() + 2, False)
 	If Crouch Then
-		DrawImage CrouchIcon, x - 50 * HUDScale, y
+		DrawImage CrouchIcon, x - 50 * Viewport_GetScale(), y
 	Else
-		DrawImage SprintIcon, x - 50 * HUDScale, y
+		DrawImage SprintIcon, x - 50 * Viewport_GetScale(), y
 	EndIf
 
 	If DebugHUD Then
@@ -5798,10 +5791,10 @@ Function DrawTimer()
 	Else
 		durText$ = I_Loc\HUD_SpeedrunSaveloaded
 	EndIf
-	Local x% = HUDEndX - StringWidth(durText) - 24 * HUDScale
-	Local y% = HUDStartY + 24 * HUDScale
+	Local x% = Viewport_GetEndX() - StringWidth(durText) - 24 * Viewport_GetScale()
+	Local y% = Viewport_GetStartY() + 24 * Viewport_GetScale()
 	Color 0, 0, 0
-	Text(x + 3 * HUDScale, y + 3 * HUDScale, durText)
+	Text(x + 3 * Viewport_GetScale(), y + 3 * Viewport_GetScale(), durText)
 	If TimerStopped And TimerStopped<>3 Then
 		Color 255, 0, 0
 	Else
@@ -6578,21 +6571,21 @@ Function LoadEntities()
 	ScaleImage PauseMenuIMG,Gfx\MenuScale,Gfx\MenuScale
 	
 	SprintIcon% = LoadImage_Strict("GFX\sprinticon.png")
-	ScaleImage(SprintIcon, HUDScale, HUDScale)
+	ScaleImage(SprintIcon, Viewport_GetScale(), Viewport_GetScale())
 	BlinkIcon% = LoadImage_Strict("GFX\blinkicon.png")
-	ScaleImage(BlinkIcon, HUDScale, HUDScale)
+	ScaleImage(BlinkIcon, Viewport_GetScale(), Viewport_GetScale())
 	CrouchIcon% = LoadImage_Strict("GFX\sneakicon.png")
-	ScaleImage(CrouchIcon, HUDScale, HUDScale)
+	ScaleImage(CrouchIcon, Viewport_GetScale(), Viewport_GetScale())
 	HandIcon% = LoadImage_Strict("GFX\handsymbol.png")
-	ScaleImage(HandIcon, HUDScale, HUDScale)
+	ScaleImage(HandIcon, Viewport_GetScale(), Viewport_GetScale())
 	HandIcon2% = LoadImage_Strict("GFX\handsymbol2.png")
-	ScaleImage(HandIcon2, HUDScale, HUDScale)
+	ScaleImage(HandIcon2, Viewport_GetScale(), Viewport_GetScale())
 
 	StaminaMeterIMG% = LoadImage_Strict("GFX\staminameter.jpg")
-	ScaleImage(StaminaMeterIMG, HUDScale, HUDScale)
+	ScaleImage(StaminaMeterIMG, Viewport_GetScale(), Viewport_GetScale())
 
 	Panel294 = LoadImage_Strict("GFX\294panel.jpg")
-	ScaleImage(Panel294, HUDScale, HUDScale)
+	ScaleImage(Panel294, Viewport_GetScale(), Viewport_GetScale())
 
 	Load294()
 
@@ -8838,12 +8831,12 @@ Function Use294()
 	If PlayerRoom\SoundCHN<>0 Then temp = False
 	
 	Color 255, 255, 255
-	Text x+903*HUDScale, y+185*HUDScale, Right(Input294,13), True,True
+	Text x+903*Viewport_GetScale(), y+185*Viewport_GetScale(), Right(Input294,13), True,True
 	
 	If temp Then
 		If MouseHit1 Then
-			xtemp = Floor((ScaledMouseX()-x-Keyboard294X*HUDScale) / Keyboard294TileWidth / HUDScale)
-			ytemp = Floor((ScaledMouseY()-y-Keyboard294Y*HUDScale) / Keyboard294TileHeight / HUDScale)
+			xtemp = Floor((ScaledMouseX()-x-Keyboard294X*Viewport_GetScale()) / Keyboard294TileWidth / Viewport_GetScale())
+			ytemp = Floor((ScaledMouseY()-y-Keyboard294Y*Viewport_GetScale()) / Keyboard294TileHeight / Viewport_GetScale())
 			
 			temp = False
 			
@@ -9732,10 +9725,10 @@ Function RenderWorld2()
 			Local plusY% = 0
 			If hasBattery=1 Then plusY% = 40
 			
-			Text Config\Graphics\ScreenWidth/2,HUDStartY+(20+plusY)*Gfx\MenuScale,I_Loc\HUD_NvgRefresh,True,False
+			Text Config\Graphics\ScreenWidth/2,Viewport_GetStartY()+(20+plusY)*Gfx\MenuScale,I_Loc\HUD_NvgRefresh,True,False
 			
-			Text Config\Graphics\ScreenWidth/2,HUDStartY+(60+plusY)*Gfx\MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
-			Text Config\Graphics\ScreenWidth/2,HUDStartY+(100+plusY)*Gfx\MenuScale,I_Loc\HUD_NvgRefreshSeconds,True,False
+			Text Config\Graphics\ScreenWidth/2,Viewport_GetStartY()+(60+plusY)*Gfx\MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
+			Text Config\Graphics\ScreenWidth/2,Viewport_GetStartY()+(100+plusY)*Gfx\MenuScale,I_Loc\HUD_NvgRefreshSeconds,True,False
 			
 			temp% = CreatePivot() : temp2% = CreatePivot()
 			PositionEntity temp, EntityX(Collider), EntityY(Collider), EntityZ(Collider)
@@ -9781,25 +9774,25 @@ Function RenderWorld2()
 			
 			Color 0,0,55
 			For k=0 To 10
-				Rect HUDStartX+45,Config\Graphics\ScreenHeight*0.5-(k*20),54,10,True
+				Rect Viewport_GetStartX()+45,Config\Graphics\ScreenHeight*0.5-(k*20),54,10,True
 			Next
 			Color 0,0,255
 			For l=0 To Floor((power%+50)*0.01)
-				Rect HUDStartX+45,Config\Graphics\ScreenHeight*0.5-(l*20),54,10,True
+				Rect Viewport_GetStartX()+45,Config\Graphics\ScreenHeight*0.5-(l*20),54,10,True
 			Next
-			DrawImage NVGImages,HUDStartX+40,Config\Graphics\ScreenHeight*0.5+30,1
+			DrawImage NVGImages,Viewport_GetStartX()+40,Config\Graphics\ScreenHeight*0.5+30,1
 			
 			Color 255,255,255
 		ElseIf WearingNightVision=1 And hasBattery<>0
 			Color 0,55,0
 			For k=0 To 10
-				Rect HUDStartX+45,Config\Graphics\ScreenHeight*0.5-(k*20),54,10,True
+				Rect Viewport_GetStartX()+45,Config\Graphics\ScreenHeight*0.5-(k*20),54,10,True
 			Next
 			Color 0,255,0
 			For l=0 To Floor((power%+50)*0.01)
-				Rect HUDStartX+45,Config\Graphics\ScreenHeight*0.5-(l*20),54,10,True
+				Rect Viewport_GetStartX()+45,Config\Graphics\ScreenHeight*0.5-(l*20),54,10,True
 			Next
-			DrawImage NVGImages,HUDStartX+40,Config\Graphics\ScreenHeight*0.5+30,0
+			DrawImage NVGImages,Viewport_GetStartX()+40,Config\Graphics\ScreenHeight*0.5+30,0
 		EndIf
 	EndIf
 	

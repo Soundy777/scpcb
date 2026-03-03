@@ -938,9 +938,9 @@ Function GenForestGrid(fr.Forest)
 		Repeat
 			Cls()
 
-			Local tileSize = Max(Min(32 * HUDScale, Min(Config\Graphics\ScreenWidth / gridsize, (Config\Graphics\ScreenHeight - 50 * HUDScale) / gridsize)), 3)
+			Local tileSize = Max(Min(32 * Viewport_GetScale(), Min(Config\Graphics\ScreenWidth / gridsize, (Config\Graphics\ScreenHeight - 50 * Viewport_GetScale()) / gridsize)), 3)
 			Local totalWidth = gridsize * tileSize - 2, totalHeight = gridsize * tileSize - 2
-			Local xStart = Config\Graphics\ScreenWidth / 2 - totalWidth / 2, yStart = Config\Graphics\ScreenHeight / 2 - totalHeight / 2 - 50 * HUDScale
+			Local xStart = Config\Graphics\ScreenWidth / 2 - totalWidth / 2, yStart = Config\Graphics\ScreenHeight / 2 - totalHeight / 2 - 50 * Viewport_GetScale()
 
 			i=gridsize-1
 			For x=0 To gridsize-1
@@ -971,7 +971,7 @@ Function GenForestGrid(fr.Forest)
 
 			If Config\Graphics\Fullscreen Then DrawImage(CursorIMG,ScaledMouseX(),ScaledMouseY())
 			Color(255, 255, 255)
-			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 25 * HUDScale, I_Loc\Menu_Pressany, True, True)
+			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 25 * Viewport_GetScale(), I_Loc\Menu_Pressany, True, True)
 			
 			Flip()
 		Until GetKey() <> 0
@@ -7568,9 +7568,9 @@ Function CreateMap(loadingstart,loadingcount#)
 		Repeat
 			Cls
 
-			Local tileSize = Max(Min(32 * HUDScale, Min(Config\Graphics\ScreenWidth / MapWidth, (Config\Graphics\ScreenHeight - 50) / MapHeight)), 3)
+			Local tileSize = Max(Min(32 * Viewport_GetScale(), Min(Config\Graphics\ScreenWidth / MapWidth, (Config\Graphics\ScreenHeight - 50) / MapHeight)), 3)
 			Local totalWidth = MapWidth * tileSize - 2, totalHeight = MapHeight * tileSize - 2
-			Local xStart = Config\Graphics\ScreenWidth / 2 - totalWidth / 2, yStart = Config\Graphics\ScreenHeight / 2 - totalHeight / 2 - 50 * HUDScale
+			Local xStart = Config\Graphics\ScreenWidth / 2 - totalWidth / 2, yStart = Config\Graphics\ScreenHeight / 2 - totalHeight / 2 - 50 * Viewport_GetScale()
 
 			For x = 0 To MapWidth - 1
 				For y = 0 To MapHeight - 1
@@ -7619,7 +7619,7 @@ Function CreateMap(loadingstart,loadingcount#)
 
 			If Config\Graphics\Fullscreen Then DrawImage(CursorIMG,ScaledMouseX(),ScaledMouseY())
 			Color 255, 255, 255
-			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 25 * HUDScale, I_Loc\Menu_Pressany, True, True)
+			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight - 25 * Viewport_GetScale(), I_Loc\Menu_Pressany, True, True)
 			
 			Flip
 		Until GetKey() <> 0

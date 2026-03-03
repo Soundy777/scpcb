@@ -12,7 +12,7 @@ ResizeImage(Menu173, ImageWidth(Menu173) * Gfx\MenuScale, ImageHeight(Menu173) *
 
 For i = 0 To 3
 	ArrowIMG(i) = LoadImage_Strict("GFX\menu\arrow.png")
-	ScaleImage(ArrowIMG(i), HUDScale, HUDScale)
+	ScaleImage(ArrowIMG(i), Viewport_GetScale(), Viewport_GetScale())
 	RotateImage(ArrowIMG(i), 90 * i)
 	HandleImage(ArrowIMG(i), 0, 0)
 Next
@@ -1700,7 +1700,7 @@ Function DrawLoading(percent%, shortloading=False)
 		
 		DrawImage SelectedLoadingScreen\img, x, y
 		
-		DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 - 70 * Gfx\MenuScale, 300 * HUDScale, percent / 100.0, True)
+		DrawBar(BlinkMeterIMG, Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 - 70 * Gfx\MenuScale, 300 * Viewport_GetScale(), percent / 100.0, True)
 		
 		If SelectedLoadingScreen\title = "CWM" Then
 			

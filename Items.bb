@@ -81,14 +81,14 @@ Function CreateItemTemplate.ItemTemplates(name$, group$, displayname$, objpath$,
 		it\invimg = LoadImage_Strict(invimgpath)
 		it\invimgpath = invimgpath
 		MaskImage(it\invimg, 255, 0, 255)
-		ScaleImage(it\invimg, HUDScale, HUDScale)
+		ScaleImage(it\invimg, Viewport_GetScale(), Viewport_GetScale())
 	EndIf
 	
 	If (invimgpath2 <> "") Then
 		If it\invimg2=0 Then
 			it\invimg2 = LoadImage_Strict(invimgpath2)
 			MaskImage(it\invimg2,255,0,255)
-			ScaleImage(it\invimg2, HUDScale, HUDScale)
+			ScaleImage(it\invimg2, Viewport_GetScale(), Viewport_GetScale())
 		EndIf
 	Else
 		it\invimg2 = 0

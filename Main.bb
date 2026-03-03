@@ -5873,6 +5873,10 @@ Function DrawMenu()
 		
 		;DebugLog AchievementsMenu+"|"+OptionsMenu+"|"+QuitMSG
 		
+		;; ToDo:: this is current not working due to DeltaTime been 0 during pausing
+		;; However, it not working is actually better UX as it occured way too often.
+		;; A bug will still enable 173 to proc this due to the pause menu displaying 1 frame before the game is actually paused
+		;; We may want to eventually refactor this to perform a roll to determine if it will proc & then give it a random duration until it does
 		If PlayerRoom\RoomTemplate\Name$ <> "exit1" And PlayerRoom\RoomTemplate\Name$ <> "gatea"
 			If StopHidingTimer = 0 Then
 				If EntityDistance(Curr173\Collider, Collider)<4.0 Or EntityDistance(Curr106\Collider, Collider)<4.0 Then 

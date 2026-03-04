@@ -39,24 +39,14 @@ Loading_Init()
 ; 1) Load Fonts
 ; 2) Load & Scale BlinkMeterIMG
 
-;Global Font1%
-;Global Font2%
-;Global Font3%
-;Global Font4%
-Global Font5%
-;Font1 = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * Gfx\MenuScale))
-;Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * Gfx\MenuScale))
-;Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * Gfx\MenuScale))
-;Font4% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * Gfx\MenuScale))
-Font5% = LoadFont_Strict("GFX\font\Journal\Journal.ttf", Int(58 * Gfx\MenuScale))
-
 SetFont GameFonts\UI_Large
 
 ;; ToDo:: Find a more suitable point to setup this core UI Texture
-; This blink meter image is used everywhere for several different purposes
-; It appears on the HUD
-; It is used on the loading screen
-; Several other random calls make use of it
+; This is actually the individual loading bar blip texture - not the bar's background or border (think of it as the fill)
+; Used in Menu.bb's DrawBar Component as the fill for the progress bar
+; Used in Menu.bb's UI Slider Component to act as the slider button
+; With this getting used for the progress bar it is there for imporant for the loading screen, main menu, HUD & options menu (at the very least)
+; We'll refactor this when we come to overhaul the UI system
 Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 ScaleImage(BlinkMeterIMG, Viewport_GetScale(), Viewport_GetScale())
 
@@ -5483,7 +5473,7 @@ Function DrawGUI()
 									
 									SetBuffer ImageBuffer(SelectedItem\itemtemplate\img)
 									Color 37,45,137
-									SetFont Font5
+									SetFont GameFonts\Handwritten
 									temp = ((Int(AccessCode)*3) Mod 10000)
 									If temp < 1000 Then temp = temp+1000
 									Text 383*Gfx\MenuScale, 734*Gfx\MenuScale, temp, True, True

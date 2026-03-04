@@ -37,7 +37,7 @@ Function Config_Load.GameConfig()
 
     config\Audio = AudioConfig_Load()
     config\Console = ConsoleConfig_Load()
-    ; controls
+    config\Controls = ControlsConfig_Load()
     config\Debug = DebugConfig_Load()
     config\Gameplay = GameplayConfig_Load()
     config\Graphics = GraphicsConfig_Load()

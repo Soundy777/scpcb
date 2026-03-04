@@ -73,8 +73,6 @@ Global KEY_CROUCH = GetOptionInt("binds", "Crouch key")
 Global KEY_SAVE = GetOptionInt("binds", "Save key")
 Global KEY_CONSOLE = GetOptionInt("binds", "Console key")
 
-Global MouseSmooth# = GetOptionFloat("controls", "mouse smoothing")
-
 ;---------------------------------------------------------------------------------------------------------------------
 ; Refactoring Checkpoint #2
 ;---------------------------------------------------------------------------------------------------------------------
@@ -3053,12 +3051,12 @@ Function MouseLook()
 		;RotateEntity Collider, EntityPitch(Collider), EntityYaw(Collider), 0
 		;moveentity player, side, up, 0	
 		; -- Update the smoothing que To smooth the movement of the mouse.
-		mouse_x_speed_1# = CurveValue(MouseXSpeed() * (MouseSens + 0.6) , mouse_x_speed_1, (6.0 / (MouseSens + 1.0))*MouseSmooth) 
+		mouse_x_speed_1# = CurveValue(MouseXSpeed() * (MouseSens + 0.6) , mouse_x_speed_1, (6.0 / (MouseSens + 1.0))*Config\Controls\MouseSmoothing) 
 		If IsNaN(mouse_x_speed_1) Then mouse_x_speed_1 = 0
 		If InvertMouse Then
-			mouse_y_speed_1# = CurveValue(-MouseYSpeed() * (MouseSens + 0.6), mouse_y_speed_1, (6.0/(MouseSens+1.0))*MouseSmooth) 
+			mouse_y_speed_1# = CurveValue(-MouseYSpeed() * (MouseSens + 0.6), mouse_y_speed_1, (6.0/(MouseSens+1.0))*Config\Controls\MouseSmoothing) 
 		Else
-			mouse_y_speed_1# = CurveValue(MouseYSpeed () * (MouseSens + 0.6), mouse_y_speed_1, (6.0/(MouseSens+1.0))*MouseSmooth) 
+			mouse_y_speed_1# = CurveValue(MouseYSpeed () * (MouseSens + 0.6), mouse_y_speed_1, (6.0/(MouseSens+1.0))*Config\Controls\MouseSmoothing) 
 		EndIf
 		If IsNaN(mouse_y_speed_1) Then mouse_y_speed_1 = 0
 		
@@ -6069,11 +6067,11 @@ Function DrawMenu()
 					
 					y = y + 40*Gfx\MenuScale
 					
-					MouseSmooth = (SlideBar(x + 270*Gfx\MenuScale, y-4*Gfx\MenuScale, 100*Gfx\MenuScale, (MouseSmooth)*50.0, 2)/50.0)
+					Config\Controls\MouseSmoothing = (SlideBar(x + 270*Gfx\MenuScale, y-4*Gfx\MenuScale, 100*Gfx\MenuScale, (Config\Controls\MouseSmoothing)*50.0, 2)/50.0)
 					Color(255, 255, 255)
 					Text(x, y, I_Loc\OptionName_Mousesmoothing)
 					If (MouseOn(x+270*Gfx\MenuScale,y-4*Gfx\MenuScale,100*Gfx\MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=2
-						DrawOptionsTooltip(tx,ty,tw,th,"mousesmoothing",MouseSmooth)
+						DrawOptionsTooltip(tx,ty,tw,th,"mousesmoothing",Config\Controls\MouseSmoothing)
 					EndIf
 					
 					Color(255, 255, 255)
@@ -9460,7 +9458,7 @@ Function SaveOptionsINI()
 	PutINIValue(Paths\OptionsFile, "general", "speed run mode", SpeedRunMode%)
 	PutINIValue(Paths\OptionsFile, "general", "numeric seeds", Config\Gameplay\UseNumericSeeds%)
 	PutINIValue(Paths\OptionsFile, "graphics", "enable vram", EnableVRam)
-	PutINIValue(Paths\OptionsFile, "controls", "mouse smoothing", MouseSmooth)
+	PutINIValue(Paths\OptionsFile, "controls", "mouse smoothing", Config\Controls\MouseSmoothing)
 	PutINIValue(Paths\OptionsFile, "graphics", "hud offset", Config\Graphics\HUDOffset)
 	PutINIValue(Paths\OptionsFile, "graphics", "fov", Config\Graphics\FOV)
 	

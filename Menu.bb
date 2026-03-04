@@ -888,11 +888,11 @@ Function UpdateMainMenu()
 					
 					y = y + 40*Gfx\MenuScale
 					
-					MouseSmooth = (SlideBar(x + 310*Gfx\MenuScale, y-4*Gfx\MenuScale, 150*Gfx\MenuScale, (MouseSmooth)*50.0, 2)/50.0)
+					Config\Controls\MouseSmoothing = (SlideBar(x + 310*Gfx\MenuScale, y-4*Gfx\MenuScale, 150*Gfx\MenuScale, (Config\Controls\MouseSmoothing)*50.0, 2)/50.0)
 					Color(255, 255, 255)
 					Text(x + 20 * Gfx\MenuScale, y, I_Loc\OptionName_Mousesmoothing)
 					If (MouseOn(x+310*Gfx\MenuScale,y-4*Gfx\MenuScale,150*Gfx\MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=2
-						DrawOptionsTooltip(tx,ty,tw,th,"mousesmoothing",MouseSmooth)
+						DrawOptionsTooltip(tx,ty,tw,th,"mousesmoothing",Config\Controls\MouseSmoothing)
 					EndIf
 					
 					Color(255, 255, 255)

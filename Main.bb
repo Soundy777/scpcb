@@ -705,16 +705,16 @@ Function UpdateDoors()
 					If d\obj2 <> 0 Then ResetEntity(d\obj2)
 					If d\timerstate > 0 Then
 						d\timerstate = Max(0, d\timerstate - DeltaTime)
-						If d\timerstate + DeltaTime > 110 And d\timerstate <= 110 Then d\SoundCHN = PlaySound2(CautionSFX, Camera, d\obj)
-						;If d\timerstate = 0 Then d\open = (Not d\open) : PlaySound2(CloseDoorSFX(Min(d\dir,1),Rand(0, 2)), Camera, d\obj)
+						If d\timerstate + DeltaTime > 110 And d\timerstate <= 110 Then d\SoundCHN = PlaySpatialSound(CautionSFX, Camera, d\obj)
+						;If d\timerstate = 0 Then d\open = (Not d\open) : PlaySpatialSound(CloseDoorSFX(Min(d\dir,1),Rand(0, 2)), Camera, d\obj)
 						Local sound%
 						If d\dir = 1 Then sound% = Rand(0, 1) Else sound% = Rand(0, 2)
-						If d\timerstate = 0 Then d\open = (Not d\open) : d\SoundCHN = PlaySound2(CloseDoorSFX(d\dir,sound%), Camera, d\obj)
+						If d\timerstate = 0 Then d\open = (Not d\open) : d\SoundCHN = PlaySpatialSound(CloseDoorSFX(d\dir,sound%), Camera, d\obj)
 					EndIf
 					If d\AutoClose And RemoteDoorOn = True Then
 						If EntityDistance(Camera, d\obj) < 2.1 Then
 							If (Not Wearing714) Then PlaySound_Strict HorrorSFX(7)
-							d\open = False : d\SoundCHN = PlaySound2(CloseDoorSFX(Min(d\dir,1), Rand(0, 2)), Camera, d\obj) : d\AutoClose = False
+							d\open = False : d\SoundCHN = PlaySpatialSound(CloseDoorSFX(Min(d\dir,1), Rand(0, 2)), Camera, d\obj) : d\AutoClose = False
 						EndIf
 					EndIf				
 				EndIf
@@ -961,9 +961,9 @@ Function UseDoor(d.Doors, showmsg%=True, playsfx%=True)
 		If d\open Then
 			If d\LinkedDoor <> Null Then d\LinkedDoor\timerstate = d\LinkedDoor\timer
 			d\timerstate = d\timer
-			d\SoundCHN = PlaySound2 (OpenDoorSFX(d\dir, sound), Camera, d\obj)
+			d\SoundCHN = PlaySpatialSound (OpenDoorSFX(d\dir, sound), Camera, d\obj)
 		Else
-			d\SoundCHN = PlaySound2 (CloseDoorSFX(d\dir, sound), Camera, d\obj)
+			d\SoundCHN = PlaySpatialSound (CloseDoorSFX(d\dir, sound), Camera, d\obj)
 		EndIf
 		UpdateSoundOrigin(d\SoundCHN,Camera,d\obj)
 	Else
@@ -1479,7 +1479,7 @@ While IsRunning
 						If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\Forest\ambient"+(CurrAmbientSFX+1)+".ogg")
 				End Select
 				
-				AmbientSFXCHN = PlaySound2(AmbientSFX(PlayerZone,CurrAmbientSFX), Camera, SoundEmitter)
+				AmbientSFXCHN = PlaySpatialSound(AmbientSFX(PlayerZone,CurrAmbientSFX), Camera, SoundEmitter)
 			EndIf
 			UpdateSoundOrigin(AmbientSFXCHN,Camera, SoundEmitter)
 			
@@ -2000,7 +2000,7 @@ Function QuickLoadEvents()
 					e\EventStr = "load2"
 				ElseIf e\EventStr = "load2"
 					QuickLoadPercent = 35
-					e\room\NPC[0]\SoundChn = PlaySound2(e\room\NPC[0]\Sound, Camera, e\room\NPC[0]\Collider, 12)
+					e\room\NPC[0]\SoundChn = PlaySpatialSound(e\room\NPC[0]\Sound, Camera, e\room\NPC[0]\Collider, 12)
 					e\EventStr = "load3"
 				ElseIf e\EventStr = "load3"
 					QuickLoadPercent = 55
@@ -2642,7 +2642,7 @@ Function DrawGUI()
 				If ClosestDoor\Code <> "" Then
 					SelectedDoor = ClosestDoor
 				ElseIf PlayerCanMove Then
-					PlaySound2(Resource_GetSound(SFX_INTERACT_BUTTON_1), Camera, ClosestButton)
+					PlaySpatialSound(Resource_GetSound(SFX_INTERACT_BUTTON_1), Camera, ClosestButton)
 					UseDoor(ClosestDoor,True)				
 				EndIf
 			EndIf
@@ -6717,7 +6717,7 @@ End Function
 
 ;--------------------------------------- music & sounds ----------------------------------------------
 
-Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
+Function PlaySpatialSound%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range, 1.0)
 	Local soundchn% = 0
 	
@@ -6735,7 +6735,7 @@ Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	Return soundchn
 End Function
 
-Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1.0)
+Function LoopSpatialSound%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range,1.0)
 	
 	If volume>0 Then
@@ -7278,7 +7278,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 					n.NPCs = CreateNPC(NPCtype1499,x,y,z)
 					n\State = 1
 					n\Sound = LoadSound_Strict("SFX\SCP\1499\Triggered.ogg")
-					n\SoundChn = PlaySound2(n\Sound, Camera, n\Collider,20.0)
+					n\SoundChn = PlaySpatialSound(n\Sound, Camera, n\Collider,20.0)
 					n\State3 = 1
 					RemoveItem(item)
 			End Select
@@ -8556,7 +8556,7 @@ Function UpdateDecals()
 						Local temp# = Rnd(d\Size)
 						Local d2.Decals = CreateDecal(1, EntityX(d\obj) + Cos(angle) * temp, EntityY(d\obj) - 0.0005, EntityZ(d\obj) + Sin(angle) * temp, EntityPitch(d\obj), Rnd(360), EntityRoll(d\obj))
 						d2\Size = Rnd(0.1, 0.5) : ScaleSprite(d2\obj, d2\Size, d2\Size)
-						PlaySound2(DecaySFX(Rand(1, 3)), Camera, d2\obj, 10.0, Rnd(0.1, 0.5))
+						PlaySpatialSound(DecaySFX(Rand(1, 3)), Camera, d2\obj, 10.0, Rnd(0.1, 0.5))
 						d\Timer = Rand(50, 100)
 					Else
 						d\Timer= d\Timer-DeltaTime

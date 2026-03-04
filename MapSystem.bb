@@ -5610,7 +5610,7 @@ Function UpdateRooms()
 				If r\SoundEmitter[i]<>0 Then 
 					dist# = EntityDistance(r\SoundEmitterObj[i],Collider)
 					If dist < r\SoundEmitterRange[i] Then
-						r\SoundEmitterCHN[i] = LoopSound2(RoomAmbience[r\SoundEmitter[i]],r\SoundEmitterCHN[i], Camera, r\SoundEmitterObj[i],r\SoundEmitterRange[i])
+						r\SoundEmitterCHN[i] = LoopSpatialSound(RoomAmbience[r\SoundEmitter[i]],r\SoundEmitterCHN[i], Camera, r\SoundEmitterObj[i],r\SoundEmitterRange[i])
 					EndIf
 				EndIf
 			Next
@@ -6592,7 +6592,7 @@ Function UpdateSecurityCams()
 					
 				EndIf ;if screen=true
 				
-				If (Not sc\InSight) Then sc\soundCHN = LoopSound2(CameraSFX, sc\soundCHN, Camera, sc\CameraObj, 4.0)
+				If (Not sc\InSight) Then sc\soundCHN = LoopSpatialSound(CameraSFX, sc\soundCHN, Camera, sc\CameraObj, 4.0)
 			Else
 				;If SelectedMonitor=sc Then SelectedMonitor=Null
 			EndIf
@@ -6690,9 +6690,9 @@ Function UpdateLever(obj, locked=False)
 				EndIf 
 				
 				If EntityPitch(obj,True) > 75 Then ;p��ll�
-					If prevpitch =< 75 Then PlaySound2(LeverSFX, Camera, obj, 1.0)
+					If prevpitch =< 75 Then PlaySpatialSound(LeverSFX, Camera, obj, 1.0)
 				ElseIf EntityPitch(obj,True) < -75 ;pois p��lt�
-					If prevpitch => -75 Then PlaySound2(LeverSFX, Camera, obj, 1.0)	
+					If prevpitch => -75 Then PlaySpatialSound(LeverSFX, Camera, obj, 1.0)	
 				EndIf						
 			EndIf
 		EndIf
@@ -6889,7 +6889,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					UseDoor(door2,False,Not inside)
 					door1\open = False
 					
-					PlaySound2(ElevatorBeepSFX, Camera, room1, 4.0)
+					PlaySpatialSound(ElevatorBeepSFX, Camera, room1, 4.0)
 				EndIf
 			Else
 				State = State + DeltaTime
@@ -6986,7 +6986,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					UseDoor(door1,False,Not inside)
 					door2\open = False
 					
-					PlaySound2(ElevatorBeepSFX, Camera, room2, 4.0)
+					PlaySpatialSound(ElevatorBeepSFX, Camera, room2, 4.0)
 				EndIf	
 				
 			EndIf
@@ -8000,7 +8000,7 @@ Function UpdateRoomLights(cam%)
 								If r\LightFlicker%[i]>4 Then
 									If Rand(400)=1 Then
 										SetEmitter(r\LightSpritesPivot[i],ParticleEffect[0])
-										PlaySound2(IntroSFX(Rand(10,12)),cam,r\LightSpritesPivot[i])
+										PlaySpatialSound(IntroSFX(Rand(10,12)),cam,r\LightSpritesPivot[i])
 										ShowEntity r\LightConeSpark[i]
 										r\LightConeSparkTimer[i] = DeltaTime
 									EndIf

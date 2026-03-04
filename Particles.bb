@@ -119,7 +119,7 @@ Function UpdateEmitters()
 			
 			p\Achange = e\achange
 			;EndIf
-			e\SoundCHN = LoopSound2(HissSFX, e\SoundCHN, Camera, e\Obj)
+			e\SoundCHN = LoopSpatialSound(HissSFX, e\SoundCHN, Camera, e\Obj)
 			
 			If InSmoke = False Then
 				If WearingGasMask=0 And WearingHazmat=0 Then
@@ -241,7 +241,7 @@ Function UpdateDevilEmitters()
 				dem\timer = 0.0
 			EndIf
 			If dem\isDeconGas
-				dem\SoundCHN = LoopSound2(HissSFX, dem\SoundCHN, Camera, dem\obj)
+				dem\SoundCHN = LoopSpatialSound(HissSFX, dem\SoundCHN, Camera, dem\obj)
 				If InSmoke = False Then
 					If WearingGasMask=0 And WearingHazmat=0 Then
 						Local dist# = Distance(EntityX(Camera, True), EntityZ(Camera, True), EntityX(dem\obj, True), EntityZ(dem\obj, True))

@@ -100,6 +100,9 @@ Type Emitters
 	Field SizeChange#, Achange#
 End Type 
 
+;; ToDo:: Decouple this from player logic
+;; This is, for some ungodly reason, coupled with player logic which tests if we're standing inside an emitter & then kills us if not wearing protective gear
+;; The issue here is that it never differentiates between emitters, so maybe there is only ever smoke used throughout the game? Thats fucking madness though! 
 Function UpdateEmitters()
 	InSmoke = False
 	For e.emitters = Each Emitters
@@ -278,12 +281,3 @@ Function DeleteDevilEmitters()
 	Delete Each DevilEmitters
 	
 End Function
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#4#10#2E#4A#54#66#A0#C5#D0#E0#112
-;~C#Blitz3D

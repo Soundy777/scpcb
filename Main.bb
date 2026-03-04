@@ -380,6 +380,8 @@ Include "src/game/player/Player.bb"
 
 ;--------------------------------------- Particles ------------------------------------------------------------
 
+;; ToDo:: Decouple the player and audio logic from within this so that it only concerns itself with managaing particle systems
+;; we cannot move it until then as its tied into all sorts of shit
 Include "Particles.bb"
 
 ;-------------------------------------  Doors --------------------------------------------------------------
@@ -8555,7 +8557,6 @@ Function UpdateDecals()
 						Local d2.Decals = CreateDecal(1, EntityX(d\obj) + Cos(angle) * temp, EntityY(d\obj) - 0.0005, EntityZ(d\obj) + Sin(angle) * temp, EntityPitch(d\obj), Rnd(360), EntityRoll(d\obj))
 						d2\Size = Rnd(0.1, 0.5) : ScaleSprite(d2\obj, d2\Size, d2\Size)
 						PlaySound2(DecaySFX(Rand(1, 3)), Camera, d2\obj, 10.0, Rnd(0.1, 0.5))
-						;d\Timer = d\Timer + Rand(50,150)
 						d\Timer = Rand(50, 100)
 					Else
 						d\Timer= d\Timer-DeltaTime
@@ -8582,7 +8583,6 @@ Function UpdateDecals()
 		End If
 	Next
 End Function
-
 
 ;--------------------------------------- INI-functions -------------------------------------------------------
 
@@ -8643,7 +8643,6 @@ Function MakeCollBox(mesh%)
 	EntityBox mesh, Mesh_MinX * sx, Mesh_MinY * sy, Mesh_MinZ * sz, Mesh_MagX * sx, Mesh_MagY * sy, Mesh_MagZ * sz
 End Function
 
-; Find mesh extents
 Function GetMeshExtents(Mesh%)
 	Local s%, surf%, surfs%, v%, verts%, x#, y#, z#
 	Local minx# = INFINITY

@@ -2,10 +2,10 @@
 ; Player.bb
 ; ===========================================================================
 Include "src/game/player/Input.bb"
-Include "src/game/player/Movement.bb"
 Include "src/game/player/Inventory.bb"
 Include "src/game/player/Status.bb"
-Include "src/game/player/HUD.bb"
+Include "src/game/player/Camera.bb"
+Include "src/game/player/Movement.bb"
 ; ===========================================================================
 
 ;---------------------------------------------------------------------------------------------------------------------
@@ -62,6 +62,16 @@ Global Shake#   ; Camera shake
 Global ExplosionTimer#, ExplosionSFX%
 
 Global SoundTransmission%
+
+;This variable is for when a camera detected the player
+	;False: Player is not seen (will be set after every call of the Main Loop
+	;True: The Player got detected by a camera
+Global PlayerDetected%
+Global PrevInjuries#,PrevBloodloss#
+Global NoTarget% = False
+
+Global GuaranteedOmni% = False
+Global Wearing1499% = False
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Player Type & Init

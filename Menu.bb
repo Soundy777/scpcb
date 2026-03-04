@@ -39,7 +39,6 @@ Global SelectedInputBox%
 Global SavePath$ = "Saves\"
 Global SaveMSG$
 
-;nykyisen tallennuksen nimi ja samalla missä kansiossa tallennustiedosto sijaitsee saves-kansiossa
 Global PrevSave$, CurrSave$
 
 Global SaveGameAmount%
@@ -1494,7 +1493,6 @@ Function GreatestCommonDivsior(u%, v%)
 	Return u Shl k
 End Function
 
-
 Function DrawBar(img%, x%, y%, width%, filled#, centerX% = False)
 	Local spacing = ImageWidth(img) + 2
 	width = Int(width / spacing) * spacing + 3
@@ -1676,9 +1674,6 @@ Function SlideBar#(x%, y%, width%, value#, ID%)
 	Return value
 	
 End Function
-
-
-
 
 Function RowText(A$, X, Y, W, H, align% = 0, Leading#=1)
 	;Display A$ starting at X,Y - no wider than W And no taller than H (all in pixels).
@@ -2355,13 +2350,3 @@ Function Button%(x,y,width,height,txt$, disabled%=False)
 	
 	If Pushed And MouseHit1 Then PlaySFX(SFX_INTERACT_BUTTON_1) : Return True
 End Function
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#33#499#4AB#4B5#4E8#5C3#5D6#5F3#5FA#615#629#64A#662#693#6C4#6EA#710#72D#73E#756
-;~F#764#787#79F#7A8#7D9#7ED#821#867#8A9
-;~C#Blitz3D

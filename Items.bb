@@ -1,14 +1,3 @@
-Global BurntNote%
-
-Const MaxItemAmount% = 10
-Global ItemAmount%
-Dim Inventory.Items(MaxItemAmount + 1)
-Global InvSelect%, SelectedItem.Items
-
-Global ClosestItem.Items
-
-Global LastItemID%
-
 Type ItemTemplates
 	Field displayname$
 	Field name$
@@ -28,6 +17,48 @@ Type ItemTemplates
 	;Field bumptex%
 	Field tex%, texpath$
 End Type 
+
+Type Inventories
+	Field Items.Items[20]
+	Field Size%
+End Type
+
+Type Items
+	Field displayname$
+	Field collider%,model%
+	Field itemtemplate.ItemTemplates
+	Field DropSpeed#
+	
+	Field r%,g%,b%,a#
+	
+	Field level
+	
+	Field SoundChn%
+	
+	Field dist#, disttimer#
+	
+	Field state#, state2#
+	
+	Field Picked%,Dropped%
+	
+	Field invimg%
+	Field WontColl% = False
+	Field xspeed#,zspeed#
+	Field Inventory.Inventories
+	Field ID%
+
+	Field drinkName$
+End Type 
+
+Const ITEMS_DATA_PATH$ = "Data\items.ini"
+
+Global BurntNote%
+Const MaxItemAmount% = 10
+Global ItemAmount%
+Dim Inventory.Items(MaxItemAmount + 1)
+Global InvSelect%, SelectedItem.Items
+Global ClosestItem.Items
+Global LastItemID%
 
 Function CreateItemTemplate.ItemTemplates(name$, group$, displayname$, objpath$, invimgpath$, imgpath$, scale#, texturepath$ = "",invimgpath2$="",Anim%=0, texflags%=9)
 	Local it.ItemTemplates = New ItemTemplates, n
@@ -215,8 +246,6 @@ Function InitItemTemplatesFromFile(file$)
 
 End Function
 
-Const ITEMS_DATA_PATH$ = "Data\items.ini"
-
 Function InitItemTemplates()
 	Local hasOverride%
 	For m.ActiveMods = Each ActiveMods
@@ -254,38 +283,6 @@ Function FindItemTemplate.ItemTemplates(name$)
 		End If
 	Next
 End Function
-
-Type Inventories
-	Field Items.Items[20]
-	Field Size%
-End Type
-
-Type Items
-	Field displayname$
-	Field collider%,model%
-	Field itemtemplate.ItemTemplates
-	Field DropSpeed#
-	
-	Field r%,g%,b%,a#
-	
-	Field level
-	
-	Field SoundChn%
-	
-	Field dist#, disttimer#
-	
-	Field state#, state2#
-	
-	Field Picked%,Dropped%
-	
-	Field invimg%
-	Field WontColl% = False
-	Field xspeed#,zspeed#
-	Field Inventory.Inventories
-	Field ID%
-
-	Field drinkName$
-End Type 
 
 Function CreateItem.Items(name$, x#, y#, z#)
 	CatchErrors("Uncaught (CreateItem)")
@@ -413,7 +410,6 @@ Function RemoveItem(i.Items, inGame%=True)
 	
 	CatchErrors("RemoveItem")
 End Function
-
 
 Function UpdateItems()
 	CatchErrors("Uncaught (UpdateItems)")
@@ -744,8 +740,6 @@ Function Update294()
 			CameraShake = Rnd(0, 2)
 		EndIf
 		
-;		If (MilliSecs() Mod 1000) < Rand(1200) Then 
-		
 		If Rand(50) = 50 And (MilliSecs() Mod 4000) < 200 Then PlaySound_Strict(CoughSFX(Rand(0,2)))
 		
 		;Regurgitate when timer is below 10 seconds. (ew)
@@ -811,14 +805,3 @@ Function Update294()
 	
 	CatchErrors("Update294")
 End Function
-
-
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#B#1E
-;~C#Blitz3D

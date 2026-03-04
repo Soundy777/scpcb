@@ -73,7 +73,7 @@ Function Loading_Render(percent%, shortloading=False)
 				EndIf
 			EndIf
 			
-			SetFont Font2
+			SetFont GameFonts\UI_Large
 			strtemp$ = ""
 			temp = Rand(2,9)
 			For i = 0 To temp
@@ -129,13 +129,13 @@ Function Loading_Render(percent%, shortloading=False)
 		Else
 			
 			Color 0,0,0
-			SetFont Font2
+			SetFont GameFonts\UI_Large
 			Text(Config\Graphics\ScreenWidth / 2 + Max(1, Gfx\MenuScale), Config\Graphics\ScreenHeight / 2 + 80*Gfx\MenuScale+Max(1, Gfx\MenuScale), CurrentLoadingScreen\title, True, True)
 			SetFont GameFonts\UI_Small
 			RowText(CurrentLoadingScreen\txt[LoadingScreenTextHandle], Config\Graphics\ScreenWidth / 2-200*Gfx\MenuScale+Max(1, Gfx\MenuScale), Config\Graphics\ScreenHeight / 2 +120*Gfx\MenuScale+Max(1, Gfx\MenuScale),400*Gfx\MenuScale,300*Gfx\MenuScale,True)
 			
 			Color 255,255,255
-			SetFont Font2
+			SetFont GameFonts\UI_Large
 			Text(Config\Graphics\ScreenWidth / 2, Config\Graphics\ScreenHeight / 2 +80*Gfx\MenuScale, CurrentLoadingScreen\title, True, True)
 			SetFont GameFonts\UI_Small
 			RowText(CurrentLoadingScreen\txt[LoadingScreenTextHandle], Config\Graphics\ScreenWidth / 2-200*Gfx\MenuScale, Config\Graphics\ScreenHeight / 2 +120*Gfx\MenuScale,400*Gfx\MenuScale,300*Gfx\MenuScale,True)

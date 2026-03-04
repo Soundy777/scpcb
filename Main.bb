@@ -40,12 +40,12 @@ Loading_Init()
 ; 2) Load & Scale BlinkMeterIMG
 
 ;Global Font1%
-Global Font2%
+;Global Font2%
 Global Font3%
 Global Font4%
 Global Font5%
 ;Font1 = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * Gfx\MenuScale))
-Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * Gfx\MenuScale))
+;Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * Gfx\MenuScale))
 Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * Gfx\MenuScale))
 Font4% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * Gfx\MenuScale))
 Font5% = LoadFont_Strict("GFX\font\Journal\Journal.ttf", Int(58 * Gfx\MenuScale))
@@ -2417,7 +2417,7 @@ Function DrawEnding()
 				DrawImage PauseMenuIMG, x, y
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				Text(x + width / 2 + 40*Gfx\MenuScale, y + 20*Gfx\MenuScale, I_Loc\Menu_End, True)
 				SetFont GameFonts\UI_Small
 				
@@ -5734,7 +5734,7 @@ Function DrawHUD()
 End Function
 
 Function DrawTimer()
-	SetFont(Font2)
+	SetFont(GameFonts\UI_Large)
 	Local durText$
 	If TimerStopped = 0 Lor TimerStopped = 3 Then
 		durText$ = FormatDuration(PlayTime)
@@ -5854,23 +5854,23 @@ Function DrawMenu()
 		EndIf
 		
 		If AchievementsMenu > 0 Then
-			SetFont Font2
+			SetFont GameFonts\UI_Large
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_AchievementsUpper,False,True)
 			SetFont GameFonts\UI_Small
 		ElseIf OptionsMenu > 0 Then
-			SetFont Font2
+			SetFont GameFonts\UI_Large
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_OptionsUpper,False,True)
 			SetFont GameFonts\UI_Small
 		ElseIf QuitMSG > 0 Then
-			SetFont Font2
+			SetFont GameFonts\UI_Large
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_QuitQuestion,False,True)
 			SetFont GameFonts\UI_Small
 		ElseIf KillTimer >= 0 Then
-			SetFont Font2
+			SetFont GameFonts\UI_Large
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_Pause,False,True)
 			SetFont GameFonts\UI_Small
 		Else
-			SetFont Font2
+			SetFont GameFonts\UI_Large
 			Text(x, y-(122-45)*Gfx\MenuScale, I_Loc\Menu_Dead,False,True)
 			SetFont GameFonts\UI_Small
 		End If		
@@ -6391,7 +6391,7 @@ Function DrawMenu()
 					Else
 						DrawFrame(x,y,390*Gfx\MenuScale, 60*Gfx\MenuScale)
 						Color (100, 100, 100)
-						SetFont Font2
+						SetFont GameFonts\UI_Large
 						Text(x + (390*Gfx\MenuScale) / 2, y + (60*Gfx\MenuScale) / 2, I_Loc\Menu_Load, True, True)
 					EndIf
 					y = y + 75*Gfx\MenuScale

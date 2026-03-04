@@ -149,7 +149,7 @@ Function UpdateMainMenu()
 		EndIf
 	EndIf
 	
-	SetFont Font2
+	SetFont GameFonts\UI_Large
 	
 	DrawImage(MenuText, Config\Graphics\ScreenWidth / 2 - ImageWidth(MenuText) / 2, Config\Graphics\ScreenHeight - 20 * Gfx\MenuScale - ImageHeight(MenuText))
 	
@@ -303,7 +303,7 @@ Function UpdateMainMenu()
 				height = 70 * Gfx\MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				Text(x + width / 2, y + height / 2, I_Loc\Menu_NewUpper, True, True)
 				
 				y = y + height + 10 * Gfx\MenuScale
@@ -423,7 +423,7 @@ Function UpdateMainMenu()
 					LoadSavedMaps()
 				EndIf
 				
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				
 				If DrawButton(x + 420 * Gfx\MenuScale, y + height + 10 * Gfx\MenuScale, 160 * Gfx\MenuScale, 70 * Gfx\MenuScale, I_Loc\NewGame_Start, False) Then
 					TimerStopped = True
@@ -481,7 +481,7 @@ Function UpdateMainMenu()
 				height = 70 * Gfx\MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				Text(x + width / 2, y + height / 2, I_Loc\Menu_LoadUpper, True, True)
 				
 				y = y + height + 10 * Gfx\MenuScale
@@ -490,7 +490,7 @@ Function UpdateMainMenu()
 				
 				;SetFont GameFonts\UI_Small	
 				
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				
 				If CurrLoadGamePage < Ceil(Float(SaveGameAmount)/EntriesPerPage)-1 And SaveMSG = "" Then 
 					If DrawButton(x+530*Gfx\MenuScale, y + PagingFrameHeight, 50*Gfx\MenuScale, 55*Gfx\MenuScale, ">") Then
@@ -615,7 +615,7 @@ Function UpdateMainMenu()
 				height = 70 * Gfx\MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				Text(x + width / 2, y + height / 2, I_Loc\Menu_OptionsUpper, True, True)
 				
 				y = y + height + 10 * Gfx\MenuScale
@@ -1067,14 +1067,14 @@ Function UpdateMainMenu()
 				height = 70 * Gfx\MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				Text(x + width / 2, y + height / 2, I_Loc\NewGame_LoadmapUpper, True, True)
 				
 				y = y + height + 10 * Gfx\MenuScale
 				width = 580 * Gfx\MenuScale
 				height = 350 * Gfx\MenuScale
 				
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				
 				tx# = x+width+1*Gfx\MenuScale
 				ty# = y
@@ -1154,14 +1154,14 @@ Function UpdateMainMenu()
 				height = 70 * Gfx\MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 				Text(x + width / 2, y + height / 2, I_Loc\Menu_ModsUpper, True, True)
 				
 				y = y + height + 10 * Gfx\MenuScale
 				width = 580 * Gfx\MenuScale
 				height = 296 * Gfx\MenuScale
 				
-				SetFont Font2
+				SetFont GameFonts\UI_Large
 
 				If CurrLoadGamePage < Ceil(Float(ModCount)/EntriesPerPage)-1 And SaveMSG = "" Then 
 					If DrawButton(x+530*Gfx\MenuScale, y + PagingFrameHeight, 50*Gfx\MenuScale, 55*Gfx\MenuScale, ">") Then
@@ -1615,7 +1615,7 @@ Function DrawButton%(x%, y%, width%, height%, txt$, bigfont% = True, waitForMous
 	Else
 		Color (255, 255, 255)
 	EndIf
-	If bigfont Then SetFont Font2 Else SetFont GameFonts\UI_Small
+	If bigfont Then SetFont GameFonts\UI_Large Else SetFont GameFonts\UI_Small
 	Text(x + width / 2, y + height / 2, txt, True, True)
 	
 	Return clicked
@@ -1635,7 +1635,7 @@ Function DrawButton2%(x%, y%, width%, height%, txt$, bigfont% = True)
 	EndIf
 	
 	Color (255, 255, 255)
-	If bigfont Then SetFont Font2 Else SetFont GameFonts\UI_Small
+	If bigfont Then SetFont GameFonts\UI_Large Else SetFont GameFonts\UI_Small
 	Text(x + width / 2, y + height / 2, txt, True, True)
 	
 	Return clicked

@@ -264,7 +264,7 @@ Function UpdateMainMenu()
 					CurrLoadGamePage = 0
 					MainMenuTab = 0
 				Case 3,5,6,7 ;save the options
-					SaveOptionsINI()
+					Config_Save()
 					
 					UserTrackCheck% = 0
 					UserTrackCheck2% = 0

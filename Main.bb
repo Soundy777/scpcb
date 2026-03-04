@@ -2815,7 +2815,7 @@ Function DrawGUI()
 	EndIf
 	
 	If KeyHit(1) And EndingTimer=0 And (Not Using294) Then
-		If (MenuOpen Or InvOpen) And OptionsMenu <> 0 Then SaveOptionsINI()
+		If (MenuOpen Or InvOpen) And OptionsMenu <> 0 Then Config_Save()
 		MenuOpen = (Not MenuOpen)
 		UpdateMenuState()
 		
@@ -5110,7 +5110,7 @@ Function DrawMenu()
 				OptionsMenu = 0
 				QuitMSG = 0
 				MouseHit1 = False
-				SaveOptionsINI()
+				Config_Save()
 				
 				AntiAlias Config\Graphics\AntiAliasing
 				TextureLodBias Gfx\TextureLODBias#
@@ -8507,50 +8507,6 @@ Function UpdateDecals()
 			Delete d
 		End If
 	Next
-End Function
-
-;--------------------------------------- INI-functions -------------------------------------------------------
-
-;Save options to .ini.
-Function SaveOptionsINI()
-	
-	PutINIValue(Paths\OptionsFile, "controls", "mouse sensitivity", MouseSens)
-	PutINIValue(Paths\OptionsFile, "controls", "invert mouse y", Config\Controls\InvertMouse)
-	PutINIValue(Paths\OptionsFile, "graphics", "HUD enabled", HUDenabled)
-	PutINIValue(Paths\OptionsFile, "graphics", "screengamma", Config\Graphics\ScreenGamma)
-	PutINIValue(Paths\OptionsFile, "graphics", "antialias", Config\Graphics\AntiAliasing)
-	PutINIValue(Paths\OptionsFile, "graphics", "vsync", Config\Graphics\Vsync)
-	PutINIValue(Paths\OptionsFile, "graphics", "show FPS", Config\Graphics\ShowFPS)
-	PutINIValue(Paths\OptionsFile, "graphics", "framelimit", Config\Graphics\Framelimit%)
-	PutINIValue(Paths\OptionsFile, "general", "achievement popup enabled", AchvMSGenabled%)
-	PutINIValue(Paths\OptionsFile, "launcher", "launcher enabled", Config\Launcher\LauncherEnabled%)
-	PutINIValue(Paths\OptionsFile, "graphics", "texture details", Config\Graphics\TextureDetails%)
-	PutINIValue(Paths\OptionsFile, "console", "enabled", ConsoleEnabled%)
-	PutINIValue(Paths\OptionsFile, "console", "auto opening", Config\Console\ConsoleAutoOpen%)
-	PutINIValue(Paths\OptionsFile, "general", "speed run mode", SpeedRunMode%)
-	PutINIValue(Paths\OptionsFile, "general", "numeric seeds", Config\Gameplay\UseNumericSeeds%)
-	PutINIValue(Paths\OptionsFile, "graphics", "enable vram", EnableVRam)
-	PutINIValue(Paths\OptionsFile, "controls", "mouse smoothing", Config\Controls\MouseSmoothing)
-	PutINIValue(Paths\OptionsFile, "graphics", "hud offset", Config\Graphics\HUDOffset)
-	PutINIValue(Paths\OptionsFile, "graphics", "fov", Config\Graphics\FOV)
-	
-	PutINIValue(Paths\OptionsFile, "audio", "music volume", MusicVolume)
-	PutINIValue(Paths\OptionsFile, "audio", "sound volume", PrevSFXVolume)
-	PutINIValue(Paths\OptionsFile, "audio", "sfx release", Config\Audio\EnableSFXRelease)
-	PutINIValue(Paths\OptionsFile, "audio", "enable user tracks", EnableUserTracks%)
-	PutINIValue(Paths\OptionsFile, "audio", "user track setting", UserTrackMode%)
-	
-	PutINIValue(Paths\OptionsFile, "binds", "Right key", KEY_RIGHT)
-	PutINIValue(Paths\OptionsFile, "binds", "Left key", KEY_LEFT)
-	PutINIValue(Paths\OptionsFile, "binds", "Up key", KEY_UP)
-	PutINIValue(Paths\OptionsFile, "binds", "Down key", KEY_DOWN)
-	PutINIValue(Paths\OptionsFile, "binds", "Blink key", KEY_BLINK)
-	PutINIValue(Paths\OptionsFile, "binds", "Sprint key", KEY_SPRINT)
-	PutINIValue(Paths\OptionsFile, "binds", "Inventory key", KEY_INV)
-	PutINIValue(Paths\OptionsFile, "binds", "Crouch key", KEY_CROUCH)
-	PutINIValue(Paths\OptionsFile, "binds", "Save key", KEY_SAVE)
-	PutINIValue(Paths\OptionsFile, "binds", "Console key", KEY_CONSOLE)
-	
 End Function
 
 ;--------------------------------------- MakeCollBox -functions -------------------------------------------------------

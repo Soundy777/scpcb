@@ -112,8 +112,6 @@ Global IsNVGBlinking% = False
 
 Global DebugHUD%
 
-Global BlurVolume#, BlurTimer#
-
 Global LightBlink#, LightFlash#
 
 Global BumpEnabled% = GetOptionInt("graphics", "bump mapping enabled")

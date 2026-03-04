@@ -1,6 +1,9 @@
 Global ark_blur_image%, ark_blur_texture%, ark_sw%, ark_sh%
 Global ark_blur_cam%
 
+;; ToDo:: review if these should be located elsewhere, or if we need to migrate more of the blur logic into this class
+Global BlurVolume#, BlurTimer#
+
 Function CreateBlurImage()
 	;Create blur Camera
 	Local cam% = CreateCamera()

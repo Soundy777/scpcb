@@ -17,6 +17,8 @@ Function Engine_Init()
     Graphics_Init(Config\Graphics)
     Viewport_Init()
 
+    Physics_Init()
+
     Resource_Init()
     ;; ToDo:: init InputManager
 

@@ -110,20 +110,12 @@ Global NVTimer#
 Global NVBlink%
 Global IsNVGBlinking% = False
 
-Global DebugHUD%
+Global DebugHUD%		;; ToDo:: consider moving this into a specalized DebugHUD.bb class along with the logic for renderings & updating the DebugHUD
 
 Global LightBlink#, LightFlash#
 
 Global BumpEnabled% = GetOptionInt("graphics", "bump mapping enabled")
 Global HUDenabled% = GetOptionInt("graphics", "HUD enabled")
-
-Global Camera%, CameraShake#, CurrCameraZoom#
-
-Global Brightness%
-Global CameraFogNear#
-Global CameraFogFar#
-
-Global StoredCameraFogFar# = CameraFogFar
 
 Global MouseSens# = GetOptionFloat("controls", "mouse sensitivity")
 
@@ -135,7 +127,6 @@ Dim LightSpriteTex(10)
 ; Refactoring Checkpoint #3
 ;---------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------  Sounds -----------------------------------------------------
-
 Global SoundEmitter%
 Global TempSounds%[10]
 Global TempSoundCHN%
@@ -1276,14 +1267,6 @@ Function RemoveEvent(e.Events)
 	If e\img<>0 Then FreeImage e\img
 	Delete e
 End Function
-
-Collisions HIT_PLAYER, HIT_MAP, 2, 2
-Collisions HIT_PLAYER, HIT_PLAYER, 1, 3
-Collisions HIT_ITEM, HIT_MAP, 2, 2
-Collisions HIT_APACHE, HIT_APACHE, 1, 2
-Collisions HIT_178, HIT_MAP, 2, 2
-Collisions HIT_178, HIT_178, 1, 3
-Collisions HIT_DEAD, HIT_MAP, 2, 2
 
 Loading_Render(90, True)
 

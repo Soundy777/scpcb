@@ -14,6 +14,7 @@
 ; ===========================================================================
 Include "src/engine/graphics/FrameCompositor.bb"
 Include "src/engine/graphics/ImageScaler.bb"
+Include "src/engine/graphics/BlurEffect.bb"
 ; ===========================================================================
 
 Type GraphicsState

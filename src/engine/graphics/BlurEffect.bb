@@ -11,8 +11,8 @@ Function CreateBlurImage()
 	MoveEntity cam, 0, 0, 10000
 	ark_blur_cam = cam
 	
-	ark_sw = Config\Graphics\ScreenWidth;GraphicsWidth()
-	ark_sh = Config\Graphics\ScreenHeight;GraphicsHeight()
+	ark_sw = Config\Graphics\ScreenWidth
+	ark_sh = Config\Graphics\ScreenHeight
 	CameraViewport cam,0,0,ark_sw,ark_sh
 	
 	;Create sprite
@@ -40,11 +40,6 @@ Function UpdateBlur(power#)
 	
 	EntityAlpha ark_blur_image, power#
 	
-	;CopyRect ark_sw / 2 - 1024, ark_sh / 2 - 1024, 2048, 2048, 0, 0, BackBuffer(), TextureBuffer(ark_blur_texture)
 	CopyRect 0, 0, Config\Graphics\ScreenWidth, Config\Graphics\ScreenHeight, 1024.0 - Config\Graphics\ScreenWidth/2, 1024.0 - Config\Graphics\ScreenHeight/2, BackBuffer(), TextureBuffer(ark_blur_texture)
 	
 End Function
-
-;~IDEal Editor Parameters:
-;~F#3#26
-;~C#Blitz3D

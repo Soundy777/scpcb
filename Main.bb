@@ -179,8 +179,6 @@ Global MouseSens# = GetOptionFloat("controls", "mouse sensitivity")
 
 Global EnableVRam% = GetOptionInt("graphics", "enable vram")
 
-Include "dreamfilter.bb"
-
 Dim LightSpriteTex(10)
 
 ;---------------------------------------------------------------------------------------------------------------------

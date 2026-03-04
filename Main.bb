@@ -61,8 +61,6 @@ Const mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-
 Global mouse_x_speed_1#
 Global mouse_y_speed_1#
 
-Global MoveInputCancelling% = GetOptionInt("general", "move input cancelling")
-
 Global KEY_RIGHT = GetOptionInt("binds", "Right key")
 Global KEY_LEFT = GetOptionInt("binds", "Left key")
 Global KEY_UP = GetOptionInt("binds", "Up key")
@@ -2847,7 +2845,7 @@ Function MovePlayer()
 		
 		temp = False
 		If (Not IsZombie%)
-			If MoveInputCancelling Then
+			If Config\Gameplay\MoveInputCancelling Then
 				MoveZ = KeyDown(KEY_DOWN) - KeyDown(KEY_UP)
 				MoveX = KeyDown(KEY_LEFT) - KeyDown(KEY_RIGHT)
 			Else

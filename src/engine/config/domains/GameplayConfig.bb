@@ -17,7 +17,7 @@ Function GameplayConfig_Load.GameplayConfig()
 
     ;config\IntroEnabled
     ;config\AchievementPopups
-    ;config\MoveInputCancelling
+    config\MoveInputCancelling = Config_ResolveIntSetting("general", "move input cancelling")
     config\UseNumericSeeds = Config_ResolveIntSetting("general", "numeric seeds")
     ;config\SpeedRunMode
     config\PlayStartupVideo = Config_ResolveIntSetting("general","play startup video") And (Not HasCLIFlag("novid"))

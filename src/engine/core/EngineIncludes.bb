@@ -2,6 +2,7 @@ Include "src/engine/core/BuildInfo.bb"
 Include "src/engine/core/FeatureFlags.bb"
 
 Include "src/engine/core/MathUtils.bb"
+Include "src/engine/core/MeshUtils.bb"
 
 Include "src/engine/infastructure/FileSystem.bb"
 Include "src/engine/infastructure/IniParser.bb"

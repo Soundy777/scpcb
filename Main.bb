@@ -42,12 +42,12 @@ Loading_Init()
 ;Global Font1%
 ;Global Font2%
 ;Global Font3%
-Global Font4%
+;Global Font4%
 Global Font5%
 ;Font1 = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * Gfx\MenuScale))
 ;Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * Gfx\MenuScale))
 ;Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * Gfx\MenuScale))
-Font4% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * Gfx\MenuScale))
+;Font4% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * Gfx\MenuScale))
 Font5% = LoadFont_Strict("GFX\font\Journal\Journal.ttf", Int(58 * Gfx\MenuScale))
 
 SetFont GameFonts\UI_Large
@@ -3452,7 +3452,7 @@ Function DrawGUI()
 				EndIf
 			Else
 				Text Config\Graphics\ScreenWidth/2, y+70*scale, I_Loc\HUD_KeypadCode,True,True	
-				SetFont Font4
+				SetFont GameFonts\Digital_Large
 				Text Config\Graphics\ScreenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 
@@ -4864,7 +4864,7 @@ Function DrawGUI()
 									strtemp = strtemp + Chr(Rand(1,100))
 								Next
 								
-								SetFont Font4
+								SetFont GameFonts\Digital_Large
 								Text(x+97, y+16, Rand(0,9),True,True)
 								
 							Else
@@ -4880,7 +4880,7 @@ Function DrawGUI()
 									EndIf
 								Next
 								
-								SetFont Font4
+								SetFont GameFonts\Digital_Large
 								Text(x+97, y+16, Int(SelectedItem\state2+1),True,True)
 							EndIf
 							
@@ -5255,7 +5255,7 @@ Function DrawGUI()
 								;Line xtemp, ytemp, xtemp, ytemp+100
 								;Line xtemp+20, ytemp, xtemp+20, ytemp+100
 								;
-								;SetFont Font4
+								;SetFont GameFonts\Digital_Large
 								;For i = 1 To Ceil(SelectedItem\state / 10.0)
 								;	Text (xtemp+11, ytemp+i*10-26, "-", True)
 								;	;Rect(x - width/2, y+i*15, 40 - i * 6, 5, Ceil(SelectedItem\state / 20.0) > 4 - i)

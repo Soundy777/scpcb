@@ -76,8 +76,7 @@ Global RestoreSanity%
 
 Global PlayerCanMove% = True
 
-Global BLINKFREQ#
-
+Global BlinkFrequency#
 Global BlinkTimer#			; Timer to next blink
 Global BlinkRate# = 1.0		; Rate at which we blink
 Global BlinkRateResetTimer#	; Timer until blink rate is reset if adjusted
@@ -1654,7 +1653,7 @@ While IsRunning
 			End If
 			
 			If EyeStuck > 0 Then 
-				BlinkTimer = BLINKFREQ
+				BlinkTimer = BlinkFrequency
 				EyeStuck = Max(EyeStuck-DeltaTime,0)
 				
 				If EyeStuck < 9000 Then BlurTimer = Max(BlurTimer, (9000-EyeStuck)*0.5)
@@ -1678,13 +1677,13 @@ While IsRunning
 					;Randomizes the frequency of blinking. Scales with difficulty.
 					Select SelectedDifficulty\otherFactors
 						Case EASY
-							BLINKFREQ = Rnd(490,700)
+							BlinkFrequency = Rnd(490,700)
 						Case NORMAL
-							BLINKFREQ = Rnd(455,665)
+							BlinkFrequency = Rnd(455,665)
 						Case HARD
-							BLINKFREQ = Rnd(420,630)
+							BlinkFrequency = Rnd(420,630)
 					End Select 
-					BlinkTimer = BLINKFREQ
+					BlinkTimer = BlinkFrequency
 				EndIf
 				
 				BlinkTimer = BlinkTimer - DeltaTime
@@ -5601,7 +5600,7 @@ Function DrawHUD()
 	x% = Viewport_GetStartX() + 80 * Viewport_GetScale()
 	y% = Viewport_GetEndY() - 95 * Viewport_GetScale()
 
-	DrawBar(BlinkMeterIMG, x, y, width, BlinkTimer / BLINKFREQ)
+	DrawBar(BlinkMeterIMG, x, y, width, BlinkTimer / BlinkFrequency)
 	Color 0, 0, 0
 	Rect(x - 50 * Viewport_GetScale(), y, 30 * Viewport_GetScale(), 30 * Viewport_GetScale())
 	
@@ -7237,7 +7236,7 @@ Function InitLoadGame()
 	
 	HidePointer ()
 	
-	BlinkTimer = BLINKFREQ
+	BlinkTimer = BlinkFrequency
 	Stamina = 100
 	
 	ResetAllRMeshes()

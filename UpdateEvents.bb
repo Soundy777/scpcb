@@ -6816,7 +6816,7 @@ Function UpdateEvents()
 					LightBlink = 1.0
 					e\EventState = e\EventState + DeltaTime
 				ElseIf e\EventState <> 0 Then
-					BlinkTimer = BLINKFREQ
+					BlinkTimer = BlinkFrequency
 					
 					Curr173\Idle = False
 					RemoveEvent(e)

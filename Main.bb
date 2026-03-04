@@ -8419,6 +8419,9 @@ End Function
 
 ;--------------------------------------- decals -------------------------------------------------------
 
+;; ToDo:: Extract these to Decals.bb
+; To be able to do this we need to migrate PlaySpatialSound to our Audio System first
+; Then we need to rig up a way for the decal to request playing a sound long before we've defined it (event bus time I feel)
 Type Decals
 	Field obj%
 	Field SizeChange#, Size#, MaxSize#

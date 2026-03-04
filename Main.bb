@@ -55,10 +55,6 @@ Loading_Render(0, True)
 ;---------------------------------------------------------------------------------------------------------------------
 ; Loading Zone 2
 ;---------------------------------------------------------------------------------------------------------------------
-; - -Viewport.
-Global viewport_center_x% = Gfx\RealWidth / 2
-Global viewport_center_y% = Gfx\RealHeight / 2
-
 ; -- Mouselook.
 Const mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
 Const mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
@@ -3141,7 +3137,7 @@ Function MouseLook()
 		End If
 	EndIf
 	
-	MoveMouse viewport_center_x, viewport_center_y
+	MoveMouse Gfx\ScreenCenterX, Gfx\ScreenCenterY
 	
 	If WearingGasMask Or WearingHazmat Or Wearing1499 Then
 		If Wearing714 = False Then
@@ -3729,7 +3725,7 @@ Function DrawGUI()
 					OtherOpen = Null
 					closedInv=True
 					
-					MoveMouse viewport_center_x, viewport_center_y
+					MoveMouse Gfx\ScreenCenterX, Gfx\ScreenCenterY
 				Else
 					
 					If PrevOtherOpen\Inventory\Items[MouseSlot] = Null Then
@@ -3915,7 +3911,7 @@ Function DrawGUI()
 							InvOpen = False
 					End Select
 					
-					MoveMouse viewport_center_x, viewport_center_y
+					MoveMouse Gfx\ScreenCenterX, Gfx\ScreenCenterY
 				Else
 					If Inventory(MouseSlot) = Null Then
 						For z% = 0 To MaxItemAmount - 1
@@ -5584,7 +5580,7 @@ Function DrawGUI()
 		EndIf
 	Next
 	
-	If PrevInvOpen And (Not InvOpen) Then MoveMouse viewport_center_x, viewport_center_y
+	If PrevInvOpen And (Not InvOpen) Then MoveMouse Gfx\ScreenCenterX, Gfx\ScreenCenterY
 
 	DrawHUD()
 	
@@ -6343,7 +6339,7 @@ Function DrawMenu()
 							MenuOpen = False
 							LoadGameQuick(SavePath + CurrSave)
 							
-							MoveMouse viewport_center_x,viewport_center_y
+							MoveMouse Gfx\ScreenCenterX,Gfx\ScreenCenterY
 							SetFont GameFonts\UI_Small
 							HidePointer ()
 							
@@ -6398,7 +6394,7 @@ Function DrawMenu()
 						MenuOpen = False
 						LoadGameQuick(SavePath + CurrSave)
 						
-						MoveMouse viewport_center_x,viewport_center_y
+						MoveMouse Gfx\ScreenCenterX,Gfx\ScreenCenterY
 						SetFont GameFonts\UI_Small
 						HidePointer ()
 						
@@ -7209,7 +7205,7 @@ Function InitNewGame()
 	FreeTextureCache
 	Loading_Render(100)
 
-	MoveMouse viewport_center_x,viewport_center_y
+	MoveMouse Gfx\ScreenCenterX,Gfx\ScreenCenterY
 
 	FlushKeys
 	FlushMouse
@@ -7297,7 +7293,7 @@ Function InitLoadGame()
 	FreeTextureCache
 	Loading_Render(100)
 
-	MoveMouse viewport_center_x,viewport_center_y
+	MoveMouse Gfx\ScreenCenterX,Gfx\ScreenCenterY
 	
 	DeltaTime = 0
 	ResetInput()

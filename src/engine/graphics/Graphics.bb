@@ -22,6 +22,8 @@ Type GraphicsState
 	
 	Field RealWidth%
 	Field RealHeight%
+	Field ScreenCenterX%
+	Field ScreenCenterY%
 	Field AspectRatio#
 	
 	Field MenuScale#
@@ -74,6 +76,9 @@ Function Graphics_Init(config.GraphicsConfig)
 		EndIf
 		
 	EndIf
+
+	Gfx\ScreenCenterX = Int(Gfx\RealWidth/2) 
+	Gfx\ScreenCenterY = Int(Gfx\RealHeight/2)
 
 	; -------------------------
 	; Texture Bias

@@ -1,3 +1,67 @@
+; ===========================================================================
+; Player.bb
+; ===========================================================================
+Include "src/game/player/Input.bb"
+; ===========================================================================
+
+;---------------------------------------------------------------------------------------------------------------------
+; Global Player Vars
+;; ToDo:: refactor these by forming them into the Player Type
+;; ToDo:: audit each variable name to ensure they're accurately descriptive
+;---------------------------------------------------------------------------------------------------------------------
+Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
+Global Sanity#, ForceMove#, ForceAngle#
+Global RestoreSanity%
+
+Global PlayerCanMove% = True
+
+Global BlinkFrequency#		; Blink timer is reset to this after each blink, modulated by game difficulty
+Global BlinkTimer#			; Timer to next blink
+Global BlinkRate# = 1.0		; Rate at which we blink
+Global BlinkRateResetTimer#	; Timer until blink rate is reset if adjusted
+Global EyeIrritation#
+Global EyeStuck#
+
+Global Stamina#
+Global StaminaDrainRate#=1.0
+Global StaminaRateResetTimer#
+
+Global CameraShakeTimer#, Vomit%, VomitTimer#, Regurgitate%
+
+Global SCP1025state#[6]
+
+Global HeartBeatRate#, HeartBeatTimer#, HeartBeatVolume#
+
+Global WearingGasMask%, WearingHazmat%, WearingVest%, Wearing714%, WearingNightVision%
+
+Global SuperMan%, SuperManTimer#
+
+Global Injuries#, Bloodloss#, Infect#, HealTimer#
+
+Global RefinedItems%
+
+Global DropSpeed#, HeadDropSpeed#, CurrSpeed#
+Global user_camera_pitch#, side#
+Global Crouch%, CrouchState#
+
+Global PlayerZone%, PlayerRoom.Rooms
+Global GrabbedEntity%
+
+Global GodMode%, NoClip%, NoClipSpeed# = 2.0
+
+Global CoffinDistance# = 100.0
+
+Global PlayerSoundVolume#
+
+Global Shake#   ; Camera shake
+
+Global ExplosionTimer#, ExplosionSFX%
+
+Global SoundTransmission%
+
+;---------------------------------------------------------------------------------------------------------------------
+; Player Type & Init
+;---------------------------------------------------------------------------------------------------------------------
 Type Player
     ; --- Stats ---
     Field Sanity#
@@ -47,8 +111,6 @@ Type Player
     Field GrabbedEntity%
     Field PlayerSoundVolume#
 End Type
-
-;; ToDo:: BlinkRate possibly missing - also might be StaminaDrainRate
 
 Global PlayerData.Player
 

@@ -70,60 +70,6 @@ Loading_Render(0, True)
 ; Loading Zone 1
 ;---------------------------------------------------------------------------------------------------------------------
 
-Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
-Global Sanity#, ForceMove#, ForceAngle#
-Global RestoreSanity%
-
-Global PlayerCanMove% = True
-
-Global BlinkFrequency#		; Blink timer is reset to this after each blink, modulated by game difficulty
-Global BlinkTimer#			; Timer to next blink
-Global BlinkRate# = 1.0		; Rate at which we blink
-Global BlinkRateResetTimer#	; Timer until blink rate is reset if adjusted
-Global EyeIrritation#
-Global EyeStuck#
-
-Global Stamina#
-Global StaminaDrainRate#=1.0
-Global StaminaRateResetTimer#
-
-Global CameraShakeTimer#, Vomit%, VomitTimer#, Regurgitate%
-
-Global SCP1025state#[6]
-
-Global HeartBeatRate#, HeartBeatTimer#, HeartBeatVolume#
-
-Global WearingGasMask%, WearingHazmat%, WearingVest%, Wearing714%, WearingNightVision%
-
-Global SuperMan%, SuperManTimer#
-
-Global Injuries#, Bloodloss#, Infect#, HealTimer#
-
-Global RefinedItems%
-
-Global DropSpeed#, HeadDropSpeed#, CurrSpeed#
-Global user_camera_pitch#, side#
-Global Crouch%, CrouchState#
-
-Global PlayerZone%, PlayerRoom.Rooms
-
-Global GrabbedEntity%
-
-Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, LastMouseHit1X%, LastMouseHit1Y%, MouseUp1%
-
-Global GodMode%, NoClip%, NoClipSpeed# = 2.0
-
-Global CoffinDistance# = 100.0
-
-Global PlayerSoundVolume#
-
-;camera/lighting effects (blur, camera shake, etc)-------------------------------------------------------------------
-Global Shake#
-
-Global ExplosionTimer#, ExplosionSFX%
-
-Global SoundTransmission%
-
 ;menus, GUI ---------------------------------------------------------------------------------------------------------
 Global MainMenuOpen%, MenuOpen%, StopHidingTimer#, InvOpen%
 Global OtherOpen.Items = Null

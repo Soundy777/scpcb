@@ -69,21 +69,23 @@ Loading_Render(0, True)
 ;---------------------------------------------------------------------------------------------------------------------
 ; Loading Zone 1
 ;---------------------------------------------------------------------------------------------------------------------
-;player stats -------------------------------------------------------------------------------------------------------
+
 Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
 Global Sanity#, ForceMove#, ForceAngle#
 Global RestoreSanity%
 
 Global PlayerCanMove% = True
 
-Global BlinkFrequency#
+Global BlinkFrequency#		; Blink timer is reset to this after each blink, modulated by game difficulty
 Global BlinkTimer#			; Timer to next blink
 Global BlinkRate# = 1.0		; Rate at which we blink
 Global BlinkRateResetTimer#	; Timer until blink rate is reset if adjusted
 Global EyeIrritation#
 Global EyeStuck#
 
-Global Stamina#, StaminaDrainRate#=1.0, StaminaRateResetTimer#
+Global Stamina#
+Global StaminaDrainRate#=1.0
+Global StaminaRateResetTimer#
 
 Global CameraShakeTimer#, Vomit%, VomitTimer#, Regurgitate%
 
@@ -92,7 +94,6 @@ Global SCP1025state#[6]
 Global HeartBeatRate#, HeartBeatTimer#, HeartBeatVolume#
 
 Global WearingGasMask%, WearingHazmat%, WearingVest%, Wearing714%, WearingNightVision%
-Global NVTimer#
 
 Global SuperMan%, SuperManTimer#
 
@@ -100,7 +101,6 @@ Global Injuries#, Bloodloss#, Infect#, HealTimer#
 
 Global RefinedItems%
 
-;player coordinates, angle, speed, movement etc ---------------------------------------------------------------------
 Global DropSpeed#, HeadDropSpeed#, CurrSpeed#
 Global user_camera_pitch#, side#
 Global Crouch%, CrouchState#
@@ -159,6 +159,8 @@ Global PlayTime%
 Global TimerStopped% = True
 
 Global InfiniteStamina% = False
+
+Global NVTimer#
 Global NVBlink%
 Global IsNVGBlinking% = False
 
@@ -9609,16 +9611,20 @@ Function RenderWorld2()
 			NVTimer=NVTimer-DeltaTime
 			
 			If NVTimer<=0.0 Then
+
 				For np.NPCs = Each NPCs
 					np\NVX = EntityX(np\Collider,True)
 					np\NVY = EntityY(np\Collider,True)
 					np\NVZ = EntityZ(np\Collider,True)
 				Next
+
 				IsNVGBlinking% = True
 				ShowEntity NVBlink%
+
 				If NVTimer<=-10
-				NVTimer = 600.0
-			EndIf
+					NVTimer = 600.0
+				EndIf
+
 			EndIf
 			
 			Color 255,255,255

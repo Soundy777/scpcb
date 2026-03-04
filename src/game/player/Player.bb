@@ -49,3 +49,18 @@ Type Player
 End Type
 
 ;; ToDo:: BlinkRate possibly missing - also might be StaminaDrainRate
+
+Global PlayerData.Player
+
+Function Player_Init()
+
+    ; Delete the existing instance of PlayerData if it exists to allow for easy resettings
+    If PlayerData.Player <> Null Then
+        Delete PlayerData.Player
+        PlayerData = Null
+    EndIf
+    PlayerData.Player = New Player
+
+    ;; ToDo:: setup the defaults here
+
+End Function

@@ -59,6 +59,11 @@ Global KEY_CROUCH = GetOptionInt("binds", "Crouch key")
 Global KEY_SAVE = GetOptionInt("binds", "Save key")
 Global KEY_CONSOLE = GetOptionInt("binds", "Console key")
 
+;; ToDo:: migrate this into the game domain
+; It will require refactoring Achievements.bb itself as its doing some shit automatically on Include
+; That will invovle creating an Achievemennts_Init() function & proc'in it at an appropriate time
+Include "Achievements.bb"
+
 Loading_Render(0, True)
 
 ;---------------------------------------------------------------------------------------------------------------------
@@ -90,8 +95,6 @@ Global SuperMan%, SuperManTimer#
 Global Injuries#, Bloodloss#, Infect#, HealTimer#
 
 Global RefinedItems%
-
-Include "Achievements.bb"
 
 ;player coordinates, angle, speed, movement etc ---------------------------------------------------------------------
 Global DropSpeed#, HeadDropSpeed#, CurrSpeed#

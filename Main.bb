@@ -35,10 +35,6 @@ Game_Init()
 ;; ToDo:: Eventually move this into the GameStateManager once we've refactored everything down to the main loop below
 Loading_Init()
 
-;; Previous Loading Logic
-; 1) Load Fonts
-; 2) Load & Scale BlinkMeterIMG (this is used for the loading screens progress bar)
-
 SetFont GameFonts\UI_Large
 
 ;; ToDo:: Find a more suitable point to setup this core UI Texture
@@ -50,17 +46,7 @@ SetFont GameFonts\UI_Large
 Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 ScaleImage(BlinkMeterIMG, Viewport_GetScale(), Viewport_GetScale())
 
-Loading_Render(0, True)
-
-;---------------------------------------------------------------------------------------------------------------------
-; Loading Zone 2
-;---------------------------------------------------------------------------------------------------------------------
-; -- Mouselook.
-Const mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
-Const mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
-Global mouse_x_speed_1#
-Global mouse_y_speed_1#
-
+;; ToDo:: move this into our new Input System when created
 Global KEY_RIGHT = GetOptionInt("binds", "Right key")
 Global KEY_LEFT = GetOptionInt("binds", "Left key")
 Global KEY_UP = GetOptionInt("binds", "Up key")
@@ -73,8 +59,10 @@ Global KEY_CROUCH = GetOptionInt("binds", "Crouch key")
 Global KEY_SAVE = GetOptionInt("binds", "Save key")
 Global KEY_CONSOLE = GetOptionInt("binds", "Console key")
 
+Loading_Render(0, True)
+
 ;---------------------------------------------------------------------------------------------------------------------
-; Refactoring Checkpoint #2
+; Loading Zone 2
 ;---------------------------------------------------------------------------------------------------------------------
 ;player stats -------------------------------------------------------------------------------------------------------
 Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
@@ -3017,6 +3005,11 @@ Function ZoomCamera(fov%)
 	CameraZoom(Camera, Min(1.0+(CurrCameraZoom/400.0),1.1) / Tan((ATan(Tan(fov%/2.0)*Gfx\RealWidth/Gfx\RealHeight))))
 End Function
 
+; -- Mouselook.
+Const mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
+Const mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
+Global mouse_x_speed_1#
+Global mouse_y_speed_1#
 Function MouseLook()
 	Local i%
 	

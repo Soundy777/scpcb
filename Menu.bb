@@ -881,7 +881,7 @@ Function UpdateMainMenu()
 					
 					Color(255, 255, 255)
 					Text(x + 20 * Gfx\MenuScale, y, I_Loc\OptionName_Mouseinvert)
-					InvertMouse = DrawTick(x + 310 * Gfx\MenuScale, y + Gfx\MenuScale, InvertMouse)
+					Config\Controls\InvertMouse = DrawTick(x + 310 * Gfx\MenuScale, y + Gfx\MenuScale, Config\Controls\InvertMouse)
 					If MouseOn(x+310*Gfx\MenuScale,y+Gfx\MenuScale,20*Gfx\MenuScale,20*Gfx\MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"mouseinvert")
 					EndIf

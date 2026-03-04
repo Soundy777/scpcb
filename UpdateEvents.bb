@@ -7381,7 +7381,7 @@ Function UpdateEvents()
 										Msg = I_Loc\Message_914PlayerCoarse
 										MsgTimer = 70*8
 									Case "1:1"
-										InvertMouse = (Not InvertMouse)
+										Config\Controls\InvertMouse = (Not Config\Controls\InvertMouse)
 									Case "fine", "very fine"
 										SuperMan = True
 								End Select

@@ -105,7 +105,6 @@ Global PlayerZone%, PlayerRoom.Rooms
 
 Global GrabbedEntity%
 
-Global InvertMouse% = GetOptionInt("controls", "invert mouse y")
 Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, LastMouseHit1X%, LastMouseHit1Y%, MouseUp1%
 
 Global GodMode%, NoClip%, NoClipSpeed# = 2.0
@@ -3047,7 +3046,7 @@ Function MouseLook()
 		; -- Update the smoothing que To smooth the movement of the mouse.
 		mouse_x_speed_1# = CurveValue(MouseXSpeed() * (MouseSens + 0.6) , mouse_x_speed_1, (6.0 / (MouseSens + 1.0))*Config\Controls\MouseSmoothing) 
 		If IsNaN(mouse_x_speed_1) Then mouse_x_speed_1 = 0
-		If InvertMouse Then
+		If Config\Controls\InvertMouse Then
 			mouse_y_speed_1# = CurveValue(-MouseYSpeed() * (MouseSens + 0.6), mouse_y_speed_1, (6.0/(MouseSens+1.0))*Config\Controls\MouseSmoothing) 
 		Else
 			mouse_y_speed_1# = CurveValue(MouseYSpeed () * (MouseSens + 0.6), mouse_y_speed_1, (6.0/(MouseSens+1.0))*Config\Controls\MouseSmoothing) 
@@ -3097,7 +3096,7 @@ Function MouseLook()
 			HeadDropSpeed# = HeadDropSpeed - 0.002 * DeltaTime
 		EndIf
 		
-		If InvertMouse Then
+		If Config\Controls\InvertMouse Then
 			TurnEntity (Camera, -MouseYSpeed() * 0.05 * DeltaTime, -MouseXSpeed() * 0.15 * DeltaTime, 0)
 		Else
 			TurnEntity (Camera, MouseYSpeed() * 0.05 * DeltaTime, -MouseXSpeed() * 0.15 * DeltaTime, 0)
@@ -4330,7 +4329,7 @@ Function DrawGUI()
 												SuperMan = True
 												Msg = I_Loc\MessageItem_BluefirstaidUseSuperman
 											Case 2
-												InvertMouse = (Not InvertMouse)
+												Config\Controls\InvertMouse = (Not Config\Controls\InvertMouse)
 												Msg = I_Loc\MessageItem_BluefirstaidUseInvert
 											Case 3
 												BlurTimer = 5000
@@ -6054,7 +6053,7 @@ Function DrawMenu()
 					
 					Color(255, 255, 255)
 					Text(x, y, I_Loc\OptionName_Mouseinvert)
-					InvertMouse = DrawTick(x + 270 * Gfx\MenuScale, y + Gfx\MenuScale, InvertMouse)
+					Config\Controls\InvertMouse = DrawTick(x + 270 * Gfx\MenuScale, y + Gfx\MenuScale, Config\Controls\InvertMouse)
 					If MouseOn(x+270*Gfx\MenuScale,y+Gfx\MenuScale,20*Gfx\MenuScale,20*Gfx\MenuScale) And OnSliderID=0
 						DrawOptionsTooltip(tx,ty,tw,th,"mouseinvert")
 					EndIf
@@ -9437,7 +9436,7 @@ End Function
 Function SaveOptionsINI()
 	
 	PutINIValue(Paths\OptionsFile, "controls", "mouse sensitivity", MouseSens)
-	PutINIValue(Paths\OptionsFile, "controls", "invert mouse y", InvertMouse)
+	PutINIValue(Paths\OptionsFile, "controls", "invert mouse y", Config\Controls\InvertMouse)
 	PutINIValue(Paths\OptionsFile, "graphics", "HUD enabled", HUDenabled)
 	PutINIValue(Paths\OptionsFile, "graphics", "screengamma", Config\Graphics\ScreenGamma)
 	PutINIValue(Paths\OptionsFile, "graphics", "antialias", Config\Graphics\AntiAliasing)

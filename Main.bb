@@ -37,7 +37,7 @@ Loading_Init()
 
 ;; Previous Loading Logic
 ; 1) Load Fonts
-; 2) Load & Scale BlinkMeterIMG
+; 2) Load & Scale BlinkMeterIMG (this is used for the loading screens progress bar)
 
 SetFont GameFonts\UI_Large
 
@@ -56,12 +56,14 @@ Loading_Render(0, True)
 ; Loading Zone 2
 ;---------------------------------------------------------------------------------------------------------------------
 ; - -Viewport.
-Global viewport_center_x% = Gfx\RealWidth / 2, viewport_center_y% = Gfx\RealHeight / 2
+Global viewport_center_x% = Gfx\RealWidth / 2
+Global viewport_center_y% = Gfx\RealHeight / 2
 
 ; -- Mouselook.
-Global mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
-Global mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
-Global mouse_x_speed_1#, mouse_y_speed_1#
+Const mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
+Const mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
+Global mouse_x_speed_1#
+Global mouse_y_speed_1#
 
 Global MoveInputCancelling% = GetOptionInt("general", "move input cancelling")
 
@@ -78,10 +80,6 @@ Global KEY_SAVE = GetOptionInt("binds", "Save key")
 Global KEY_CONSOLE = GetOptionInt("binds", "Console key")
 
 Global MouseSmooth# = GetOptionFloat("controls", "mouse smoothing")
-
-Global Mesh_MinX#, Mesh_MinY#, Mesh_MinZ#
-Global Mesh_MaxX#, Mesh_MaxY#, Mesh_MaxZ#
-Global Mesh_MagX#, Mesh_MagY#, Mesh_MagZ#
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Refactoring Checkpoint #2
@@ -9493,7 +9491,9 @@ End Function
 
 ;--------------------------------------- MakeCollBox -functions -------------------------------------------------------
 
-
+Global Mesh_MinX#, Mesh_MinY#, Mesh_MinZ#
+Global Mesh_MaxX#, Mesh_MaxY#, Mesh_MaxZ#
+Global Mesh_MagX#, Mesh_MagY#, Mesh_MagZ#
 ; Create a collision box For a mesh entity taking into account entity scale
 ; (will not work in non-uniform scaled space)
 Function MakeCollBox(mesh%)

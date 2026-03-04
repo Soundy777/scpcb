@@ -86,7 +86,7 @@ End Function
 Function AchievementTooltip(achvno%)
     Local scale# = Config\Graphics\ScreenHeight/768.0
     
-    SetFont Font3
+    SetFont GameFonts\Digital_Small
     Local width = StringWidth(AchievementStrings(achvno))
     SetFont GameFonts\UI_Small
     If (StringWidth(AchievementDescs(achvno))>width) Then
@@ -100,7 +100,7 @@ Function AchievementTooltip(achvno%)
     Rect(ScaledMouseX()+(20*Gfx\MenuScale),ScaledMouseY()+(20*Gfx\MenuScale),width,height,True)
     Color 150,150,150
     Rect(ScaledMouseX()+(20*Gfx\MenuScale),ScaledMouseY()+(20*Gfx\MenuScale),width,height,False)
-    SetFont Font3
+    SetFont GameFonts\Digital_Small
     Text(ScaledMouseX()+(20*Gfx\MenuScale)+(width/2),ScaledMouseY()+(35*Gfx\MenuScale), AchievementStrings(achvno), True, True)
     SetFont GameFonts\UI_Small
     Text(ScaledMouseX()+(20*Gfx\MenuScale)+(width/2),ScaledMouseY()+(55*Gfx\MenuScale), AchievementDescs(achvno), True, True)

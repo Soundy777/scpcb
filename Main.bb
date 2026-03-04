@@ -41,12 +41,12 @@ Loading_Init()
 
 ;Global Font1%
 ;Global Font2%
-Global Font3%
+;Global Font3%
 Global Font4%
 Global Font5%
 ;Font1 = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(19 * Gfx\MenuScale))
 ;Font2% = LoadFont_Strict("GFX\font\cour\Courier New.ttf", Int(52 * Gfx\MenuScale))
-Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * Gfx\MenuScale))
+;Font3% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * Gfx\MenuScale))
 Font4% = LoadFont_Strict("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * Gfx\MenuScale))
 Font5% = LoadFont_Strict("GFX\font\Journal\Journal.ttf", Int(58 * Gfx\MenuScale))
 
@@ -3440,7 +3440,7 @@ Function DrawGUI()
 				Case WearingNightVision=2 Color 0,0,255
 				Case WearingNightVision=3 Color 255,0,0
 			End Select
-			SetFont Font3
+			SetFont GameFonts\Digital_Small
 			If KeypadMSG <> "" Then 
 				KeypadTimer = KeypadTimer-RawDeltaTime
 				
@@ -4837,7 +4837,7 @@ Function DrawGUI()
 								Next
 							EndIf	
 							
-							SetFont Font3
+							SetFont GameFonts\Digital_Small
 							Text(x+60, y, I_Loc\HUD_RadioChannel)						
 							
 							If SelectedItem\itemtemplate\name = "veryfineradio" Then ;"KOODIKANAVA"
@@ -4884,7 +4884,7 @@ Function DrawGUI()
 								Text(x+97, y+16, Int(SelectedItem\state2+1),True,True)
 							EndIf
 							
-							SetFont Font3
+							SetFont GameFonts\Digital_Small
 							If strtemp <> "" Then
 								strtemp = Right(Left(strtemp, (Int(MilliSecs()/300) Mod Len(strtemp))),10)
 								Text(x+32, y+33, strtemp)
@@ -5084,7 +5084,7 @@ Function DrawGUI()
 					
 					DrawImage(SelectedItem\itemtemplate\img, x - ImageWidth(SelectedItem\itemtemplate\img) / 2, y - ImageHeight(SelectedItem\itemtemplate\img) / 2 + 85)
 					
-					SetFont Font3
+					SetFont GameFonts\Digital_Small
 					
 					Local NavWorks% = True
 					If PlayerRoom\RoomTemplate\Name$ = "pocketdimension" Or PlayerRoom\RoomTemplate\Name$ = "dimension1499" Then
@@ -5260,7 +5260,7 @@ Function DrawGUI()
 								;	Text (xtemp+11, ytemp+i*10-26, "-", True)
 								;	;Rect(x - width/2, y+i*15, 40 - i * 6, 5, Ceil(SelectedItem\state / 20.0) > 4 - i)
 								;Next
-								;SetFont Font3
+								;SetFont GameFonts\Digital_Small
 								
 								xtemp = x - width/2 + 196
 								ytemp = y - height/2 + 10
@@ -9646,7 +9646,7 @@ Function RenderWorld2()
 			
 			Color 255,255,255
 			
-			SetFont Font3
+			SetFont GameFonts\Digital_Small
 			
 			Local plusY% = 0
 			If hasBattery=1 Then plusY% = 40
@@ -9731,7 +9731,7 @@ Function RenderWorld2()
 	If BlinkTimer < - 16 Or BlinkTimer > - 6
 		If (WearingNightVision=1 Or WearingNightVision=2) And (hasBattery=1) And ((MilliSecs() Mod 800) < 400) Then
 			Color 255,0,0
-			SetFont Font3
+			SetFont GameFonts\Digital_Small
 			
 			Text Config\Graphics\ScreenWidth/2,20*Gfx\MenuScale,I_Loc\HUD_NvgBatlow,True,False
 			Color 255,255,255

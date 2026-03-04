@@ -293,9 +293,7 @@ Function UpdateMainMenu()
 		EndIf
 		
 		Select MainMenuTab
-			Case 1 ; New game
-				;[Block]
-				
+			Case 1 ; New game		
 				x = 159 * Gfx\MenuScale
 				y = 286 * Gfx\MenuScale
 				
@@ -461,11 +459,7 @@ Function UpdateMainMenu()
 					PutINIValue(Paths\OptionsFile, "general", "intro enabled", IntroEnabled%)
 					
 				EndIf
-				
-				;[End Block]
 			Case 2 ;load game
-				;[Block]
-				
 				y = y + height + 10 * Gfx\MenuScale
 				width = 580 * Gfx\MenuScale
 				;height = 300 * Gfx\MenuScale
@@ -601,13 +595,9 @@ Function UpdateMainMenu()
 						EndIf
 					EndIf
 				EndIf
-				
-				
-				
-				;[End Block]
+
 			Case 3,5,6,7 ;options
-				;[Block]
-				
+
 				x = 159 * Gfx\MenuScale
 				y = 286 * Gfx\MenuScale
 				
@@ -653,11 +643,8 @@ Function UpdateMainMenu()
 				Local tw# = 440*Gfx\MenuScale
 				Local th# = 160*Gfx\MenuScale
 				
-				;DrawOptionsTooltip(tx,ty,tw,th,"")
-				
 				If MainMenuTab = 3 ;Graphics
-					;[Block]
-					;height = 380 * Gfx\MenuScale
+
 					height = 330 * Gfx\MenuScale
 					DrawFrame(x, y, width, height)
 					
@@ -742,9 +729,8 @@ Function UpdateMainMenu()
 						DrawOptionsTooltip(tx,ty,tw,th,"fov")
 					EndIf
 
-					;[End Block]
 				ElseIf MainMenuTab = 5 ;Audio
-					;[Block]
+
 					height = 220 * Gfx\MenuScale
 					DrawFrame(x, y, width, height)	
 					
@@ -759,7 +745,6 @@ Function UpdateMainMenu()
 					
 					y = y + 40*Gfx\MenuScale
 					
-					;Config\Audio\SFXVolume = (SlideBar(x + 310*Gfx\MenuScale, y-4*Gfx\MenuScale, 150*Gfx\MenuScale, Config\Audio\SFXVolume*100.0)/100.0)
 					PrevSFXVolume = (SlideBar(x + 310*Gfx\MenuScale, y-4*Gfx\MenuScale, 150*Gfx\MenuScale, Config\Audio\SFXVolume*100.0, 2)/100.0)
 					Config\Audio\SFXVolume = PrevSFXVolume
 					Color 255,255,255
@@ -767,15 +752,6 @@ Function UpdateMainMenu()
 					If (MouseOn(x+310*Gfx\MenuScale,y-4*Gfx\MenuScale,150*Gfx\MenuScale+14,20) And OnSliderID=0) Lor OnSliderID=2
 						DrawOptionsTooltip(tx,ty,tw,th,"soundvol",PrevSFXVolume)
 					EndIf
-					;If MouseDown1 Then
-					;	If MouseX() >= x And MouseX() <= x + width + 14 And MouseY() >= y And MouseY() <= y + 20 Then
-					;		PlayTestSound(True)
-					;	Else
-					;		PlayTestSound(False)
-					;	EndIf
-					;Else
-					;	PlayTestSound(False)
-					;EndIf
 					
 					y = y + 30*Gfx\MenuScale
 					
@@ -862,9 +838,9 @@ Function UpdateMainMenu()
 					Else
 						UserTrackCheck%=0
 					EndIf
-					;[End Block]
+
 				ElseIf MainMenuTab = 6 ;Controls
-					;[Block]
+
 					height = 270 * Gfx\MenuScale
 					DrawFrame(x, y, width, height)	
 					
@@ -955,9 +931,9 @@ Function UpdateMainMenu()
 						End Select
 						SelectedInputBox = 0
 					EndIf
-					;[End Block]
+
 				ElseIf MainMenuTab = 7 ;Advanced
-					;[Block]
+
 					height = (325 + (Config\Graphics\Framelimit > 0.0) * 30) * Gfx\MenuScale
 					DrawFrame(x, y, width, height)	
 					
@@ -1050,11 +1026,11 @@ Function UpdateMainMenu()
 						;DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
 					;EndIf
 					; ============================================================
-					;[End Block]
+
 				EndIf
-				;[End Block]
+
 			Case 4 ; load map
-				;[Block]
+
 				y = y + height + 10 * Gfx\MenuScale
 				width = 580 * Gfx\MenuScale
 				
@@ -1138,7 +1114,7 @@ Function UpdateMainMenu()
 						EndIf
 					Next
 				EndIf
-				;[End Block]
+
 			Case 8 ;Mods
 
 				y = y + height + 10 * Gfx\MenuScale
@@ -1822,7 +1798,6 @@ Function DrawOptionsTooltip(x%,y%,width%,height%,option$,value#=0,ingame%=False)
 	Color 255,255,255
 	Select Lower(option$)
 		;Graphic options
-			;[Block]
 		Case "vsync"
 			txt = I_Loc\OptionTooltip_Vsync
 		Case "antialias"
@@ -1853,9 +1828,8 @@ Function DrawOptionsTooltip(x%,y%,width%,height%,option$,value#=0,ingame%=False)
 			G = 255
 			B = 255
 			txt2 = Format(I_Loc\Option_HintDefault, "°", Str(Config\Graphics\FOV), Str(Config\Graphics\DefaultFOV))
-			;[End Block]
+
 		;Sound options
-			;[Block]
 		Case "musicvol"
 			txt = I_Loc\OptionTooltip_Musicvol
 			R = 255
@@ -1883,9 +1857,8 @@ Function DrawOptionsTooltip(x%,y%,width%,height%,option$,value#=0,ingame%=False)
 			txt2 = I_Loc\OptionTooltip_UsertrackmodeNote
 		Case "usertrackscan"
 			txt = I_Loc\OptionTooltip_Usertrackscan
-			;[End Block]
+
 		;Control options	
-			;[Block]
 		Case "mousesensitivity"
 			txt = I_Loc\OptionTooltip_Mousesensitivty
 			R = 255
@@ -1902,9 +1875,8 @@ Function DrawOptionsTooltip(x%,y%,width%,height%,option$,value#=0,ingame%=False)
 			txt2 = Format(I_Loc\Option_HintDefault, "%", Str(Int(value*100)), "100")
 		Case "controls"
 			txt = I_Loc\OptionTooltip_Binds
-			;[End Block]
+
 		;Advanced options	
-			;[Block]
 		Case "hud"
 			txt = I_Loc\OptionTooltip_Showhud
 		Case "consoleenable"
@@ -1928,7 +1900,6 @@ Function DrawOptionsTooltip(x%,y%,width%,height%,option$,value#=0,ingame%=False)
 				G = 255
 				txt2 = I_Loc\OptionTooltip_FramelimitNote
 			EndIf
-			;[End Block]
 	End Select
 	
 	lines% = GetLineAmount(txt,fw,fh)

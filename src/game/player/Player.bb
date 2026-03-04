@@ -2,6 +2,10 @@
 ; Player.bb
 ; ===========================================================================
 Include "src/game/player/Input.bb"
+Include "src/game/player/Movement.bb"
+Include "src/game/player/Inventory.bb"
+Include "src/game/player/Status.bb"
+Include "src/game/player/HUD.bb"
 ; ===========================================================================
 
 ;---------------------------------------------------------------------------------------------------------------------
@@ -114,7 +118,9 @@ End Type
 
 Global PlayerData.Player
 
-Function Player_Init()
+; Initialization when the player loads from a new game
+; This is what we'll use when we eventually migrate all the player data into the player type
+Function Player_Init_Future()
 
     ; Delete the existing instance of PlayerData if it exists to allow for easy resettings
     If PlayerData.Player <> Null Then
@@ -123,6 +129,28 @@ Function Player_Init()
     EndIf
     PlayerData.Player = New Player
 
-    ;; ToDo:: setup the defaults here
+    ; Setup the initial values for the PlayerData obj
+
+End Function
+
+; A temporary initialization used when a new game is launched
+Function Player_Init_NewGame()
+
+    ; Setup the initial values for all player data
+    BlinkTimer = -10
+	BlurTimer = 100
+	Stamina = 100
+    DropSpeed = 0
+
+End Function
+
+; Special initialization which is called when the game loads from a save
+Function Player_Init_LoadGame()
+
+    ; Setup the initial values for all player data
+    BlinkTimer = BlinkFrequency
+	Stamina = 100
+    DropSpeed = 0.0
+    HeartBeatRate = 70
 
 End Function

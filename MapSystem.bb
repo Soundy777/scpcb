@@ -1748,7 +1748,7 @@ Global RoomAmbience%[20]
 
 Global Sky
 
-Global HideDistance# = 15.0
+Global HideDistance# = 15.0		; Possibly for use with culling calcuations?
 
 Global SecondaryLightOn# = True
 Global PrevSecondaryLightOn# = True

@@ -1585,8 +1585,6 @@ While IsRunning
 		
 		UpdateBlur(BlurVolume)
 		
-		;[Block]
-		
 		Local darkA# = 0.0
 		If (Not MenuOpen)  Then
 			If Sanity < 0 Then
@@ -2386,18 +2384,6 @@ Function DrawEnding()
 					If DrawButton(x-145*Gfx\MenuScale,y-200*Gfx\MenuScale,390*Gfx\MenuScale,60*Gfx\MenuScale,I_Loc\Menu_AchievementsUpper, True) Then
 						AchievementsMenu = 1
 					EndIf
-					
-;					If DrawButton(x-145*Gfx\MenuScale,y-100*Gfx\MenuScale,390*Gfx\MenuScale,60*Gfx\MenuScale,"MAIN MENU", True) Then
-;						NullGame()
-;						StopStream_Strict(MusicCHN)
-;						;Music(21) = LoadSound_Strict("SFX\Ending\MenuBreath.ogg")
-;						ShouldPlay = 21
-;						MenuOpen = False
-;						MainMenuOpen = True
-;						MainMenuTab = 0
-;						CurrSave = ""
-;						FlushKeys()
-;					EndIf
 					
 					If DrawButton(x-145*Gfx\MenuScale,y-100*Gfx\MenuScale,390*Gfx\MenuScale,60*Gfx\MenuScale,I_Loc\Menu_MainMenuUpper, True)
 						ShouldPlay = 24
@@ -6171,7 +6157,6 @@ Function DrawMenu()
 						;DrawOptionsTooltip(tx,ty,tw,th,"framelimit",Config\Graphics\Framelimit)
 					;EndIf
 					; ============================================================
-					;[End Block]
 			End Select
 		ElseIf AchievementsMenu <= 0 And OptionsMenu <= 0 And QuitMSG > 0 And KillTimer >= 0
 			Local QuitButton% = 60 
@@ -6594,33 +6579,7 @@ Function LoadEntities()
 	HideEntity LiquidObj
 	
 	MTFObj = LoadAnimMesh_Strict("GFX\npcs\MTF2.b3d") ;optimized MTFs
-	GuardObj = LoadAnimMesh_Strict("GFX\npcs\guard.b3d") ;optimized Guards
-	;GuardTex = LoadTexture_Strict("GFX\npcs\body.jpg") ;optimized the guards even more
-	
-	;If BumpEnabled Then
-	;	bump1 = LoadTexture_Strict("GFX\npcs\mtf_newnormal01.png")
-	;	;TextureBlend bump1, FE_BUMP ;USE DOT3
-	;		
-	;	For i = 2 To CountSurfaces(MTFObj)
-	;		sf = GetSurface(MTFObj,i)
-	;		b = GetSurfaceBrush( sf )
-	;		t1 = GetBrushTexture(b,0)
-	;		
-	;		Select Lower(StripPath(TextureName(t1)))
-	;			Case "MTF_newdiffuse02.png"
-	;				
-	;				BrushTexture b, bump1, 0, 0
-	;				BrushTexture b, t1, 0, 1
-	;				PaintSurface sf,b
-	;		End Select
-	;		FreeBrush b
-	;		FreeTexture t1
-	;	Next
-	;	FreeTexture bump1	
-	;EndIf
-	
-	
-	
+	GuardObj = LoadAnimMesh_Strict("GFX\npcs\guard.b3d") ;optimized Guards	
 	ClassDObj = LoadAnimMesh_Strict("GFX\npcs\classd.b3d") ;optimized Class-D's and scientists/researchers
 	ApacheObj = LoadAnimMesh_Strict("GFX\apache.b3d") ;optimized Apaches (helicopters)
 	ApacheRotorObj = LoadAnimMesh_Strict("GFX\apacherotor.b3d") ;optimized the Apaches even more
@@ -6640,34 +6599,6 @@ Function LoadEntities()
 	ClerkOBJ = LoadAnimMesh_Strict("GFX\npcs\clerk.b3d")
 	HideEntity ClerkOBJ	
 	;[End Block]
-	
-;	For i=0 To 4
-;		Select True
-;			Case i=2
-;				tempStr="2c"
-;			Case i>2
-;				tempStr=Str(i)
-;			Default
-;				tempStr=Str(i+1)
-;		End Select
-;		OBJTunnel(i)=LoadRMesh("GFX\map\mt"+tempStr+".rmesh",Null)
-;		HideEntity OBJTunnel(i)
-;	Next
-	
-;	OBJTunnel(0)=LoadRMesh("GFX\map\mt1.rmesh",Null)	
-;	HideEntity OBJTunnel(0)				
-;	OBJTunnel(1)=LoadRMesh("GFX\map\mt2.rmesh",Null)	
-;	HideEntity OBJTunnel(1)
-;	OBJTunnel(2)=LoadRMesh("GFX\map\mt2c.rmesh",Null)	
-;	HideEntity OBJTunnel(2)				
-;	OBJTunnel(3)=LoadRMesh("GFX\map\mt3.rmesh",Null)	
-;	HideEntity OBJTunnel(3)	
-;	OBJTunnel(4)=LoadRMesh("GFX\map\mt4.rmesh",Null)	
-;	HideEntity OBJTunnel(4)				
-;	OBJTunnel(5)=LoadRMesh("GFX\map\mt_elevator.rmesh",Null)
-;	HideEntity OBJTunnel(5)
-;	OBJTunnel(6)=LoadRMesh("GFX\map\mt_generator.rmesh",Null)
-;	HideEntity OBJTunnel(6)
 	
 	LightSpriteTex(0) = LoadTexture_Strict("GFX\light1.jpg", 1)
 	LightSpriteTex(1) = LoadTexture_Strict("GFX\light2.jpg", 1)
@@ -6706,24 +6637,6 @@ Function LoadEntities()
 	HideEntity LeverBaseOBJ
 	LeverOBJ = LoadMesh_Strict("GFX\map\leverhandle.x")
 	HideEntity LeverOBJ
-	
-	;For i = 0 To 1
-	;	HideEntity BigDoorOBJ(i)
-	;	;If BumpEnabled And 0 Then
-	;	If BumpEnabled
-	;		
-	;		Local bumptex = LoadTexture_Strict("GFX\map\containmentdoorsbump.jpg")
-	;		;TextureBlend bumptex, FE_BUMP
-	;		Local tex = LoadTexture_Strict("GFX\map\containment_doors.jpg")	
-	;		EntityTexture BigDoorOBJ(i), bumptex, 0, 0
-	;		EntityTexture BigDoorOBJ(i), tex, 0, 1
-	;		
-	;		;FreeEntity tex
-	;		;FreeEntity bumptex
-	;		FreeTexture tex
-	;		FreeTexture bumptex
-	;	EndIf
-	;Next
 	
 	Loading_Render(15)
 	
@@ -6994,8 +6907,6 @@ Function InitNewGame()
 
 	HideDistance# = 15.0
 	
-	HeartBeatRate = 70
-	
 	AccessCode = 0
 	For i = 0 To 3
 		AccessCode = AccessCode + (Rand(1,9)*(10^i))
@@ -7122,9 +7033,7 @@ Function InitNewGame()
 	
 	HidePointer()
 	
-	BlinkTimer = -10
-	BlurTimer = 100
-	Stamina = 100
+	Player_Init_NewGame()
 	
 	PlayerCanMove = False
 	For i% = 0 To 70
@@ -7149,8 +7058,6 @@ Function InitNewGame()
 	FlushKeys
 	FlushMouse
 	
-	DropSpeed = 0
-	
 	CatchErrors("InitNewGame")
 End Function
 
@@ -7174,22 +7081,17 @@ Function InitLoadGame()
 		EntityParent(sc\obj, 0)
 	Next
 	
-	ResetEntity Collider
-	
-	;InitEvents()
-	
 	Loading_Render(90)
-		
+
+	HidePointer()
 	SetFont GameFonts\UI_Small
 	
-	HidePointer ()
-	
-	BlinkTimer = BlinkFrequency
-	Stamina = 100
+	;---------------------------------------------------
+	ResetEntity Collider
+	Player_Init_LoadGame()
+	;---------------------------------------------------
 	
 	ResetAllRMeshes()
-	
-	DropSpeed = 0.0
 	
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
@@ -7233,7 +7135,6 @@ Function InitLoadGame()
 	Loading_Render(100)
 
 	MoveMouse Gfx\ScreenCenterX,Gfx\ScreenCenterY
-	
 	DeltaTime = 0
 	ResetInput()
 	
@@ -9246,9 +9147,6 @@ Function CurveAngle#(val#, old#, smooth#)
    Return WrapAngle(old + diff * (1.0 / smooth * DeltaTime))
 End Function
 
-
-
-
 Function WrapAngle#(angle#)
 	If angle = INFINITY Then Return 0.0
 	While angle < 0
@@ -9379,8 +9277,6 @@ End Function
 
 
 ;--------------------------------------- INI-functions -------------------------------------------------------
-
-
 
 ;Save options to .ini.
 Function SaveOptionsINI()

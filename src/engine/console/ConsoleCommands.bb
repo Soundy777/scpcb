@@ -1,6 +1,10 @@
 ; ===========================================================================
 ; ConsoleCommands.bb
 ; ===========================================================================
+;; ToDo:: Audit each command to ensure long description fits to screen
+;; ToDo:: Audit each command to ensure input values are properly extracted
+; Switch from using "Left()" & "Right()" to use "Piece()"
+; ===========================================================================
 
 ; Core Commands
 Const CMD_HELP = 1
@@ -35,7 +39,7 @@ Const CMD_REVIVE = 42
 Const CMD_INFSTAM = 43
 Const CMD_GODMODE = 44
 Const CMD_NOTARGET = 45
-Const CMD_SETBLINKEFFECT = 46
+Const CMD_SETBLINK = 46
 
 ; Item Commands
 Const CMD_SPAWNITEM = 60
@@ -117,7 +121,7 @@ Function InitConsoleCommands()
     RegisterConsoleCommand("infstam", CMD_INFSTAM, "Toggles infinite stamina", "Toggles infinite stamina, which prevents the player's stamina from decreasing. Useful for testing and exploration.")
     RegisterConsoleCommand("godmode", CMD_GODMODE, "Toggles godmode", "Toggles godmode, which prevents the player from taking any damage. Useful for testing and exploration.")
     RegisterConsoleCommand("notarget", CMD_NOTARGET, "Toggles notarget mode", "Toggles notarget mode, which prevents NPCs from targeting the player. Useful for testing and exploration.")
-    RegisterConsoleCommand("setblinkeffect", CMD_SETBLINKEFFECT, "Sets blink effect", "Sets the parameters for the blink effect, which is a visual effect that can be used to simulate blinking or other vision impairments. Requires two parameters: intensity and duration. Example usage: 'setblinkeffect 0.5 2' would set the intensity of the blink effect to 0.5 and the duration to 2 seconds.")
+    RegisterConsoleCommand("setblink", CMD_SETBLINK, "Sets blink rate and duration", "Sets the parameters for the blinking effect. Requires two parameters: intensity and duration. Example usage: 'setblinkeffect 5 2' would set the intensity of the blink effect to 5 for a duration of 2 seconds.")
 
     ; Item Commands
     RegisterConsoleCommand("spawnitem", CMD_SPAWNITEM, "Spawns an item", "Spawns the specified item at the player's location. Requires the item name as a parameter. Example usage: 'spawnitem medkit' would spawn a medkit at the player's location.")
@@ -235,8 +239,8 @@ Function Console_DispatchCommand(commandID%, args$)
             Cmd_GodMode(args)
         Case CMD_NOTARGET
             Cmd_NoTarget(args)
-        Case CMD_SETBLINKEFFECT
-            Cmd_SetBlinkEffect(args)
+        Case CMD_SETBLINK
+            Cmd_SetBlink(args)
         
         ; Item Commands
         Case CMD_SPAWNITEM
@@ -534,7 +538,7 @@ Function Cmd_NoClip(args$)
     Select args$
         Case "on", "1", "true"
             NoClip = True
-            Playable = True
+            PlayerCanMove = True
         Case "off", "0", "false"
             NoClip = False	
             RotateEntity Collider, 0, EntityYaw(Collider), 0
@@ -543,7 +547,7 @@ Function Cmd_NoClip(args$)
             If NoClip = False Then		
                 RotateEntity Collider, 0, EntityYaw(Collider), 0
             Else
-                Playable = True
+                PlayerCanMove = True
             EndIf
     End Select
     
@@ -784,11 +788,12 @@ Function Cmd_NoTarget(args$)
 
 End Function
 
-Function Cmd_SetBlinkEffect(args$)
+Function Cmd_SetBlink(args$)
 
-    BlinkEffect = Float(Left(args, Len(args) - Instr(args, " ")))
-    BlinkEffectTimer = Float(Right(args, Len(args) - Instr(args, " ")))
-    CreateConsoleMsg("Set BlinkEffect to: " + BlinkEffect + "and BlinkEffect timer: " + BlinkEffectTimer)
+    BlinkRate = Float(Piece$(args$,1," "))
+    BlinkRateResetTimer = Float(Piece$(args$,2," "))
+
+    CreateConsoleMsg("Set BlinkRate:: " + BlinkRate + ", Duration:: " + BlinkRateResetTimer)
 
 End Function
 

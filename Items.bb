@@ -768,9 +768,9 @@ Function Update294()
 		If VomitTimer > -5 Then
 			If (MilliSecs() Mod 400) < 50 Then CameraShake = 4 
 			mouse_x_speed_1 = 0.0
-			Playable = False
+			PlayerCanMove = False
 		Else
-			Playable = True
+			PlayerCanMove = True
 		EndIf
 		
 		If (Not Vomit) Then

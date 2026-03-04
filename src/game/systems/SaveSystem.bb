@@ -12,7 +12,7 @@ Global CanSave% = True	; This gets set based upon one of several events/npc stat
 Function SaveGame(file$)
 	CatchErrors("Uncaught (SaveGame)")
 	
-	If Not Playable Then Return ;don't save if the player can't move at all
+	If Not PlayerCanMove Then Return ;don't save if the player can't move at all
 	
 	If DropSpeed#>0.02*DeltaTime Or DropSpeed#<-0.02*DeltaTime Then Return
 	
@@ -46,8 +46,8 @@ Function SaveGame(file$)
 	WriteString f, CompatibleNumber
 	
 	WriteFloat f, BlinkTimer
-	WriteFloat f, BlinkEffect
-	WriteFloat f, BlinkEffectTimer
+	WriteFloat f, BlinkRate
+	WriteFloat f, BlinkRateResetTimer
 	
 	WriteInt f, DeathTimer
 	WriteInt f, BlurTimer
@@ -56,8 +56,8 @@ Function SaveGame(file$)
 	WriteByte f, Crouch
 	
 	WriteFloat f, Stamina
-	WriteFloat f, StaminaEffect
-	WriteFloat f, StaminaEffectTimer
+	WriteFloat f, StaminaDrainRate
+	WriteFloat f, StaminaRateResetTimer
 	
 	WriteFloat f, EyeStuck	
 	WriteFloat f, EyeIrritation
@@ -533,8 +533,8 @@ Function LoadGame(file$)
 	version = strtemp
 	
 	BlinkTimer = ReadFloat(f)
-	BlinkEffect = ReadFloat(f)	
-	BlinkEffectTimer = ReadFloat(f)
+	BlinkRate = ReadFloat(f)	
+	BlinkRateResetTimer = ReadFloat(f)
 	
 	DeathTimer = ReadInt(f)	
 	BlurTimer = ReadInt(f)	
@@ -543,8 +543,8 @@ Function LoadGame(file$)
 	Crouch = ReadByte(f)
 	
 	Stamina = ReadFloat(f)
-	StaminaEffect = ReadFloat(f)	
-	StaminaEffectTimer = ReadFloat(f)	
+	StaminaDrainRate = ReadFloat(f)	
+	StaminaRateResetTimer = ReadFloat(f)	
 	
 	EyeStuck = ReadFloat(f)
 	EyeIrritation = ReadFloat(f)
@@ -1372,8 +1372,8 @@ Function LoadGameQuick(file$)
 	version = strtemp
 	
 	BlinkTimer = ReadFloat(f)
-	BlinkEffect = ReadFloat(f)	
-	BlinkEffectTimer = ReadFloat(f)	
+	BlinkRate = ReadFloat(f)	
+	BlinkRateResetTimer = ReadFloat(f)	
 	
 	DeathTimer = ReadInt(f)	
 	BlurTimer = ReadInt(f)	
@@ -1382,8 +1382,8 @@ Function LoadGameQuick(file$)
 	Crouch = ReadByte(f)
 	
 	Stamina = ReadFloat(f)
-	StaminaEffect = ReadFloat(f)	
-	StaminaEffectTimer = ReadFloat(f)	
+	StaminaDrainRate = ReadFloat(f)	
+	StaminaRateResetTimer = ReadFloat(f)	
 	
 	EyeStuck	= ReadFloat(f)
 	EyeIrritation= ReadFloat(f)

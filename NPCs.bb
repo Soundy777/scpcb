@@ -4151,16 +4151,16 @@ Function UpdateNPCs()
 								BlurTimer = ((Sin(MilliSecs()/50)+1.0)*200)/dist
 								
 								If (Not Wearing714) And (WearingGasMask<3) And (WearingHazmat<3) And dist<16 Then
-									If StaminaEffect<1.5 Then
+									If StaminaDrainRate<1.5 Then
 										Msg = I_Loc\Message_966Sleep[Rand(4)]
 										MsgTimer = 7*70
 									EndIf
 									
-									BlinkEffect = Max(BlinkEffect, 1.5)
-									BlinkEffectTimer = 1000
+									BlinkRate = Max(BlinkRate, 1.5)
+									BlinkRateResetTimer = 1000
 									
-									StaminaEffect = 2.0
-									StaminaEffectTimer = 1000
+									StaminaDrainRate = 2.0
+									StaminaRateResetTimer = 1000
 								EndIf							
 							EndIf
 							

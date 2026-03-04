@@ -412,7 +412,7 @@ Function UpdateEvents()
 									HideEntity Collider
 									PositionEntity Collider, x, 0.302, z	
 									DropSpeed = 0
-									Playable = False
+									PlayerCanMove = False
 								Else
 									HideEntity Light
 									
@@ -423,7 +423,7 @@ Function UpdateEvents()
 									e\EventState3 = 15
 									Msg = I_Loc\MessageHelp_Paper
 									MsgTimer=70*7
-									Playable = True
+									PlayerCanMove = True
 								EndIf
 								
 								user_camera_pitch = 0

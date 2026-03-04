@@ -74,12 +74,17 @@ Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
 Global Sanity#, ForceMove#, ForceAngle#
 Global RestoreSanity%
 
-Global Playable% = True
+Global PlayerCanMove% = True
 
 Global BLINKFREQ#
-Global BlinkTimer#, EyeIrritation#, EyeStuck#, BlinkEffect# = 1.0, BlinkEffectTimer#
 
-Global Stamina#, StaminaEffect#=1.0, StaminaEffectTimer#
+Global BlinkTimer#			; Timer to next blink
+Global BlinkRate# = 1.0		; Rate at which we blink
+Global BlinkRateResetTimer#	; Timer until blink rate is reset if adjusted
+Global EyeIrritation#
+Global EyeStuck#
+
+Global Stamina#, StaminaDrainRate#=1.0, StaminaRateResetTimer#
 
 Global CameraShakeTimer#, Vomit%, VomitTimer#, Regurgitate%
 
@@ -1684,7 +1689,7 @@ While IsRunning
 				
 				BlinkTimer = BlinkTimer - DeltaTime
 			Else
-				BlinkTimer = BlinkTimer - DeltaTime * 0.6 * BlinkEffect
+				BlinkTimer = BlinkTimer - DeltaTime * 0.6 * BlinkRate
 				If EyeIrritation > 0 Then BlinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * DeltaTime
 				
 				darkA = Max(darkA, 0.0)
@@ -1692,10 +1697,10 @@ While IsRunning
 			
 			EyeIrritation = Max(0, EyeIrritation - DeltaTime)
 			
-			If BlinkEffectTimer > 0 Then
-				BlinkEffectTimer = BlinkEffectTimer - (DeltaTime/70)
+			If BlinkRateResetTimer > 0 Then
+				BlinkRateResetTimer = BlinkRateResetTimer - (DeltaTime/70)
 			Else
-				If BlinkEffect <> 1.0 Then BlinkEffect = 1.0
+				If BlinkRate <> 1.0 Then BlinkRate = 1.0
 			EndIf
 			
 			LightBlink = Max(LightBlink - (DeltaTime / 35.0), 0)
@@ -1807,7 +1812,7 @@ While IsRunning
 					Else
 						If SelectedScreen<>Null
 							GameSaved = False
-							Playable = True
+							PlayerCanMove = True
 							DropSpeed = 0
 						EndIf
 						SaveGame(SavePath + CurrSave)
@@ -2684,10 +2689,10 @@ Function MovePlayer()
         Stamina = Min(Stamina + 0.15 * DeltaTime*1.25, 100.0)
     EndIf
 	
-	If StaminaEffectTimer > 0 Then
-		StaminaEffectTimer = StaminaEffectTimer - (DeltaTime/70)
+	If StaminaRateResetTimer > 0 Then
+		StaminaRateResetTimer = StaminaRateResetTimer - (DeltaTime/70)
 	Else
-		If StaminaEffect <> 1.0 Then StaminaEffect = 1.0
+		If StaminaDrainRate <> 1.0 Then StaminaDrainRate = 1.0
 	EndIf
 	
 	Local temp#
@@ -2739,10 +2744,10 @@ Function MovePlayer()
 	EndIf
 	
 	If (Not NoClip) Then
-		If ForceMove > 0 Lor Playable And (MoveX <> 0 Lor MoveZ <> 0) Then
+		If ForceMove > 0 Lor PlayerCanMove And (MoveX <> 0 Lor MoveZ <> 0) Then
 			If Crouch = 0 And (KeyDown(KEY_SPRINT)) And Stamina > 0.0 And (Not IsZombie) Then
 				Sprint = 2.5
-				Stamina = Stamina - DeltaTime * 0.4 * StaminaEffect
+				Stamina = Stamina - DeltaTime * 0.4 * StaminaDrainRate
 				If Stamina <= 0 Then Stamina = -20.0
 			End If
 			
@@ -2800,7 +2805,7 @@ Function MovePlayer()
 		EndIf
 	EndIf
 	
-	If KeyHit(KEY_CROUCH) And Playable Then Crouch = (Not Crouch)
+	If KeyHit(KEY_CROUCH) And PlayerCanMove Then Crouch = (Not Crouch)
 	
 	Local temp2# = (Speed * Sprint) / (1.0+CrouchState)
 	
@@ -2858,16 +2863,16 @@ Function MovePlayer()
 				EndIf
 			EndIf
 
-			If moveZ > 0 And Playable Then
+			If moveZ > 0 And PlayerCanMove Then
 				temp = True
 				If moveX = 0 Then angle = 180 Else angle = 135 * moveX
-			ElseIf moveZ < 0 And Playable Then
+			ElseIf moveZ < 0 And PlayerCanMove Then
 				temp = True
 				If moveX = 0 Then angle = 0 Else angle = 45 * moveX
 			ElseIf ForceMove>0 Then
 				temp=True
 				angle = ForceAngle
-			Else If Playable And moveX <> 0 Then
+			Else If PlayerCanMove And moveX <> 0 Then
 				temp = True
 				angle = 90 * moveX
 			EndIf
@@ -2977,7 +2982,7 @@ Function MovePlayer()
 		Injuries = Max(Injuries - (DeltaTime / 70) / 30, 0.0)
 	EndIf
 		
-	If Playable Then
+	If PlayerCanMove Then
 		If KeyHit(KEY_BLINK) Then BlinkTimer = 0
 		If KeyDown(KEY_BLINK) And BlinkTimer < - 10 Then BlinkTimer = -10
 	EndIf
@@ -3327,7 +3332,7 @@ Function DrawGUI()
 			If ClosestDoor <> Null Then 
 				If ClosestDoor\Code <> "" Then
 					SelectedDoor = ClosestDoor
-				ElseIf Playable Then
+				ElseIf PlayerCanMove Then
 					PlaySound2(Resource_GetSound(SFX_INTERACT_BUTTON_1), Camera, ClosestButton)
 					UseDoor(ClosestDoor,True)				
 				EndIf
@@ -4333,8 +4338,8 @@ Function DrawGUI()
 												BlurTimer = 5000
 												Msg = I_Loc\MessageItem_BluefirstaidUseNausea
 											Case 4
-												BlinkEffect = 0.6
-												BlinkEffectTimer = Rand(20,30)
+												BlinkRate = 0.6
+												BlinkRateResetTimer = Rand(20,30)
 											Case 5
 												Bloodloss = 0
 												Injuries = 0
@@ -4356,8 +4361,8 @@ Function DrawGUI()
 					;[Block]
 					If CanUseItem(False,False,False)
 						If (Not (Wearing714=1)) Then ;wtf is this
-							BlinkEffect = 0.6
-							BlinkEffectTimer = Rand(20,30)
+							BlinkRate = 0.6
+							BlinkRateResetTimer = Rand(20,30)
 							BlurTimer = 200
 						EndIf
 						RemoveItem(SelectedItem)
@@ -4367,8 +4372,8 @@ Function DrawGUI()
 					;[Block]
 					If CanUseItem(False,False,False)
 						If (Not (Wearing714=1)) Then 
-							BlinkEffect = 0.4
-							BlinkEffectTimer = Rand(30,40)
+							BlinkRate = 0.4
+							BlinkRateResetTimer = Rand(30,40)
 							Bloodloss = Max(Bloodloss-1.0, 0)
 							BlurTimer = 200
 						EndIf
@@ -4379,8 +4384,8 @@ Function DrawGUI()
 					;[Block]
 					If CanUseItem(False,False,False)
 						If (Not (Wearing714 = 1)) Then
-							BlinkEffect = 0.0
-							BlinkEffectTimer = 60
+							BlinkRate = 0.0
+							BlinkRateResetTimer = 60
 							EyeStuck = 10000
 						EndIf
 						BlurTimer = 1000
@@ -4471,13 +4476,13 @@ Function DrawGUI()
 						
 						;the state of refined drinks is more than 1.0 (fine setting increases it by 1, very fine doubles it)
 						strtemp = GetINIString2(iniStr, loc, "blink effect")
-						If strtemp <> "" Then BlinkEffect = Float(strtemp)^SelectedItem\state
+						If strtemp <> "" Then BlinkRate = Float(strtemp)^SelectedItem\state
 						strtemp = GetINIString2(iniStr, loc, "blink effect timer")
-						If strtemp <> "" Then BlinkEffectTimer = Float(strtemp)*SelectedItem\state
+						If strtemp <> "" Then BlinkRateResetTimer = Float(strtemp)*SelectedItem\state
 						strtemp = GetINIString2(iniStr, loc, "stamina effect")
-						If strtemp <> "" Then StaminaEffect = Float(strtemp)^SelectedItem\state
+						If strtemp <> "" Then StaminaDrainRate = Float(strtemp)^SelectedItem\state
 						strtemp = GetINIString2(iniStr, loc, "stamina effect timer")
-						If strtemp <> "" Then StaminaEffectTimer = Float(strtemp)*SelectedItem\state
+						If strtemp <> "" Then StaminaRateResetTimer = Float(strtemp)*SelectedItem\state
 						
 						strtemp = GetINIString2(iniStr, loc, "refusemessage")
 						If strtemp <> "" Then
@@ -4501,8 +4506,8 @@ Function DrawGUI()
 					;[Block]
 					If CanUseItem(False,True,True)
 						HealTimer = 30
-						StaminaEffect = 0.5
-						StaminaEffectTimer = 20
+						StaminaDrainRate = 0.5
+						StaminaRateResetTimer = 20
 						
 						Msg = I_Loc\MessageItem_SyringeUse
 						MsgTimer = 70 * 8
@@ -4514,8 +4519,8 @@ Function DrawGUI()
 					;[Block]
 					If CanUseItem(False,True,True)
 						HealTimer = Rnd(20, 40)
-						StaminaEffect = Rnd(0.5, 0.8)
-						StaminaEffectTimer = Rnd(20, 30)
+						StaminaDrainRate = Rnd(0.5, 0.8)
+						StaminaRateResetTimer = Rnd(20, 30)
 						
 						Msg = I_Loc\MessageItem_FinesyringeUse
 						MsgTimer = 70 * 8
@@ -4529,8 +4534,8 @@ Function DrawGUI()
 						Select Rand(3)
 							Case 1
 								HealTimer = Rnd(40, 60)
-								StaminaEffect = 0.1
-								StaminaEffectTimer = 30
+								StaminaDrainRate = 0.1
+								StaminaRateResetTimer = 30
 								Msg = I_Loc\MessageItem_VeryfinesyringeUseHuge
 							Case 2
 								SuperMan = True
@@ -5581,9 +5586,9 @@ Function ResetDiseases()
 	For i = 0 To 5
 		SCP1025state[i]=0
 	Next
-	If StaminaEffect > 1.0 Then
-		StaminaEffect = 1.0
-		StaminaEffectTimer = 0.0
+	If StaminaDrainRate > 1.0 Then
+		StaminaDrainRate = 1.0
+		StaminaRateResetTimer = 0.0
 	EndIf
 End Function
 
@@ -6332,7 +6337,7 @@ Function DrawMenu()
 							
 							FlushKeys()
 							FlushMouse()
-							Playable=True
+							PlayerCanMove=True
 							
 							UpdateRooms()
 							
@@ -6387,7 +6392,7 @@ Function DrawMenu()
 						
 						FlushKeys()
 						FlushMouse()
-						Playable=True
+						PlayerCanMove=True
 						
 						UpdateRooms()
 						
@@ -7174,7 +7179,7 @@ Function InitNewGame()
 	BlurTimer = 100
 	Stamina = 100
 	
-	Playable = False
+	PlayerCanMove = False
 	For i% = 0 To 70
 		DeltaTime = 1.0
 		FlushKeys()
@@ -7187,7 +7192,7 @@ Function InitNewGame()
 			Loading_Render(80+Int(Float(i)*0.27))
 		EndIf
 	Next
-	Playable = True
+	PlayerCanMove = True
 	
 	FreeTextureCache
 	Loading_Render(100)
@@ -7345,10 +7350,10 @@ Function NullGame(playbuttonsfx%=True)
 	
 	HeartBeatVolume = 0
 	
-	StaminaEffect = 1.0
-	StaminaEffectTimer = 0
-	BlinkEffect = 1.0
-	BlinkEffectTimer = 0
+	StaminaDrainRate = 1.0
+	StaminaRateResetTimer = 0
+	BlinkRate = 1.0
+	BlinkRateResetTimer = 0
 	
 	Bloodloss = 0
 	Injuries = 0
@@ -7387,7 +7392,7 @@ Function NullGame(playbuttonsfx%=True)
 	
 	ForceMove = 0.0
 	ForceAngle = 0.0	
-	Playable = True
+	PlayerCanMove = True
 	
 	CoffinDistance = 100
 	

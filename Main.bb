@@ -30,7 +30,7 @@ Game_Init()
 ; ===========================================================================
 
 ;---------------------------------------------------------------------------------------------------------------------
-; Loading Zone 1
+; Loading Init
 ;---------------------------------------------------------------------------------------------------------------------
 ;; ToDo:: Eventually move this into the GameStateManager once we've refactored everything down to the main loop below
 Loading_Init()
@@ -62,7 +62,7 @@ Global KEY_CONSOLE = GetOptionInt("binds", "Console key")
 Loading_Render(0, True)
 
 ;---------------------------------------------------------------------------------------------------------------------
-; Loading Zone 2
+; Loading Zone 1
 ;---------------------------------------------------------------------------------------------------------------------
 ;player stats -------------------------------------------------------------------------------------------------------
 Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
@@ -115,8 +115,6 @@ Global PlayerSoundVolume#
 Global Shake#
 
 Global ExplosionTimer#, ExplosionSFX%
-
-Global LightsOn% = True
 
 Global SoundTransmission%
 

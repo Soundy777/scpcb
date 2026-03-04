@@ -118,7 +118,6 @@ Function SaveGame(file$)
 	
 	WriteByte f, SuperMan
 	WriteFloat f, SuperManTimer
-	WriteByte f, LightsOn
 	
 	WriteByte f, HasNumericSeed
 	If HasNumericSeed
@@ -597,7 +596,6 @@ Function LoadGame(file$)
 	
 	SuperMan = ReadByte(f)
 	SuperManTimer = ReadFloat(f)
-	LightsOn = ReadByte(f)
 
 	HasNumericSeed = ReadByte(f)
 	If HasNumericSeed Then
@@ -1437,7 +1435,6 @@ Function LoadGameQuick(file$)
 	
 	SuperMan = ReadByte(f)
 	SuperManTimer = ReadFloat(f)
-	LightsOn = ReadByte(f)
 	
 	HasNumericSeed = ReadByte(f)
 	If HasNumericSeed Then

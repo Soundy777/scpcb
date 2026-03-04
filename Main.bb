@@ -4877,10 +4877,10 @@ Function DrawHUD()
 		SetFont GameFonts\Console
 		
 		;Text x + 250, 50, "Zone: " + (EntityZ(Collider)/8.0)
-		Text x - 50, 50, "Player Position: (" + f2s(EntityX(Collider), 3) + ", " + f2s(EntityY(Collider), 3) + ", " + f2s(EntityZ(Collider), 3) + ")"
-		Text x - 50, 70, "Camera Position: (" + f2s(EntityX(Camera), 3)+ ", " + f2s(EntityY(Camera), 3) +", " + f2s(EntityZ(Camera), 3) + ")"
-		Text x - 50, 100, "Player Rotation: (" + f2s(EntityPitch(Collider), 3) + ", " + f2s(EntityYaw(Collider), 3) + ", " + f2s(EntityRoll(Collider), 3) + ")"
-		Text x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(Camera), 3)+ ", " + f2s(EntityYaw(Camera), 3) +", " + f2s(EntityRoll(Camera), 3) + ")"
+		Text x - 50, 50, "Player Position: (" + FormatFloat(EntityX(Collider), 3) + ", " + FormatFloat(EntityY(Collider), 3) + ", " + FormatFloat(EntityZ(Collider), 3) + ")"
+		Text x - 50, 70, "Camera Position: (" + FormatFloat(EntityX(Camera), 3)+ ", " + FormatFloat(EntityY(Camera), 3) +", " + FormatFloat(EntityZ(Camera), 3) + ")"
+		Text x - 50, 100, "Player Rotation: (" + FormatFloat(EntityPitch(Collider), 3) + ", " + FormatFloat(EntityYaw(Collider), 3) + ", " + FormatFloat(EntityRoll(Collider), 3) + ")"
+		Text x - 50, 120, "Camera Rotation: (" + FormatFloat(EntityPitch(Camera), 3)+ ", " + FormatFloat(EntityYaw(Camera), 3) +", " + FormatFloat(EntityRoll(Camera), 3) + ")"
 		Text x - 50, 150, "Room: " + PlayerRoom\RoomTemplate\Name
 		For ev.Events = Each Events
 			If ev\room = PlayerRoom Then
@@ -4893,32 +4893,32 @@ Function DrawHUD()
 			EndIf
 		Next
 		Text x - 50, 280, "Room coordinates: (" + Floor(EntityX(PlayerRoom\obj) / 8.0 + 0.5) + ", " + Floor(EntityZ(PlayerRoom\obj) / 8.0 + 0.5) + ", angle: "+PlayerRoom\angle + ")"
-		Text x - 50, 300, "Stamina: " + f2s(Stamina, 3)
-		Text x - 50, 320, "Death timer: " + f2s(KillTimer, 3)               
-		Text x - 50, 340, "Blink timer: " + f2s(BlinkTimer, 3)
+		Text x - 50, 300, "Stamina: " + FormatFloat(Stamina, 3)
+		Text x - 50, 320, "Death timer: " + FormatFloat(KillTimer, 3)               
+		Text x - 50, 340, "Blink timer: " + FormatFloat(BlinkTimer, 3)
 		Text x - 50, 360, "Injuries: " + Injuries
 		Text x - 50, 380, "Bloodloss: " + Bloodloss
 		If Curr173 <> Null
-			Text x - 50, 410, "SCP - 173 Position (collider): (" + f2s(EntityX(Curr173\Collider), 3) + ", " + f2s(EntityY(Curr173\Collider), 3) + ", " + f2s(EntityZ(Curr173\Collider), 3) + ")"
-			Text x - 50, 430, "SCP - 173 Position (obj): (" + f2s(EntityX(Curr173\obj), 3) + ", " + f2s(EntityY(Curr173\obj), 3) + ", " + f2s(EntityZ(Curr173\obj), 3) + ")"
+			Text x - 50, 410, "SCP - 173 Position (collider): (" + FormatFloat(EntityX(Curr173\Collider), 3) + ", " + FormatFloat(EntityY(Curr173\Collider), 3) + ", " + FormatFloat(EntityZ(Curr173\Collider), 3) + ")"
+			Text x - 50, 430, "SCP - 173 Position (obj): (" + FormatFloat(EntityX(Curr173\obj), 3) + ", " + FormatFloat(EntityY(Curr173\obj), 3) + ", " + FormatFloat(EntityZ(Curr173\obj), 3) + ")"
 			;Text x - 50, 410, "SCP - 173 Idle: " + Curr173\Idle
 			Text x - 50, 450, "SCP - 173 State: " + Curr173\State
 		EndIf
 		If Curr106 <> Null
-			Text x - 50, 470, "SCP - 106 Position: (" + f2s(EntityX(Curr106\obj), 3) + ", " + f2s(EntityY(Curr106\obj), 3) + ", " + f2s(EntityZ(Curr106\obj), 3) + ")"
+			Text x - 50, 470, "SCP - 106 Position: (" + FormatFloat(EntityX(Curr106\obj), 3) + ", " + FormatFloat(EntityY(Curr106\obj), 3) + ", " + FormatFloat(EntityZ(Curr106\obj), 3) + ")"
 			Text x - 50, 490, "SCP - 106 Idle: " + Curr106\Idle
 			Text x - 50, 510, "SCP - 106 State: " + Curr106\State
 		EndIf
 		offset% = 0
 		For npc.NPCs = Each NPCs
 			If npc\NPCtype = NPCtype096 Then
-				Text x - 50, 530, "SCP - 096 Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
+				Text x - 50, 530, "SCP - 096 Position: (" + FormatFloat(EntityX(npc\obj), 3) + ", " + FormatFloat(EntityY(npc\obj), 3) + ", " + FormatFloat(EntityZ(npc\obj), 3) + ")"
 				Text x - 50, 550, "SCP - 096 Idle: " + npc\Idle
 				Text x - 50, 570, "SCP - 096 State: " + npc\State
-				Text x - 50, 590, "SCP - 096 Speed: " + f2s(npc\currspeed, 5)
+				Text x - 50, 590, "SCP - 096 Speed: " + FormatFloat(npc\currspeed, 5)
 			EndIf
 			If npc\NPCtype = NPCtypeMTF Then
-				Text x - 50, 620 + 60 * offset, "MTF " + offset + " Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
+				Text x - 50, 620 + 60 * offset, "MTF " + offset + " Position: (" + FormatFloat(EntityX(npc\obj), 3) + ", " + FormatFloat(EntityY(npc\obj), 3) + ", " + FormatFloat(EntityZ(npc\obj), 3) + ")"
 				Text x - 50, 640 + 60 * offset, "MTF " + offset + " State: " + npc\State
 				Text x - 50, 660 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastseen					
 				offset = offset + 1
@@ -7156,7 +7156,7 @@ Function UpdateSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 End Function
 ;--------------------------------------- random -------------------------------------------------------
 
-Function f2s$(n#, count%)
+Function FormatFloat$(n#, count%)
 	Return Left(n, Len(Int(Str(n)))+count+1)
 End Function
 
@@ -7241,7 +7241,6 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
 	Return newTime
 	
 End Function 
-
 
 Function Use914(item.Items, setting$, x#, y#, z#)
 	
@@ -8158,7 +8157,6 @@ Function Use427()
 	
 End Function
 
-
 Function UpdateMTF%()
 	If PlayerRoom\RoomTemplate\Name = "gateaentrance" Then Return
 	
@@ -8245,7 +8243,6 @@ Function UpdateMTF%()
 	EndIf
 	
 End Function
-
 
 Function UpdateInfect()
 	Local temp#, i%, r.Rooms
@@ -8418,81 +8415,6 @@ Function UpdateInfect()
 	Else
 		HideEntity InfectOverlay
 	EndIf
-End Function
-
-;--------------------------------------- math -------------------------------------------------------
-
-Function GenerateSeedNumber(seed$)
- 	Local temp% = 0
- 	Local shift% = 0
- 	For i = 1 To Len(seed)
- 		temp = temp Xor (Asc(Mid(seed,i,1)) Shl shift)
- 		shift=(shift+1) Mod 24
-	Next
- 	Return temp
-End Function
-
-Function Distance#(x1#, y1#, x2#, y2#)
-	Local x# = x2 - x1, y# = y2 - y1
-	Return(Sqr(x*x + y*y))
-End Function
-
-
-Function CurveValue#(number#, old#, smooth#)
-	If DeltaTime = 0 Then Return old
-	
-	If number < old Then
-		Return Max(old + (number - old) * (1.0 / smooth * DeltaTime), number)
-	Else
-		Return Min(old + (number - old) * (1.0 / smooth * DeltaTime), number)
-	EndIf
-End Function
-
-Function CurveAngle#(val#, old#, smooth#)
-	If DeltaTime = 0 Then Return old
-	
-   Local diff# = WrapAngle(val) - WrapAngle(old)
-   If diff > 180 Then diff = diff - 360
-   If diff < - 180 Then diff = diff + 360
-   Return WrapAngle(old + diff * (1.0 / smooth * DeltaTime))
-End Function
-
-Function WrapAngle#(angle#)
-	If angle = INFINITY Then Return 0.0
-	While angle < 0
-		angle = angle + 360
-	Wend 
-	While angle >= 360
-		angle = angle - 360
-	Wend
-	Return angle
-End Function
-
-Function point_direction#(x1#,z1#,x2#,z2#)
-	Local dx#, dz#
-	dx = x1 - x2
-	dz = z1 - z2
-	Return ATan2(dz,dx)
-End Function
-
-Function point_distance#(x1#,z1#,x2#,z2#)
-	Local dx#,dy#
-	dx = x1 - x2
-	dy = z1 - z2
-	Return Sqr((dx*dx)+(dy*dy)) 
-End Function
-
-Function angleDist#(a0#,a1#)
-	Local b# = a0-a1
-	Local bb#
-	If b<-180.0 Then
-		bb = b+360.0
-	Else If b>180.0 Then
-		bb = b-360.0
-	Else
-		bb = b
-	EndIf
-	Return bb
 End Function
 
 ;--------------------------------------- decals -------------------------------------------------------
@@ -8785,7 +8707,7 @@ Function RenderWorld2()
 			
 			Text Config\Graphics\ScreenWidth/2,Viewport_GetStartY()+(20+plusY)*Gfx\MenuScale,I_Loc\HUD_NvgRefresh,True,False
 			
-			Text Config\Graphics\ScreenWidth/2,Viewport_GetStartY()+(60+plusY)*Gfx\MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
+			Text Config\Graphics\ScreenWidth/2,Viewport_GetStartY()+(60+plusY)*Gfx\MenuScale,Max(FormatFloat(NVTimer/60.0,1),0.0),True,False
 			Text Config\Graphics\ScreenWidth/2,Viewport_GetStartY()+(100+plusY)*Gfx\MenuScale,I_Loc\HUD_NvgRefreshSeconds,True,False
 			
 			temp% = CreatePivot() : temp2% = CreatePivot()
@@ -8820,7 +8742,7 @@ Function RenderWorld2()
 						
 						If (Not IsNVGBlinking%)
 						Text Config\Graphics\ScreenWidth / 2 + xvalue * (Config\Graphics\ScreenWidth / 2),Config\Graphics\ScreenHeight / 2 - yvalue * (Config\Graphics\ScreenHeight / 2),np\NVName,True,True
-						Text Config\Graphics\ScreenWidth / 2 + xvalue * (Config\Graphics\ScreenWidth / 2),Config\Graphics\ScreenHeight / 2 - yvalue * (Config\Graphics\ScreenHeight / 2) + 30.0 * Gfx\MenuScale,Format(I_Loc\HUD_NvgMeters, f2s(dist,1)),True,True
+						Text Config\Graphics\ScreenWidth / 2 + xvalue * (Config\Graphics\ScreenWidth / 2),Config\Graphics\ScreenHeight / 2 - yvalue * (Config\Graphics\ScreenHeight / 2) + 30.0 * Gfx\MenuScale,Format(I_Loc\HUD_NvgMeters, FormatFloat(dist,1)),True,True
 					EndIf
 				EndIf
 				EndIf

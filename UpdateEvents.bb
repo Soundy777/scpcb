@@ -6550,10 +6550,7 @@ Function UpdateEvents()
 						EndIf
 						
 						If e\EventState2 > 1000 Then
-							If e\Sound2=0 Then
-								e\Sound2 = LoadSound_Strict("SFX\Door\1123DoorOpen.ogg")
-								e\SoundCHN2 = PlaySound_Strict(e\Sound2)
-							EndIf
+							e\SoundCHN2 = PlaySFX(DoorSFX\SCP_1123_Open)
 							RotateEntity e\room\Objects[11], 0, CurveAngle(10, EntityYaw(e\room\Objects[11],0), 40), 0,False
 							If e\EventState2=>1040 And e\EventState2-DeltaTime<1040 Then 
 								PlaySpatialSound(LoadTempSound("SFX\SCP\1123\Officer1.ogg"), Camera, e\room\NPC[0]\obj)

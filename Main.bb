@@ -170,17 +170,6 @@ Global CurrMusic% = 1
 
 Loading_Render(10, True)
 
-Dim OpenDoorSFX%(3,3), CloseDoorSFX%(3,3)
-
-Global KeyCardSFX1 
-Global KeyCardSFX2 
-Global ButtonSFX2 
-Global ScannerSFX1
-Global ScannerSFX2 
-
-Global OpenDoorFastSFX
-Global CautionSFX% 
-
 Global NuclearSirenSFX%
 
 Global CameraSFX  

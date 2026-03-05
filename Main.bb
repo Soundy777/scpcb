@@ -1899,7 +1899,7 @@ Function QuickLoadEvents()
 
 	Select e\EventName
 		Case "room2sl"
-			;[Block]
+			
 			If e\EventState = 0 And e\EventStr <> ""
 				If e\EventStr <> "" And Left(e\EventStr,4) <> "load"
 					QuickLoadPercent = QuickLoadPercent + 5
@@ -1952,9 +1952,9 @@ Function QuickLoadEvents()
 					QuickLoadPercent = 100
 				EndIf
 			EndIf
-			;[End Block]
+			
 		Case "room2closets"
-			;[Block]
+			
 			If e\EventState = 0
 				If e\EventStr = "load0"
 					QuickLoadPercent = 10
@@ -1992,9 +1992,9 @@ Function QuickLoadEvents()
 					e\EventState=1
 				EndIf
 			EndIf
-			;[End Block]
+			
 		Case "room3storage"
-			;[Block]
+			
 			If e\room\NPC[0]=Null Then
 				e\room\NPC[0]=CreateNPC(NPCtype939, 0,0,0)
 				QuickLoadPercent = 20
@@ -2007,9 +2007,9 @@ Function QuickLoadEvents()
 			Else
 				If QuickLoadPercent > -1 Then QuickLoadPercent = 100
 			EndIf
-			;[End Block]
+			
 		Case "room049"
-			;[Block]
+			
 			If e\EventState = 0 Then
 				If e\EventStr = "load0"
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True))
@@ -2047,9 +2047,9 @@ Function QuickLoadEvents()
 					e\EventState=1
 				EndIf
 			EndIf
-			;[End Block]
+			
 		Case "room205"
-			;[Block]
+			
 			If e\EventState=0 Or e\EventStr <> "loaddone" Then
 				If e\EventStr = "load0"
 					e\room\Objects[3] = LoadAnimMesh_Strict("GFX\npcs\205_demon1.b3d")
@@ -2089,9 +2089,9 @@ Function QuickLoadEvents()
 					;e\EventState = 1
 				EndIf
 			EndIf
-			;[End Block]
+			
 		Case "room860"
-			;[Block]
+			
 			If e\EventStr = "load0"
 				QuickLoadPercent = 15
 				ForestNPC = CreateSprite()
@@ -2114,9 +2114,9 @@ Function QuickLoadEvents()
 				If e\room\NPC[0]=Null Then e\room\NPC[0]=CreateNPC(NPCtype860, 0,0,0)
 				e\EventStr = "loaddone"
 			EndIf
-			;[End Block]
+			
 		Case "room966"
-			;[Block]
+			
 			If e\EventState = 1
 				e\EventState2 = e\EventState2+DeltaTime
 				If e\EventState2>30 Then
@@ -2133,9 +2133,9 @@ Function QuickLoadEvents()
 					QuickLoadPercent = Int(e\EventState2)
 				EndIf
 			EndIf
-			;[End Block]
+			
 		Case "dimension1499"
-			;[Block]
+			
 			If e\EventState = 0.0
 				If e\EventStr = "load0"
 					QuickLoadPercent = 10
@@ -2174,7 +2174,7 @@ Function QuickLoadEvents()
 					EndIf
 				EndIf
 			EndIf
-			;[End Block]
+			
 	End Select
 	
 	CatchErrors("QuickLoadEvents "+e\EventName)
@@ -2818,7 +2818,7 @@ Function DrawGUI()
 	Local closedInv%
 	
 	If OtherOpen<>Null Then
-		;[Block]
+		
 		PrevOtherOpen = OtherOpen
 		OtherSize=OtherOpen\Inventory\Size;Int(OtherOpen\state2)
 		
@@ -3007,7 +3007,7 @@ Function DrawGUI()
 			OtherOpen=Null
 			UpdateMenuState()
 		EndIf
-		;[End Block]
+		
 		
 	Else If InvOpen Then
 		SelectedDoor = Null
@@ -3182,7 +3182,7 @@ Function DrawGUI()
 						If SelectedItem\itemtemplate\group = "paper" Lor SelectedItem\itemtemplate\group = "misc" Then groupSelector = SelectedItem\itemtemplate\name
 						Select SelectedItem\itemtemplate\name
 							Case groupSelector,"key1","key2","key3","key4","key5","key6","oldpaper","badge","oldbadge","ticket","25ct","coin","key","scp860"
-								;[Block]
+								
 								If Inventory(MouseSlot)\itemtemplate\name = "clipboard" Then
 									;Add an item to clipboard
 									Local added.Items = Null
@@ -3271,9 +3271,9 @@ Function DrawGUI()
 								EndIf
 								SelectedItem = Null
 								
-								;[End Block]
+								
 							Case "bat"
-								;[Block]
+								
 								Select Inventory(MouseSlot)\itemtemplate\name
 									Case "snav", "snav300", "snav310"
 										If SelectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(SelectedItem\itemtemplate\sound))	
@@ -3312,9 +3312,9 @@ Function DrawGUI()
 										Msg = I_Loc\MessageItem_Cantcombine
 										MsgTimer = 70 * 5	
 								End Select
-								;[End Block]
+								
 							Case "18vbat"
-								;[Block]
+								
 								Select Inventory(MouseSlot)\itemtemplate\name
 									Case "snav", "snav300", "snav310"
 										Msg = I_Loc\MessageItem_NavBatNofit
@@ -3339,12 +3339,12 @@ Function DrawGUI()
 										Msg = I_Loc\MessageItem_Cantcombine
 										MsgTimer = 70 * 5
 								End Select
-								;[End Block]
+								
 							Default
-								;[Block]
+								
 								Msg = I_Loc\MessageItem_Cantcombine
 								MsgTimer = 70 * 5
-								;[End Block]
+								
 						End Select					
 					End If
 					
@@ -3363,7 +3363,7 @@ Function DrawGUI()
 		If SelectedItem <> Null Then
 			Select SelectedItem\itemtemplate\name
 				Case "nvgoggles"
-					;[Block]
+					
 					If Wearing1499 = 0 And WearingHazmat=0 Then
 						If WearingNightVision = 1 Then
 							Msg = I_Loc\MessageItem_NvgOff
@@ -3384,9 +3384,9 @@ Function DrawGUI()
 					EndIf
 					SelectedItem = Null
 					MsgTimer = 70 * 5
-					;[End Block]
+					
 				Case "supernv"
-					;[Block]
+					
 					If Wearing1499 = 0 And WearingHazmat=0 Then
 						If WearingNightVision = 2 Then
 							Msg = I_Loc\MessageItem_NvgOff
@@ -3407,9 +3407,9 @@ Function DrawGUI()
 					EndIf
 					SelectedItem = Null
 					MsgTimer = 70 * 5
-					;[End Block]
+					
 				Case "finenvgoggles"
-					;[Block]
+					
 					If Wearing1499 = 0 And WearingHazmat = 0 Then
 						If WearingNightVision = 3 Then
 							Msg = I_Loc\MessageItem_NvgOff
@@ -3430,9 +3430,9 @@ Function DrawGUI()
 					EndIf
 					SelectedItem = Null
 					MsgTimer = 70 * 5
-					;[End Block]
+					
 				Case "scp1123"
-					;[Block]
+					
 					If Not (Wearing714 = 1) Then
 						If PlayerRoom\RoomTemplate\Name <> "room1123" Then
 							ShowEntity Light
@@ -3454,22 +3454,22 @@ Function DrawGUI()
 							EndIf
 						Next
 					EndIf
-					;[End Block]
+					
 				Case "key1", "key2", "key3", "key4", "key5", "key6", "keyomni", "scp860", "hand", "hand2", "25ct"
-					;[Block]
+					
 					DrawImage(SelectedItem\itemtemplate\invimg, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
-					;[End Block]
+					
 				Case "scp513"
-					;[Block]
+					
 					PlaySound_Strict LoadTempSound("SFX\SCP\513\Bell1.ogg")
 					
 					If Curr5131 = Null
 						Curr5131 = CreateNPC(NPCtype5131, 0,0,0)
 					EndIf	
 					SelectedItem = Null
-					;[End Block]
+					
 				Case "scp500"
-					;[Block]
+					
 					If CanUseItem(False, False, True)
 						GiveAchievement(Achv500)
 						
@@ -3485,9 +3485,9 @@ Function DrawGUI()
 						RemoveItem(SelectedItem)
 						SelectedItem = Null
 					EndIf	
-					;[End Block]
+					
 				Case "veryfinefirstaid"
-					;[Block]
+					
 					If CanUseItem(False, False, True)
 						Select Rand(5)
 							Case 1
@@ -3536,9 +3536,9 @@ Function DrawGUI()
 						
 						RemoveItem(SelectedItem)
 					EndIf
-					;[End Block]
+					
 				Case "firstaid", "finefirstaid", "firstaid2"
-					;[Block]
+					
 					If Bloodloss = 0 And Injuries = 0 Then
 						Msg = I_Loc\MessageItem_FirstaidUseFull
 						MsgTimer = 70*5
@@ -3619,9 +3619,9 @@ Function DrawGUI()
 							EndIf
 						EndIf
 					EndIf
-					;[End Block]
+					
 				Case "eyedrops","redeyedrops"
-					;[Block]
+					
 					If CanUseItem(False,False,False)
 						If (Not (Wearing714=1)) Then ;wtf is this
 							BlinkRate = 0.6
@@ -3630,9 +3630,9 @@ Function DrawGUI()
 						EndIf
 						RemoveItem(SelectedItem)
 					EndIf
-					;[End Block]
+					
 				Case "fineeyedrops"
-					;[Block]
+					
 					If CanUseItem(False,False,False)
 						If (Not (Wearing714=1)) Then 
 							BlinkRate = 0.4
@@ -3642,9 +3642,9 @@ Function DrawGUI()
 						EndIf
 						RemoveItem(SelectedItem)
 					EndIf
-					;[End Block]
+					
 				Case "supereyedrops"
-					;[Block]
+					
 					If CanUseItem(False,False,False)
 						If (Not (Wearing714 = 1)) Then
 							BlinkRate = 0.0
@@ -3654,9 +3654,9 @@ Function DrawGUI()
 						BlurTimer = 1000
 						RemoveItem(SelectedItem)
 					EndIf
-					;[End Block]
+					
 				Case "scp1025"
-					;[Block]
+					
 					GiveAchievement(Achv1025) 
 					If SelectedItem\itemtemplate\img=0 Then
 						SelectedItem\state = Rand(0,5)
@@ -3669,9 +3669,9 @@ Function DrawGUI()
 					If (Not Wearing714) Then SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])
 					
 					DrawImage(SelectedItem\itemtemplate\img, Config\Graphics\ScreenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, Config\Graphics\ScreenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
-					;[End Block]
+					
 				Case "cup"
-					;[Block]
+					
 					If CanUseItem(False,False,True)
 						strtemp = SelectedItem\drinkName
 
@@ -3764,9 +3764,9 @@ Function DrawGUI()
 						
 						SelectedItem = Null
 					EndIf
-					;[End Block]
+					
 				Case "syringe"
-					;[Block]
+					
 					If CanUseItem(False,True,True)
 						HealTimer = 30
 						StaminaDrainRate = 0.5
@@ -3777,9 +3777,9 @@ Function DrawGUI()
 						
 						RemoveItem(SelectedItem)
 					EndIf
-					;[End Block]
+					
 				Case "finesyringe"
-					;[Block]
+					
 					If CanUseItem(False,True,True)
 						HealTimer = Rnd(20, 40)
 						StaminaDrainRate = Rnd(0.5, 0.8)
@@ -3790,9 +3790,9 @@ Function DrawGUI()
 						
 						RemoveItem(SelectedItem)
 					EndIf
-					;[End Block]
+					
 				Case "veryfinesyringe"
-					;[Block]
+					
 					If CanUseItem(False,True,True)
 						Select Rand(3)
 							Case 1
@@ -3811,9 +3811,9 @@ Function DrawGUI()
 						MsgTimer = 70 * 8
 						RemoveItem(SelectedItem)
 					EndIf
-					;[End Block]
+					
 				Case "radio","18vradio","fineradio","veryfineradio"
-					;[Block]
+					
 					If SelectedItem\state <= 100 Then SelectedItem\state = Max(0, SelectedItem\state - DeltaTime * 0.004)
 					
 					If SelectedItem\itemtemplate\img=0 Then
@@ -4134,7 +4134,7 @@ Function DrawGUI()
 						EndIf
 						
 					EndIf
-					;[End Block]
+					
 				Case "cigarette"
 					If CanUseItem(False,False,True)
 						If SelectedItem\state = 0 Then
@@ -5111,7 +5111,7 @@ Function DrawMenu()
 			Select OptionsMenu
 				Case 1 ;Graphics
 					SetFont GameFonts\UI_Small
-					;[Block]
+					
 					y=y+50*Gfx\MenuScale
 					
 					Color 255,255,255
@@ -5193,10 +5193,10 @@ Function DrawMenu()
 						DrawOptionsTooltip(tx,ty,tw,th,"fov")
 					EndIf
 					ZoomCamera(Config\Graphics\FOV)
-					;[End Block]
+					
 				Case 2 ;Audio
 					SetFont GameFonts\UI_Small
-					;[Block]
+					
 					y = y + 50*Gfx\MenuScale
 					
 					MusicVolume = (SlideBar(x + 250*Gfx\MenuScale, y-4*Gfx\MenuScale, 100*Gfx\MenuScale, MusicVolume*100.0, 1)/100.0)
@@ -5252,10 +5252,10 @@ Function DrawMenu()
 						;	DrawOptionsTooltip(tx,ty,tw,th,"usertrackscan")
 						;EndIf
 					EndIf
-					;[End Block]
+					
 				Case 3 ;Controls
 					SetFont GameFonts\UI_Small
-					;[Block]
+					
 					y = y + 50*Gfx\MenuScale
 					
 					MouseSens = (SlideBar(x + 270*Gfx\MenuScale, y-4*Gfx\MenuScale, 100*Gfx\MenuScale, (MouseSens+0.5)*100.0, 1)/100.0)-0.5
@@ -5343,10 +5343,10 @@ Function DrawMenu()
 						End Select
 						SelectedInputBox = 0
 					EndIf
-					;[End Block]
+					
 				Case 4 ;Advanced
 					SetFont GameFonts\UI_Small
-					;[Block]
+					
 					y = y + 50*Gfx\MenuScale
 					
 					Color 255,255,255				
@@ -5871,14 +5871,14 @@ Function LoadEntities()
 	HideEntity ApacheRotorObj
 	
 	;Other NPCs pre-loaded
-	;[Block]
+	
 	NPC049OBJ = LoadAnimMesh_Strict("GFX\npcs\scp-049.b3d")
 	HideEntity NPC049OBJ
 	NPC0492OBJ = LoadAnimMesh_Strict("GFX\npcs\zombie1.b3d")
 	HideEntity NPC0492OBJ
 	ClerkOBJ = LoadAnimMesh_Strict("GFX\npcs\clerk.b3d")
 	HideEntity ClerkOBJ	
-	;[End Block]
+	
 	
 	LightSpriteTex(0) = LoadTexture_Strict("GFX\light1.jpg", 1)
 	LightSpriteTex(1) = LoadTexture_Strict("GFX\light2.jpg", 1)
@@ -6049,7 +6049,7 @@ Function LoadEntities()
 	SetChunkDataValues()
 	
 	;NPCtypeD - different models with different textures (loaded using "CopyEntity") - ENDSHN
-	;[Block]
+	
 	For i=1 To MaxDTextures-1
 		DTextures[i] = CopyEntity(ClassDObj)
 		HideEntity DTextures[i]
@@ -6087,7 +6087,7 @@ Function LoadEntities()
 	EntityTexture DTextures[8],tex
 	FreeTexture tex
 	
-	;[End Block]
+	
 
 	InitMaterials()
 	
@@ -6377,7 +6377,7 @@ Function InitLoadGame()
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
 		If e\EventName = "dimension1499"
 			If e\EventState = 2
-				;[Block]
+				
 				Loading_Render(91)
 				e\room\Objects[0] = LoadMesh_Strict("GFX\map\dimension1499\1499plane.b3d")
 				HideEntity(e\room\Objects[0])
@@ -6406,7 +6406,7 @@ Function InitLoadGame()
 				DebugLog "Loaded dimension1499 successful"
 				
 				Exit
-				;[End Block]
+				
 			EndIf
 		EndIf
 	Next

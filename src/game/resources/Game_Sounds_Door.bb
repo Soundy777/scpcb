@@ -21,12 +21,12 @@ Type SFX_Door
 	Field Close_1%
 	Field Close_2%
 	Field Close_3%
-	Field SCP_079_Close%
 	Field Error%
 	Field Open_1%
 	Field Open_2%
 	Field Open_3%
 	Field SCP_079_Open%
+	Field SCP_079_Close%
 	Field SCP_173_Open%
 	Field OpenFast%
 	Field Sparks%
@@ -72,8 +72,6 @@ Function RegisterDoorsounds()
 	Resource_RegisterSound(DoorSFX\Close_2, "SFX\Door\DoorClose2.ogg")
 	Resource_RegisterSound(DoorSFX\Close_3, "SFX\Door\DoorClose3.ogg")
 
-	Resource_RegisterSound(DoorSFX\SCP_079_Close, "SFX\Door\DoorClose079.ogg")				; Done
-
 	Resource_RegisterSound(DoorSFX\Error, "SFX\Door\DoorError.ogg")							; Done
 
 	Resource_RegisterSound(DoorSFX\Open_1, "SFX\Door\DoorOpen1.ogg")
@@ -81,7 +79,8 @@ Function RegisterDoorsounds()
 	Resource_RegisterSound(DoorSFX\Open_3, "SFX\Door\DoorOpen3.ogg")
 
 	Resource_RegisterSound(DoorSFX\SCP_079_Open, "SFX\Door\DoorOpen079.ogg")				; Done
-	Resource_RegisterSound(DoorSFX\SCP_173_Open, "SFX\Door\DoorOpen173.ogg")
+	Resource_RegisterSound(DoorSFX\SCP_079_Close, "SFX\Door\DoorClose079.ogg")				; Done
+	Resource_RegisterSound(DoorSFX\SCP_173_Open, "SFX\Door\DoorOpen173.ogg")                ; Done
 
 	Resource_RegisterSound(DoorSFX\OpenFast, "SFX\Door\DoorOpenFast.ogg")
 	Resource_RegisterSound(DoorSFX\Sparks, "SFX\Door\DoorSparks.ogg")

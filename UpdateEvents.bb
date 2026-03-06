@@ -8066,7 +8066,6 @@ Function UpdateEvents()
 											e\room\RoomDoors[0]\open = False
 											e\room\RoomDoors[0]\fastopen = 1
 											
-											;PlaySound_Strict LoadTempSound("SFX\Door\DoorClose079.ogg")
 											PlaySFX(DoorSFX\SCP_079_Close)
 
 											DebugLog "079 - CLOSE DOOR AT HALLWAY IN ROOM2SL"

@@ -809,7 +809,7 @@ Function UpdateNPCs()
 																	MoveEntity pvt, 0, 0, n\Speed * 0.6
 																	
 																	If EntityPick(pvt, 0.5) = d\buttons[i] Then 
-																		PlaySound_Strict (LoadTempSound("SFX\Door\DoorOpen173.ogg"))
+																		PlaySFX(DoorSFX\SCP_173_Open)
 																		UseDoor(d,False)
 																	EndIf
 																	

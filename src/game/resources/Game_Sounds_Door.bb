@@ -83,7 +83,7 @@ Function RegisterDoorsounds()
 	Resource_RegisterSound(DoorSFX\SCP_173_Open, "SFX\Door\DoorOpen173.ogg")                ; Done
 
 	Resource_RegisterSound(DoorSFX\OpenFast, "SFX\Door\DoorOpenFast.ogg")                   ; Done
-	Resource_RegisterSound(DoorSFX\Sparks, "SFX\Door\DoorSparks.ogg")
+	Resource_RegisterSound(DoorSFX\Sparks, "SFX\Door\DoorSparks.ogg")                       ; Done
 
 	Resource_RegisterSound(DoorSFX\Elevator_Close_1, "SFX\Door\ElevatorClose1.ogg")
 	Resource_RegisterSound(DoorSFX\Elevator_Close_2, "SFX\Door\ElevatorClose2.ogg")
@@ -93,7 +93,7 @@ Function RegisterDoorsounds()
 	Resource_RegisterSound(DoorSFX\Elevator_Open_2, "SFX\Door\ElevatorOpen2.ogg")
 	Resource_RegisterSound(DoorSFX\Elevator_Open_3, "SFX\Door\ElevatorOpen3.ogg")
 
-	Resource_RegisterSound(DoorSFX\Endroom, "SFX\Door\EndroomDoor.ogg")
+	Resource_RegisterSound(DoorSFX\Endroom, "SFX\Door\EndroomDoor.ogg")                     ; Done
 
 	Resource_RegisterSound(DoorSFX\Wooden_Budge, "SFX\Door\WoodenDoorBudge.ogg")
 	Resource_RegisterSound(DoorSFX\Wooden_Close, "SFX\Door\WoodenDoorClose.ogg")

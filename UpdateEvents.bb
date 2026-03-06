@@ -1792,16 +1792,13 @@ Function UpdateEvents()
 								MoveEntity e\room\NPC[0]\Collider, 0,0,0.5 
 								
 								e\room\RoomDoors[0]\open = False
-								PlaySpatialSound(LoadTempSound("SFX\Door\EndroomDoor.ogg"), Camera, e\room\obj, 15)
+								PlaySpatialSound(Resource_GetSound(DoorSFX\Endroom), Camera, e\room\obj, 15)
 								
 								e\EventState = 1							
 							EndIf
 						EndIf
 					ElseIf e\EventState = 1
 						If PlayerRoom = e\room Then
-							;PlaySound_Strict(CloseDoorSFX(1,0))
-							;PlaySound_Strict(DecaySFX(0))
-							;e\room\RoomDoors[0]\open = False
 							e\room\NPC[0]\State = 1
 							e\EventState = 2
 							

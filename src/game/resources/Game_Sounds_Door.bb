@@ -66,7 +66,7 @@ Function RegisterDoorsounds()
 	Resource_RegisterSound(DoorSFX\Alt_Open_2, "SFX\Door\Door2Open2.ogg")
 	Resource_RegisterSound(DoorSFX\Alt_Open_3, "SFX\Door\Door2Open3.ogg")
 
-	Resource_RegisterSound(DoorSFX\Checkpoint, "SFX\Door\DoorCheckpoint.ogg")
+	Resource_RegisterSound(DoorSFX\Checkpoint, "SFX\Door\DoorCheckpoint.ogg")               ; Done
 
 	Resource_RegisterSound(DoorSFX\Close_1, "SFX\Door\DoorClose1.ogg")
 	Resource_RegisterSound(DoorSFX\Close_2, "SFX\Door\DoorClose2.ogg")

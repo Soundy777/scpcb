@@ -1529,7 +1529,7 @@ Function UpdateEvents()
 				EndIf
 				
 				If e\room\RoomDoors[0]\open <> e\EventState Then
-					If e\Sound = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.ogg")
+					If e\Sound = 0 Then Resource_GetSound(DoorSFX\Checkpoint)
 					e\SoundCHN = PlaySpatialSound(e\Sound,Camera,e\room\RoomDoors[0]\obj)
 					e\SoundCHN2 = PlaySpatialSound(e\Sound,Camera,e\room\RoomDoors[1]\obj)
 				EndIf

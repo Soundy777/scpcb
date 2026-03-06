@@ -95,9 +95,9 @@ Function RegisterDoorsounds()
 
 	Resource_RegisterSound(DoorSFX\Endroom, "SFX\Door\EndroomDoor.ogg")                     ; Done
 
-	Resource_RegisterSound(DoorSFX\Wooden_Budge, "SFX\Door\WoodenDoorBudge.ogg")
-	Resource_RegisterSound(DoorSFX\Wooden_Close, "SFX\Door\WoodenDoorClose.ogg")
-	Resource_RegisterSound(DoorSFX\Wooden_Open, "SFX\Door\WoodenDoorOpen.ogg")
+	Resource_RegisterSound(DoorSFX\Wooden_Budge, "SFX\Door\WoodenDoorBudge.ogg")            ; Done
+	Resource_RegisterSound(DoorSFX\Wooden_Close, "SFX\Door\WoodenDoorClose.ogg")            ; Done
+	Resource_RegisterSound(DoorSFX\Wooden_Open, "SFX\Door\WoodenDoorOpen.ogg")              ; Done
 End Function
 
 ;; ToDo:: migrate all current door globals into here

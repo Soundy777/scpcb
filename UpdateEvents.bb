@@ -6351,7 +6351,7 @@ Function UpdateEvents()
 										If i=e\EventState2 Then
 											BlinkTimer = -10
 											
-											PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
+											PlaySFX(DoorSFX\Wooden_Open)
 											
 											RotateEntity e\room\Objects[3], 0, 0, 0
 											RotateEntity e\room\Objects[4], 0, 180, 0
@@ -6375,7 +6375,7 @@ Function UpdateEvents()
 											e\EventState = 0.0
 											e\EventState3 = 0.0
 										Else
-											PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
+											PlaySFX(DoorSFX\Wooden_Budge)
 											Msg = I_Loc\Message_860Doorbudge
 											MsgTimer = 70*5
 										EndIf
@@ -6413,13 +6413,13 @@ Function UpdateEvents()
 								
 								If SelectedItem = Null Then
 									If MouseHit1 Then
-										PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
+										PlaySFX(DoorSFX\Wooden_Budge)
 										Msg = I_Loc\Message_860Doorbudge
 										MsgTimer = 5*70
 									EndIf
 								ElseIf SelectedItem\itemtemplate\name="scp860" 
 									If MouseHit1 Then
-										PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
+										PlaySFX(DoorSFX\Wooden_Open)
 										ShowEntity fr.Forest\Forest_Pivot
 										SelectedItem = Null
 										
@@ -6608,7 +6608,7 @@ Function UpdateEvents()
 									BlurTimer = 500	
 									Injuries = 1.5
 									Bloodloss = 70
-								;PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorClose.ogg"))							
+									; Note:: WoodenDoor close sfx was here but commented out						
 								EndIf								
 							EndIf
 							

@@ -19,10 +19,7 @@ ButtonSFX2 = LoadSound_Strict("SFX\Interact\Button2.ogg")
 ScannerSFX1 = LoadSound_Strict("SFX\Interact\ScannerUse1.ogg")
 ScannerSFX2 = LoadSound_Strict("SFX\Interact\ScannerUse2.ogg")
 
-OpenDoorFastSFX=LoadSound_Strict("SFX\Door\DoorOpenFast.ogg")
 CautionSFX% = LoadSound_Strict("SFX\Room\LockroomSiren.ogg")
-
- ;NuclearSirenSFX%
 
 CameraSFX = LoadSound_Strict("SFX\General\Camera.ogg") 
 

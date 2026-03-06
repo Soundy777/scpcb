@@ -1451,7 +1451,7 @@ Function UpdateNPCs()
 												If n\Path[n\PathLocation]\door\open = False Then
 													n\Path[n\PathLocation]\door\open = True
 													n\Path[n\PathLocation]\door\fastopen = 1
-													PlaySpatialSound(OpenDoorFastSFX, Camera, n\Path[n\PathLocation]\door\obj)
+													PlaySpatialSound(Resource_GetSound(DoorSFX\OpenFast), Camera, n\Path[n\PathLocation]\door\obj)
 												EndIf
 											EndIf							
 											If dist2 < 0.7 Then n\PathLocation = n\PathLocation + 1 ;0.2

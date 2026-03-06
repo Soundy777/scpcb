@@ -82,7 +82,7 @@ Function RegisterDoorsounds()
 	Resource_RegisterSound(DoorSFX\SCP_079_Close, "SFX\Door\DoorClose079.ogg")				; Done
 	Resource_RegisterSound(DoorSFX\SCP_173_Open, "SFX\Door\DoorOpen173.ogg")                ; Done
 
-	Resource_RegisterSound(DoorSFX\OpenFast, "SFX\Door\DoorOpenFast.ogg")
+	Resource_RegisterSound(DoorSFX\OpenFast, "SFX\Door\DoorOpenFast.ogg")                   ; Done
 	Resource_RegisterSound(DoorSFX\Sparks, "SFX\Door\DoorSparks.ogg")
 
 	Resource_RegisterSound(DoorSFX\Elevator_Close_1, "SFX\Door\ElevatorClose1.ogg")
@@ -110,5 +110,4 @@ Global KeyCardSFX2
 Global ButtonSFX2 
 Global ScannerSFX1
 Global ScannerSFX2 
-Global OpenDoorFastSFX
 Global CautionSFX% 

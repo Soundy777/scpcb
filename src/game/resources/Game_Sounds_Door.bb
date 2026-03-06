@@ -46,7 +46,7 @@ Global DoorSFX.SFX_Door = New SFX_Door
 
 Function RegisterDoorsounds()
 	Resource_RegisterSound(DoorSFX\SCP_1123_Open, "SFX\Door\1123DoorOpen.ogg")              ; Done
-	Resource_RegisterSound(DoorSFX\Airlock, "SFX\Door\Airlock.ogg")
+	Resource_RegisterSound(DoorSFX\Airlock, "SFX\Door\Airlock.ogg")                         ; Done
 
 	Resource_RegisterSound(DoorSFX\Big_Close_1, "SFX\Door\BigDoorClose.ogg")
 	Resource_RegisterSound(DoorSFX\Big_Close_2, "SFX\Door\BigDoorClose1.ogg")

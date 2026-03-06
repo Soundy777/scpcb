@@ -6525,14 +6525,9 @@ Function UpdateEvents()
 						e\room\NPC[0]\obj = CopyEntity(nazi)
 						ScaleEntity e\room\NPC[0]\obj, scale, scale, scale
 						
-						;FreeEntity e\room\NPC[1]\obj
-						;e\room\NPC[1]\obj = CopyEntity(nazi)
-						;ScaleEntity e\room\NPC[1]\obj, scale, scale, scale
-						
 						FreeEntity nazi
 						PositionEntity Collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True),True
 						ResetEntity Collider
-						;PlaySound_Strict(HorrorSFX(9))
 						CameraShake = 1.0
 						BlurTimer = 1200
 						Injuries = 1.0
@@ -7744,13 +7739,13 @@ Function UpdateEvents()
 							e\EventState = 1.0
 							If brokendoor
 								If e\Sound2 <> 0 Then FreeSound_Strict(e\Sound2) : e\Sound2 = 0
-								e\Sound2 = LoadSound_Strict("SFX\Door\DoorSparks.ogg")
+								e\Sound2 = Resource_GetSound(DoorSFX\Sparks)
 								e\SoundCHN2 = PlaySpatialSound(e\Sound2,Camera,e\room\Objects[1],5)
 							EndIf
 							StopChannel e\SoundCHN
 							e\SoundCHN = 0
 							If e\Sound <> 0 Then FreeSound_Strict(e\Sound) : e\Sound = 0
-							e\Sound = LoadSound_Strict("SFX\Door\Airlock.ogg")
+							e\Sound = Resource_GetSound(DoorSFX\Airlock)
 							e\room\RoomDoors[0]\locked = False
 							e\room\RoomDoors[1]\locked = False
 							UseDoor(e\room\RoomDoors[0])

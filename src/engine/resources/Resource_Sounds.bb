@@ -1,10 +1,14 @@
 ; -----------------------------
 ; Registration
 ; -----------------------------
-Function Resource_RegisterSound(id%, path$)
+Global Resource_Sound_Counter = 0
+Function Resource_RegisterSound%(path$)
 	Local rs.ResourceSound = New ResourceSound
-	rs\id = id
+	Resource_Sound_Counter = Resource_Sound_Counter + 1
+	rs\id = Resource_Sound_Counter
 	rs\path = path
+
+	Return Resource_Sound_Counter
 End Function
 
 ; -----------------------------

@@ -684,15 +684,14 @@ Function UpdateDoors()
 					If d\timerstate > 0 Then
 						d\timerstate = Max(0, d\timerstate - DeltaTime)
 						If d\timerstate + DeltaTime > 110 And d\timerstate <= 110 Then d\SoundCHN = PlaySpatialSound(CautionSFX, Camera, d\obj)
-						;If d\timerstate = 0 Then d\open = (Not d\open) : PlaySpatialSound(CloseDoorSFX(Min(d\dir,1),Rand(0, 2)), Camera, d\obj)
 						Local sound%
 						If d\dir = 1 Then sound% = Rand(0, 1) Else sound% = Rand(0, 2)
-						If d\timerstate = 0 Then d\open = (Not d\open) : d\SoundCHN = PlaySpatialSound(CloseDoorSFX(d\dir,sound%), Camera, d\obj)
+						If d\timerstate = 0 Then d\open = (Not d\open) : d\SoundCHN = PlayDoorSFX(d\dir, false, Camera, d\obj)
 					EndIf
 					If d\AutoClose And RemoteDoorOn = True Then
 						If EntityDistance(Camera, d\obj) < 2.1 Then
 							If (Not Wearing714) Then PlaySound_Strict HorrorSFX(7)
-							d\open = False : d\SoundCHN = PlaySpatialSound(CloseDoorSFX(Min(d\dir,1), Rand(0, 2)), Camera, d\obj) : d\AutoClose = False
+							d\open = False : d\SoundCHN = PlayDoorSFX(Min(d\dir,1), false, Camera, d\obj) : d\AutoClose = False
 						EndIf
 					EndIf				
 				EndIf
@@ -939,9 +938,11 @@ Function UseDoor(d.Doors, showmsg%=True, playsfx%=True)
 		If d\open Then
 			If d\LinkedDoor <> Null Then d\LinkedDoor\timerstate = d\LinkedDoor\timer
 			d\timerstate = d\timer
-			d\SoundCHN = PlaySpatialSound (OpenDoorSFX(d\dir, sound), Camera, d\obj)
+			; The d\dir appears to be a variable that determines the door type
+			d\SoundCHN = PlayDoorSFX(d\dir, true, Camera, d\obj)
 		Else
-			d\SoundCHN = PlaySpatialSound (CloseDoorSFX(d\dir, sound), Camera, d\obj)
+			; The d\dir appears to be a variable that determines the door type
+			d\SoundCHN = PlayDoorSFX(d\dir, false, Camera, d\obj)
 		EndIf
 		UpdateSoundOrigin(d\SoundCHN,Camera,d\obj)
 	Else

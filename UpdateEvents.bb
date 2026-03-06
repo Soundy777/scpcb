@@ -26,7 +26,7 @@ Function UpdateEvents()
 						If e\room\RoomDoors[4]\openstate > 50 Or EntityDistance(Collider, e\room\RoomDoors[4]\frameobj)<0.5 Then
 							e\room\RoomDoors[4]\openstate = Min(e\room\RoomDoors[4]\openstate,50)
 							e\room\RoomDoors[4]\open = False
-							PlaySpatialSound(Resource_GetSound(DoorSFX\Error), Camera, e\room\RoomDoors[4]\frameobj)
+							PlaySpatialSound(Resource_GetSound(SFX_Door_Error), Camera, e\room\RoomDoors[4]\frameobj)
 						EndIf							
 					EndIf
 				Else
@@ -1529,7 +1529,7 @@ Function UpdateEvents()
 				EndIf
 				
 				If e\room\RoomDoors[0]\open <> e\EventState Then
-					If e\Sound = 0 Then Resource_GetSound(DoorSFX\Checkpoint)
+					If e\Sound = 0 Then Resource_GetSound(SFX_Door_Checkpoint)
 					e\SoundCHN = PlaySpatialSound(e\Sound,Camera,e\room\RoomDoors[0]\obj)
 					e\SoundCHN2 = PlaySpatialSound(e\Sound,Camera,e\room\RoomDoors[1]\obj)
 				EndIf
@@ -1792,7 +1792,7 @@ Function UpdateEvents()
 								MoveEntity e\room\NPC[0]\Collider, 0,0,0.5 
 								
 								e\room\RoomDoors[0]\open = False
-								PlaySpatialSound(Resource_GetSound(DoorSFX\Endroom), Camera, e\room\obj, 15)
+								PlaySpatialSound(Resource_GetSound(SFX_Door_Endroom), Camera, e\room\obj, 15)
 								
 								e\EventState = 1							
 							EndIf
@@ -1874,7 +1874,7 @@ Function UpdateEvents()
 							If e\room\RoomDoors[1]\openstate > 50 Or EntityDistance(Collider, e\room\RoomDoors[1]\frameobj)<0.5 Then
 								e\room\RoomDoors[1]\openstate = Min(e\room\RoomDoors[1]\openstate,50)
 								e\room\RoomDoors[1]\open = False
-								PlaySpatialSound(Resource_GetSound(DoorSFX\Error), Camera, e\room\RoomDoors[1]\frameobj)
+								PlaySpatialSound(Resource_GetSound(SFX_Door_Error), Camera, e\room\RoomDoors[1]\frameobj)
 							EndIf							
 						EndIf
 					Else
@@ -2713,7 +2713,7 @@ Function UpdateEvents()
 					ElseIf e\EventState = 2
 						If EntityDistance(e\room\NPC[0]\Collider,e\room\Objects[1])<2.0 Then
 							e\room\RoomDoors[0]\open = False
-							PlaySpatialSound(CloseDoorSFX(3, 0), Camera, e\room\RoomDoors[0]\obj, 8.0)			
+							PlayDoorSFX(DOORTYPE_ELEVATOR, false, Camera, e\room\RoomDoors[0]\obj, 8.0)
 							
 							PlaySound_Strict (LoadTempSound("SFX\Room\Room2ElevatorDeath.ogg"))
 							
@@ -4826,13 +4826,13 @@ Function UpdateEvents()
 								If UpdateLever(e\room\Levers[0])
 									e\room\RoomDoors[4]\open = True
 									If e\Sound2 <> 0 Then FreeSound_Strict e\Sound2 : e\Sound2=0
-									e\Sound2 = Resource_GetSound(DoorSFX\Alt_DistantOpen)
+									e\Sound2 = Resource_GetSound(SFX_Door_DistantOpen)
 									e\SoundCHN2 = PlaySpatialSound(e\Sound2,Camera,e\room\RoomDoors[4]\obj,400)
 								EndIf
 								If UpdateLever(e\room\Levers[1])
 									e\room\RoomDoors[4]\open = True
 									If e\Sound2 <> 0 Then FreeSound_Strict e\Sound2 : e\Sound2=0
-									e\Sound2 = Resource_GetSound(DoorSFX\Alt_DistantOpen)
+									e\Sound2 = Resource_GetSound(SFX_Door_DistantOpen)
 									e\SoundCHN2 = PlaySpatialSound(e\Sound2,Camera,e\room\RoomDoors[4]\obj,400)
 								EndIf
 							EndIf
@@ -5771,7 +5771,7 @@ Function UpdateEvents()
 							If e\room\RoomDoors[0]\openstate > 50 Or EntityDistance(Collider, e\room\RoomDoors[0]\frameobj)<0.5 Then
 								e\room\RoomDoors[0]\openstate = Min(e\room\RoomDoors[0]\openstate,50)
 								e\room\RoomDoors[0]\open = False
-								PlaySFX(DoorSFX\Error)
+								PlaySFX(SFX_Door_Error)
 							EndIf							
 						EndIf
 					ElseIf e\EventState < 10000
@@ -6351,7 +6351,7 @@ Function UpdateEvents()
 										If i=e\EventState2 Then
 											BlinkTimer = -10
 											
-											PlaySFX(DoorSFX\Wooden_Open)
+											PlaySFX(SFX_Door_Wooden_Open)
 											
 											RotateEntity e\room\Objects[3], 0, 0, 0
 											RotateEntity e\room\Objects[4], 0, 180, 0
@@ -6375,7 +6375,7 @@ Function UpdateEvents()
 											e\EventState = 0.0
 											e\EventState3 = 0.0
 										Else
-											PlaySFX(DoorSFX\Wooden_Budge)
+											PlaySFX(SFX_Door_Wooden_Budge)
 											Msg = I_Loc\Message_860Doorbudge
 											MsgTimer = 70*5
 										EndIf
@@ -6413,13 +6413,13 @@ Function UpdateEvents()
 								
 								If SelectedItem = Null Then
 									If MouseHit1 Then
-										PlaySFX(DoorSFX\Wooden_Budge)
+										PlaySFX(SFX_Door_Wooden_Budge)
 										Msg = I_Loc\Message_860Doorbudge
 										MsgTimer = 5*70
 									EndIf
 								ElseIf SelectedItem\itemtemplate\name="scp860" 
 									If MouseHit1 Then
-										PlaySFX(DoorSFX\Wooden_Open)
+										PlaySFX(SFX_Door_Wooden_Open)
 										ShowEntity fr.Forest\Forest_Pivot
 										SelectedItem = Null
 										
@@ -6542,7 +6542,7 @@ Function UpdateEvents()
 						EndIf
 						
 						If e\EventState2 > 1000 Then
-							e\SoundCHN2 = PlaySFX(DoorSFX\SCP_1123_Open)
+							e\SoundCHN2 = PlaySFX(SFX_Door_SCP_1123_Open)
 							RotateEntity e\room\Objects[11], 0, CurveAngle(10, EntityYaw(e\room\Objects[11],0), 40), 0,False
 							If e\EventState2=>1040 And e\EventState2-DeltaTime<1040 Then 
 								PlaySpatialSound(LoadTempSound("SFX\SCP\1123\Officer1.ogg"), Camera, e\room\NPC[0]\obj)
@@ -7736,13 +7736,13 @@ Function UpdateEvents()
 							e\EventState = 1.0
 							If brokendoor
 								If e\Sound2 <> 0 Then FreeSound_Strict(e\Sound2) : e\Sound2 = 0
-								e\Sound2 = Resource_GetSound(DoorSFX\Sparks)
+								e\Sound2 = Resource_GetSound(SFX_Door_Sparks)
 								e\SoundCHN2 = PlaySpatialSound(e\Sound2,Camera,e\room\Objects[1],5)
 							EndIf
 							StopChannel e\SoundCHN
 							e\SoundCHN = 0
 							If e\Sound <> 0 Then FreeSound_Strict(e\Sound) : e\Sound = 0
-							e\Sound = Resource_GetSound(DoorSFX\Airlock)
+							e\Sound = Resource_GetSound(SFX_Door_Airlock)
 							e\room\RoomDoors[0]\locked = False
 							e\room\RoomDoors[1]\locked = False
 							UseDoor(e\room\RoomDoors[0])
@@ -7919,20 +7919,18 @@ Function UpdateEvents()
 								e\room\RoomDoors[1]\locked = True
 								If e\room\NPC[0]\Reload = 0
 									
-									PlaySFX(DoorSFX\SCP_079_Open)
+									PlaySFX(SFX_Door_SCP_079_Open)
 									DebugLog "079 - OPEN DOORS IN ROOM2SL"
 
 									e\room\NPC[0]\Reload = 1
 								EndIf
 								If (Not e\room\RoomDoors[0]\open)
 									e\room\RoomDoors[0]\open = True
-									sound=Rand(0, 2)
-									PlaySpatialSound(OpenDoorSFX(0,sound),Camera,e\room\RoomDoors[0]\obj)
+									PlayDoorSFX(DOORTYPE_PRIMARY, true, Camera, e\room\RoomDoors[0]\obj)
 								EndIf
 								If (Not e\room\RoomDoors[1]\open)
 									e\room\RoomDoors[1]\open = True
-									sound=Rand(0, 2)
-									PlaySpatialSound(OpenDoorSFX(0,sound),Camera,e\room\RoomDoors[1]\obj)
+									PlayDoorSFX(DOORTYPE_PRIMARY, true, Camera, e\room\RoomDoors[1]\obj)
 								EndIf
 							EndIf
 							If e\room\NPC[0]\Reload = 1
@@ -8063,7 +8061,7 @@ Function UpdateEvents()
 											e\room\RoomDoors[0]\open = False
 											e\room\RoomDoors[0]\fastopen = 1
 											
-											PlaySFX(DoorSFX\SCP_079_Close)
+											PlaySFX(SFX_Door_SCP_079_Close)
 
 											DebugLog "079 - CLOSE DOOR AT HALLWAY IN ROOM2SL"
 										EndIf
@@ -8072,10 +8070,8 @@ Function UpdateEvents()
 									If e\room\RoomDoors[0]\open = False
 										e\room\RoomDoors[0]\fastopen = 0
 										e\room\RoomDoors[0]\open = True
-										sound=Rand(0, 2)
-
-										PlaySpatialSound(OpenDoorSFX(0,sound),Camera,e\room\RoomDoors[0]\obj)
-										PlaySFX(DoorSFX\SCP_079_Open)
+										PlayDoorSFX(DOORTYPE_PRIMARY, true, Camera, e\room\RoomDoors[0]\obj)
+										PlaySFX(SFX_Door_SCP_079_Open)
 
 										DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
 									EndIf
@@ -8087,10 +8083,8 @@ Function UpdateEvents()
 							If e\room\RoomDoors[0]\open = False
 								e\room\RoomDoors[0]\fastopen = 0
 								e\room\RoomDoors[0]\open = True
-								sound=Rand(0, 2)
-
-								PlaySpatialSound(OpenDoorSFX(0,sound),Camera,e\room\RoomDoors[0]\obj)
-								PlaySFX(DoorSFX\SCP_079_Open)
+								PlayDoorSFX(DOORTYPE_PRIMARY, true, Camera, e\room\RoomDoors[0]\obj)
+								PlaySFX(SFX_Door_SCP_079_Open)
 
 								DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
 							EndIf

@@ -4,11 +4,11 @@
 Include "src/game/resources/Game_Sounds_Door.bb"
 ; ===========================================================================
 
-Const SFX_INTERACT_BUTTON_1% = 1
+Global SFX_INTERACT_BUTTON_1%
 Function Game_RegisterSounds()
 
 	RegisterDoorsounds()
 
-	Resource_RegisterSound(SFX_INTERACT_BUTTON_1, "SFX\Interact\Button.ogg")
+	SFX_INTERACT_BUTTON_1 = Resource_RegisterSound("SFX\Interact\Button.ogg")
 
 End Function

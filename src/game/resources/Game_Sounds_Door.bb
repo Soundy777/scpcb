@@ -1,113 +1,139 @@
 ; ---------------------------------------------------------------------------
 ; DOOR Sounds
+;; ToDo:: move this into the actual door system when we build that
 ; ---------------------------------------------------------------------------
-Type SFX_Door
-	Field SCP_1123_Open%
-	Field Airlock%
-	Field Big_Close_1%
-	Field Big_Close_2%
-	Field Big_Close_3%
-	Field Big_Open_1%
-	Field Big_Open_2%
-	Field Big_Open_3%
-	Field Alt_Close_1%
-	Field Alt_Close_2%
-	Field Alt_Close_3%
-	Field Alt_DistantOpen%
-	Field Alt_Open_1%
-	Field Alt_Open_2%
-	Field Alt_Open_3%
-	Field Checkpoint%
-	Field Close_1%
-	Field Close_2%
-	Field Close_3%
-	Field Error%
-	Field Open_1%
-	Field Open_2%
-	Field Open_3%
-	Field SCP_079_Open%
-	Field SCP_079_Close%
-	Field SCP_173_Open%
-	Field OpenFast%
-	Field Sparks%
-	Field Elevator_Close_1%
-	Field Elevator_Close_2%
-	Field Elevator_Close_3%
-	Field Elevator_Open_1%
-	Field Elevator_Open_2%
-	Field Elevator_Open_3%
-	Field Endroom%
-	Field Wooden_Budge%
-	Field Wooden_Close%
-	Field Wooden_Open%
+Const DOORTYPE_PRIMARY = 0
+Const DOORTYPE_BIG = 1
+Const DOORTYPE_ALT = 2
+Const DOORTYPE_ELEVATOR = 3
+
+Type DoorVariant
+    Field DoorType% = 0
+
+    ; Set UpperBound to (ArraySize - 1)
+    Field SFX_Open_UpperBound = 2
+    Field SFX_Open%[3]
+
+    Field SFX_Close_UpperBound = 2
+    Field SFX_Close%[3]
 End Type
 
-Global DoorSFX.SFX_Door = New SFX_Door
+Dim DoorVariants.DoorVariant(10)
+
+Global SFX_Door_Wooden_Open%
+Global SFX_Door_Wooden_Close%
+Global SFX_Door_Wooden_Budge%
+
+Global SFX_Door_Error%
+Global SFX_Door_Sparks%
+Global SFX_Door_DistantOpen%
+Global SFX_Door_OpenFast%
+
+Global SFX_Door_Airlock%
+Global SFX_Door_Checkpoint%
+Global SFX_Door_Endroom%
+
+Global SFX_Door_SCP_1123_Open%
+Global SFX_Door_SCP_079_Open%
+Global SFX_Door_SCP_079_Close%
+Global SFX_Door_SCP_173_Open%
 
 Function RegisterDoorsounds()
-	Resource_RegisterSound(DoorSFX\SCP_1123_Open, "SFX\Door\1123DoorOpen.ogg")              ; Done
-	Resource_RegisterSound(DoorSFX\Airlock, "SFX\Door\Airlock.ogg")                         ; Done
+    DoorVariants(DOORTYPE_PRIMARY) = New DoorVariant
+    DoorVariants(DOORTYPE_PRIMARY)\DoorType = DOORTYPE_PRIMARY
+    
+    DoorVariants(DOORTYPE_PRIMARY)\SFX_Open[0] = Resource_RegisterSound("SFX\Door\DoorOpen1.ogg")
+    DoorVariants(DOORTYPE_PRIMARY)\SFX_Open[1] = Resource_RegisterSound("SFX\Door\DoorOpen2.ogg")
+    DoorVariants(DOORTYPE_PRIMARY)\SFX_Open[2] = Resource_RegisterSound("SFX\Door\DoorOpen3.ogg")
 
-	Resource_RegisterSound(DoorSFX\Big_Close_1, "SFX\Door\BigDoorClose.ogg")
-	Resource_RegisterSound(DoorSFX\Big_Close_2, "SFX\Door\BigDoorClose1.ogg")
-	Resource_RegisterSound(DoorSFX\Big_Close_3, "SFX\Door\BigDoorClose2.ogg")
+    DoorVariants(DOORTYPE_PRIMARY)\SFX_Close[0] = Resource_RegisterSound("SFX\Door\DoorClose1.ogg")
+    DoorVariants(DOORTYPE_PRIMARY)\SFX_Close[1] = Resource_RegisterSound("SFX\Door\DoorClose2.ogg")
+    DoorVariants(DOORTYPE_PRIMARY)\SFX_Close[2] = Resource_RegisterSound("SFX\Door\DoorClose3.ogg")
 
-	Resource_RegisterSound(DoorSFX\Big_Open_1, "SFX\Door\BigDoorOpen.ogg")
-	Resource_RegisterSound(DoorSFX\Big_Open_2, "SFX\Door\BigDoorOpen1.ogg")
-	Resource_RegisterSound(DoorSFX\Big_Open_3, "SFX\Door\BigDoorOpen2.ogg")
+    DoorVariants(DOORTYPE_ALT) = New DoorVariant
+    DoorVariants(DOORTYPE_ALT)\DoorType = DOORTYPE_ALT
+    
+    DoorVariants(DOORTYPE_ALT)\SFX_Open[0] = Resource_RegisterSound("SFX\Door\Door2Open1.ogg")
+    DoorVariants(DOORTYPE_ALT)\SFX_Open[1] = Resource_RegisterSound("SFX\Door\Door2Open2.ogg")
+    DoorVariants(DOORTYPE_ALT)\SFX_Open[2] = Resource_RegisterSound("SFX\Door\Door2Open3.ogg")
 
-	Resource_RegisterSound(DoorSFX\Alt_Close_1, "SFX\Door\Door2Close1.ogg")
-	Resource_RegisterSound(DoorSFX\Alt_Close_2, "SFX\Door\Door2Close2.ogg")
-	Resource_RegisterSound(DoorSFX\Alt_Close_3, "SFX\Door\Door2Close3.ogg")
+    DoorVariants(DOORTYPE_ALT)\SFX_Close[0] = Resource_RegisterSound("SFX\Door\Door2Close1.ogg")
+    DoorVariants(DOORTYPE_ALT)\SFX_Close[1] = Resource_RegisterSound("SFX\Door\Door2Close2.ogg")
+    DoorVariants(DOORTYPE_ALT)\SFX_Close[2] = Resource_RegisterSound("SFX\Door\Door2Close3.ogg")
 
-	Resource_RegisterSound(DoorSFX\Alt_DistantOpen, "SFX\Door\Door2Open1_dist.ogg")         ; Done
+    DoorVariants(DOORTYPE_BIG) = New DoorVariant
+    DoorVariants(DOORTYPE_BIG)\DoorType = DOORTYPE_BIG
+    
+    DoorVariants(DOORTYPE_BIG)\SFX_Open[0] = Resource_RegisterSound("SFX\Door\BigDoorOpen.ogg")
+    DoorVariants(DOORTYPE_BIG)\SFX_Open[1] = Resource_RegisterSound("SFX\Door\BigDoorOpen1.ogg")
+    DoorVariants(DOORTYPE_BIG)\SFX_Open[2] = Resource_RegisterSound("SFX\Door\BigDoorOpen2.ogg")
 
-	Resource_RegisterSound(DoorSFX\Alt_Open_1, "SFX\Door\Door2Open1.ogg")
-	Resource_RegisterSound(DoorSFX\Alt_Open_2, "SFX\Door\Door2Open2.ogg")
-	Resource_RegisterSound(DoorSFX\Alt_Open_3, "SFX\Door\Door2Open3.ogg")
+    DoorVariants(DOORTYPE_BIG)\SFX_Close[0] = Resource_RegisterSound("SFX\Door\BigDoorClose.ogg")
+    DoorVariants(DOORTYPE_BIG)\SFX_Close[1] = Resource_RegisterSound("SFX\Door\BigDoorClose1.ogg")
+    DoorVariants(DOORTYPE_BIG)\SFX_Close[2] = Resource_RegisterSound("SFX\Door\BigDoorClose2.ogg")
 
-	Resource_RegisterSound(DoorSFX\Checkpoint, "SFX\Door\DoorCheckpoint.ogg")               ; Done
+    DoorVariants(DOORTYPE_ELEVATOR) = New DoorVariant
+    DoorVariants(DOORTYPE_ELEVATOR)\DoorType = DOORTYPE_ELEVATOR
+    
+    DoorVariants(DOORTYPE_ELEVATOR)\SFX_Open[0] = Resource_RegisterSound("SFX\Door\ElevatorOpen1.ogg")
+    DoorVariants(DOORTYPE_ELEVATOR)\SFX_Open[1] = Resource_RegisterSound("SFX\Door\ElevatorOpen2.ogg")
+    DoorVariants(DOORTYPE_ELEVATOR)\SFX_Open[2] = Resource_RegisterSound("SFX\Door\ElevatorOpen3.ogg")
 
-	Resource_RegisterSound(DoorSFX\Close_1, "SFX\Door\DoorClose1.ogg")
-	Resource_RegisterSound(DoorSFX\Close_2, "SFX\Door\DoorClose2.ogg")
-	Resource_RegisterSound(DoorSFX\Close_3, "SFX\Door\DoorClose3.ogg")
+    DoorVariants(DOORTYPE_ELEVATOR)\SFX_Close[0] = Resource_RegisterSound("SFX\Door\ElevatorClose1.ogg")
+    DoorVariants(DOORTYPE_ELEVATOR)\SFX_Close[1] = Resource_RegisterSound("SFX\Door\ElevatorClose2.ogg")
+    DoorVariants(DOORTYPE_ELEVATOR)\SFX_Close[2] = Resource_RegisterSound("SFX\Door\ElevatorClose3.ogg")
 
-	Resource_RegisterSound(DoorSFX\Error, "SFX\Door\DoorError.ogg")							; Done
+	SFX_Door_Wooden_Open = Resource_RegisterSound("SFX\Door\WoodenDoorOpen.ogg")
+	SFX_Door_Wooden_Close = Resource_RegisterSound("SFX\Door\WoodenDoorClose.ogg")
+	SFX_Door_Wooden_Budge = Resource_RegisterSound("SFX\Door\WoodenDoorBudge.ogg")
 
-	Resource_RegisterSound(DoorSFX\Open_1, "SFX\Door\DoorOpen1.ogg")
-	Resource_RegisterSound(DoorSFX\Open_2, "SFX\Door\DoorOpen2.ogg")
-	Resource_RegisterSound(DoorSFX\Open_3, "SFX\Door\DoorOpen3.ogg")
+	SFX_Door_Error = Resource_RegisterSound("SFX\Door\DoorError.ogg")
+	SFX_Door_Sparks = Resource_RegisterSound("SFX\Door\DoorSparks.ogg")
+	SFX_Door_DistantOpen = Resource_RegisterSound("SFX\Door\Door2Open1_dist.ogg")
+	SFX_Door_OpenFast = Resource_RegisterSound("SFX\Door\DoorOpenFast.ogg")
 
-	Resource_RegisterSound(DoorSFX\SCP_079_Open, "SFX\Door\DoorOpen079.ogg")				; Done
-	Resource_RegisterSound(DoorSFX\SCP_079_Close, "SFX\Door\DoorClose079.ogg")				; Done
-	Resource_RegisterSound(DoorSFX\SCP_173_Open, "SFX\Door\DoorOpen173.ogg")                ; Done
+	SFX_Door_Airlock = Resource_RegisterSound("SFX\Door\Airlock.ogg")
+	SFX_Door_Checkpoint = Resource_RegisterSound("SFX\Door\DoorCheckpoint.ogg")
+	SFX_Door_Endroom = Resource_RegisterSound("SFX\Door\EndroomDoor.ogg")
 
-	Resource_RegisterSound(DoorSFX\OpenFast, "SFX\Door\DoorOpenFast.ogg")                   ; Done
-	Resource_RegisterSound(DoorSFX\Sparks, "SFX\Door\DoorSparks.ogg")                       ; Done
+	SFX_Door_SCP_1123_Open = Resource_RegisterSound("SFX\Door\1123DoorOpen.ogg")
+    SFX_Door_SCP_079_Open = Resource_RegisterSound("SFX\Door\DoorOpen079.ogg")
+	SFX_Door_SCP_079_Close = Resource_RegisterSound("SFX\Door\DoorClose079.ogg")
+	SFX_Door_SCP_173_Open = Resource_RegisterSound("SFX\Door\DoorOpen173.ogg")
 
-	Resource_RegisterSound(DoorSFX\Elevator_Close_1, "SFX\Door\ElevatorClose1.ogg")
-	Resource_RegisterSound(DoorSFX\Elevator_Close_2, "SFX\Door\ElevatorClose2.ogg")
-	Resource_RegisterSound(DoorSFX\Elevator_Close_3, "SFX\Door\ElevatorClose3.ogg")
-
-	Resource_RegisterSound(DoorSFX\Elevator_Open_1, "SFX\Door\ElevatorOpen1.ogg")
-	Resource_RegisterSound(DoorSFX\Elevator_Open_2, "SFX\Door\ElevatorOpen2.ogg")
-	Resource_RegisterSound(DoorSFX\Elevator_Open_3, "SFX\Door\ElevatorOpen3.ogg")
-
-	Resource_RegisterSound(DoorSFX\Endroom, "SFX\Door\EndroomDoor.ogg")                     ; Done
-
-	Resource_RegisterSound(DoorSFX\Wooden_Budge, "SFX\Door\WoodenDoorBudge.ogg")            ; Done
-	Resource_RegisterSound(DoorSFX\Wooden_Close, "SFX\Door\WoodenDoorClose.ogg")            ; Done
-	Resource_RegisterSound(DoorSFX\Wooden_Open, "SFX\Door\WoodenDoorOpen.ogg")              ; Done
 End Function
 
-;; ToDo:: migrate all current door globals into here
-;; Find/Replace them with the new DoorSFX type 
-;; Remove any left over initialization for them
-Dim OpenDoorSFX%(3,3)
-Dim CloseDoorSFX%(3,3)
+Function PlayDoorSFX%(doorType%, isOpening%)
+    Local sfx% = GetDoorSFX(doorType, isOpening)
+    if sfx >= 0 Then Return PlaySFX(sfx)
+    Return -1
+End Function
+
+Function PlayDoorSFX%(doorType%, isOpening%, cam%, entity%, range#=10, volume#=1)
+    Local sfx% = GetDoorSFX(doorType, isOpening)
+    if sfx >= 0 Then Return PlaySFX(sfx, cam, entity, range, volume)
+    Return -1
+End Function
+
+Function GetDoorSFX%(doorType%, isOpening%)
+    Local door.DoorVariant = DoorVariants(doorType)
+
+    ; Exit early if door type isn't initialized
+    If door = Null Then Return -1
+
+    If isOpening Then 
+        Return door\SFX_Open[Rand(0,door\SFX_Open_UpperBound)]
+    Else 
+        Return door\SFX_Close[Rand(0,door\SFX_Close_UpperBound)]
+    End If
+End Function
+
+; These are part of the interaction sfx grouping
 Global KeyCardSFX1 
 Global KeyCardSFX2 
 Global ButtonSFX2 
 Global ScannerSFX1
 Global ScannerSFX2 
+
+; This is part of the alarms sfx grouping
 Global CautionSFX% 

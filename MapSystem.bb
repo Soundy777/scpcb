@@ -6835,7 +6835,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 						UpdateRooms()
 						
 						sound=Rand(0, 2)
-						door2\SoundCHN = PlaySound_Strict(OpenDoorSFX(3, sound))
+						door2\SoundCHN = PlayDoorSFX(DOORTYPE_ELEVATOR, isOpening)
 					EndIf
 					
 					For n.NPCs = Each NPCs
@@ -6934,7 +6934,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 						UpdateRooms()
 						
 						sound=Rand(0, 2)
-						door1\SoundCHN = PlaySound_Strict(OpenDoorSFX(3, sound))
+						door2\SoundCHN = PlayDoorSFX(DOORTYPE_ELEVATOR, isOpening)
 					EndIf
 					
 					For n.NPCs = Each NPCs

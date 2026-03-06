@@ -809,7 +809,7 @@ Function UpdateNPCs()
 																	MoveEntity pvt, 0, 0, n\Speed * 0.6
 																	
 																	If EntityPick(pvt, 0.5) = d\buttons[i] Then 
-																		PlaySFX(DoorSFX\SCP_173_Open)
+																		PlaySFX(SFX_Door_SCP_173_Open)
 																		UseDoor(d,False)
 																	EndIf
 																	
@@ -1451,7 +1451,7 @@ Function UpdateNPCs()
 												If n\Path[n\PathLocation]\door\open = False Then
 													n\Path[n\PathLocation]\door\open = True
 													n\Path[n\PathLocation]\door\fastopen = 1
-													PlaySpatialSound(Resource_GetSound(DoorSFX\OpenFast), Camera, n\Path[n\PathLocation]\door\obj)
+													PlaySpatialSound(Resource_GetSound(SFX_Door_OpenFast), Camera, n\Path[n\PathLocation]\door\obj)
 												EndIf
 											EndIf							
 											If dist2 < 0.7 Then n\PathLocation = n\PathLocation + 1 ;0.2
@@ -5476,9 +5476,7 @@ Function UpdateMTFUnit(n.NPCs)
 							If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
 								;open the door and make it automatically close after 5 seconds
 								If (Not n\Path[n\PathLocation]\door\open)
-									Local sound = 0
-									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									PlaySpatialSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+									PlayDoorSFX(n\Path[n\PathLocation]\door\dir, true, Camera, n\Path[n\PathLocation]\door\obj)
 									PlayMTFSound(MTFSFX(5),n)
 								EndIf
 								n\Path[n\PathLocation]\door\open = True
@@ -5862,9 +5860,7 @@ Function UpdateMTFUnit(n.NPCs)
 								If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
 									;open the door and make it automatically close after 5 seconds
 									If (Not n\Path[n\PathLocation]\door\open)
-										sound = 0
-										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySpatialSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+										PlayDoorSFX(n\Path[n\PathLocation]\door\dir, true, Camera, n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -6149,9 +6145,7 @@ Function UpdateMTFUnit(n.NPCs)
 									If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
 										;open the door and make it automatically close after 5 seconds
 										If (Not n\Path[n\PathLocation]\door\open)
-											sound = 0
-											If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-											PlaySpatialSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+											PlayDoorSFX(n\Path[n\PathLocation]\door\dir, true, Camera, n\Path[n\PathLocation]\door\obj)
 											PlayMTFSound(MTFSFX(5),n)
 										EndIf
 										n\Path[n\PathLocation]\door\open = True
@@ -6378,9 +6372,7 @@ Function UpdateMTFUnit(n.NPCs)
 								
 								If (newDist<2.0 And n\Path[n\PathLocation]\door<>Null) Then
 									If (Not n\Path[n\PathLocation]\door\open)
-										sound = 0
-										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySpatialSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+										PlayDoorSFX(n\Path[n\PathLocation]\door\dir, true, Camera, n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -6594,9 +6586,7 @@ Function UpdateMTFUnit(n.NPCs)
 							If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
 								;open the door and make it automatically close after 5 seconds
 								If (Not n\Path[n\PathLocation]\door\open)
-									sound = 0
-									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									PlaySpatialSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+									PlayDoorSFX(n\Path[n\PathLocation]\door\dir, true, Camera, n\Path[n\PathLocation]\door\obj)
 									PlayMTFSound(MTFSFX(5),n)
 								EndIf
 								n\Path[n\PathLocation]\door\open = True
@@ -6751,9 +6741,7 @@ Function UpdateMTFUnit(n.NPCs)
 								
 								If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
 									If (Not n\Path[n\PathLocation]\door\open)
-										sound = 0
-										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySpatialSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+										PlayDoorSFX(n\Path[n\PathLocation]\door\dir, true, Camera, n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True

@@ -29,3 +29,6 @@ Function Register_AlarmSounds()
     SFX_Alarm_Ambiance(10) = Resource_RegisterSound("SFX\Alarm\Alarm2_11.ogg")
 End Function
 
+;; ToDo:: Determine if LoopSFX works correct as intended
+;; ToDo:: replace all usages of array "AlarmSFX"
+;; ToDo:: replace the calls to "Alarm2_x" call buried somewhere

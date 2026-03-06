@@ -122,12 +122,8 @@ Next
 ;IntroSFX(14) = LoadSound_Strict("SFX\intro\shoot2.ogg")
 IntroSFX(15) = LoadSound_Strict("SFX\Room\Intro\173Vent.ogg")
 
-;Dim AlarmSFX%(5)
 AlarmSFX(0) = LoadSound_Strict("SFX\Alarm\Alarm.ogg")
-;AlarmSFX(1) = LoadSound_Strict("SFX\Alarm\Alarm2.ogg")
 AlarmSFX(2) = LoadSound_Strict("SFX\Alarm\Alarm3.ogg")
-
-;room_gw alarms
 AlarmSFX(3) = LoadSound_Strict("SFX\Alarm\Alarm4.ogg")
 AlarmSFX(4) = LoadSound_Strict("SFX\Alarm\Alarm5.ogg")
 

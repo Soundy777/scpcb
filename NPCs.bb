@@ -3067,7 +3067,7 @@ Function UpdateNPCs()
 										If Rand(20)=1 Then 
 											If EntityVisible(Collider, n\Collider) Then
 												n\State = 2
-												PlaySpatialSound(AlarmSFX(2), Camera, n\Collider, 50, 1.0)
+												PlaySFX(SFX_Alarm_2, Camera, n\Collider, 50, 1.0)
 											EndIf
 										EndIf									
 									EndIf

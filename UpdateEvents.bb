@@ -290,9 +290,9 @@ Function UpdateEvents()
 					
 					If (e\EventState < 2000) Then
 						If e\SoundCHN = 0 Then
-							e\SoundCHN = PlaySound_Strict(AlarmSFX(0))
+							e\SoundCHN = PlaySFX(SFX_Alarm_1)
 						Else
-							If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySound_Strict(AlarmSFX(0))
+							If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySFX(SFX_Alarm_1)
 						End If
 					EndIf
 					
@@ -6983,6 +6983,7 @@ Function UpdateEvents()
 						e\EventState = 1
 					ElseIf e\EventState = 1
 						e\SoundCHN = LoopSpatialSound(AlarmSFX(0), e\SoundCHN, Camera, e\room\Objects[0], 5.0)
+						;e\SoundCHN = LoopSFX(SFX_Alarm_1, e\SoundCHN, Camera, e\room\Objects[0], 5.0)
 						
 						If (MilliSecs() Mod 1000)<500 Then
 							ShowEntity e\room\Objects[5] 

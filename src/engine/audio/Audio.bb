@@ -24,7 +24,12 @@ Function PlaySFX%(id%, cam%, entity%, range#=10, volume#=1)
 
 End Function
 
+Global DoOnce = false
 Function LoopSFX(id%, channel%, cam%, entity%, range# = 10, volume# = 1.0)
+
+    if DoOnce then Return
+    DoOnce = True
+
     range# = Max(range,1.0) ; Clamp range between 0-1
 	
 	If volume > 0 Then

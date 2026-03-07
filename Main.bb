@@ -6712,19 +6712,16 @@ Function LoopSpatialSound%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volum
 	If volume>0 Then
 		
 		Local dist# = EntityDistance(cam, entity) / range#
-		;If 1 - dist# > 0 And 1 - dist# < 1 Then
-			
-			Local panvalue# = Sin(-DeltaYaw(cam,entity))
-			
-			If Chn = 0 Then
-				Chn% = PlaySound_Strict (SoundHandle)
-			Else
-				If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound_Strict (SoundHandle)
-			EndIf
-			
-			ChannelVolume(Chn, volume# * (1 - dist#)*Config\Audio\SFXVolume#)
-			ChannelPan(Chn, panvalue)
-		;EndIf
+		Local panvalue# = Sin(-DeltaYaw(cam,entity))
+		
+		If Chn = 0 Then
+			Chn% = PlaySound_Strict (SoundHandle)
+		Else
+			If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound_Strict (SoundHandle)
+		EndIf
+		
+		ChannelVolume(Chn, volume# * (1 - dist#)*Config\Audio\SFXVolume#)
+		ChannelPan(Chn, panvalue)
 	Else
 		If Chn <> 0 Then
 			ChannelVolume (Chn, 0)

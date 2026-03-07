@@ -30,5 +30,6 @@ Function Register_AlarmSounds()
 End Function
 
 ;; ToDo:: Determine if LoopSFX works correct as intended
+;LoopSFX(SFX_Alarm_4, 4, Camera, e\room\Objects[0], 5.0)
 ;; ToDo:: replace all usages of array "AlarmSFX"
 ;; ToDo:: replace the calls to "Alarm2_x" call buried somewhere

@@ -24,29 +24,46 @@ Function PlaySFX%(id%, cam%, entity%, range#=10, volume#=1)
 
 End Function
 
-Global DoOnce = false
-Function LoopSFX(id%, channel%, cam%, entity%, range# = 10, volume# = 1.0)
+;; Loops a specificed sfx for as long as this function is continually called
+; A better eventual implementation will be to use an event to add a looped sfx to a list which the audio manager then manages the lifecycle & updating of.
+Function LoopSFX%(id%, channel%, cam%, entity%, range# = 10.0, volume# = 1.0)
 
-    range# = Max(range,1.0) ; Clamp range between 0-1
-	
-	If volume > 0 Then
-		
-		Local dist# = EntityDistance(cam, entity) / range#
-        Local panvalue# = Sin(-DeltaYaw(cam,entity))
-        
-        If channel = 0 Then
-            channel% = PlaySFX(id)
-        Else
-            If (Not ChannelPlaying(channel)) Then channel% = PlaySFX(id)
-        EndIf
-        
-        ChannelVolume(channel, volume# * (1 - dist#) * Config\Audio\SFXVolume#)
-        ChannelPan(channel, panvalue)
-	Else
-		If channel <> 0 Then
-			ChannelVolume(channel, 0)
-		EndIf 
-	EndIf
-	
-	Return channel
+    ; Ensure sane range
+    range = Max(range, 1.0)
+
+    ; If volume is zero we only mute the channel
+    If volume <= 0
+        If channel <> 0 Then ChannelVolume(channel, 0)
+        Return channel
+    EndIf
+
+
+    ; ----------------------------------------------------
+    ; Ensure a valid playing channel
+    ; ----------------------------------------------------
+    If channel = 0 Or (Not ChannelPlaying(channel))
+        channel = PlaySFX(id)
+    EndIf
+
+
+    ; ----------------------------------------------------
+    ; Spatial calculations
+    ; ----------------------------------------------------
+    Local dist# = EntityDistance(cam, entity) / range
+    dist = Min(dist, 1.0) ; clamp
+
+    Local pan# = Sin(-DeltaYaw(cam, entity))
+
+
+    ; ----------------------------------------------------
+    ; Apply audio parameters
+    ; ----------------------------------------------------
+    Local finalVolume# = volume * (1.0 - dist) * Config\Audio\SFXVolume
+
+    ChannelVolume(channel, finalVolume)
+    ChannelPan(channel, pan)
+
+
+    Return channel
+
 End Function

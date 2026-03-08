@@ -237,8 +237,6 @@ Loading_Render(25, True)
 
 Dim IntroSFX%(20)
 
-Dim AlarmSFX%(5)
-
 Dim CommotionState%(25)
 
 Global HeartBeatSFX 

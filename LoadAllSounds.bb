@@ -122,11 +122,6 @@ Next
 ;IntroSFX(14) = LoadSound_Strict("SFX\intro\shoot2.ogg")
 IntroSFX(15) = LoadSound_Strict("SFX\Room\Intro\173Vent.ogg")
 
-AlarmSFX(0) = LoadSound_Strict("SFX\Alarm\Alarm.ogg")
-AlarmSFX(2) = LoadSound_Strict("SFX\Alarm\Alarm3.ogg")
-AlarmSFX(3) = LoadSound_Strict("SFX\Alarm\Alarm4.ogg")
-AlarmSFX(4) = LoadSound_Strict("SFX\Alarm\Alarm5.ogg")
-
 ;Dim CommotionState%(23)
 
  HeartBeatSFX = LoadSound_Strict("SFX\Character\D9341\Heartbeat.ogg")

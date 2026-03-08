@@ -298,15 +298,7 @@ Function UpdateEvents()
 					
 					If (e\EventState3<11) Then
 						If (Not ChannelPlaying(e\SoundCHN2)) Then
-							e\EventState3 = e\EventState3+1
-							
-							If (e\Sound2 <> 0) Then
-								FreeSound_Strict(e\Sound2)
-								e\Sound2 = 0
-							EndIf
-							
-							e\Sound2 = LoadSound_Strict("SFX\Alarm\Alarm2_"+Int(e\EventState3)+".ogg")
-							e\SoundCHN2 = PlaySound_Strict(e\Sound2)
+							e\SoundCHN2 = PlayRandomAlarmAmbianceSFX()
 						Else
 							If Int(e\EventState3) = 8 Then CameraShake = 1.0
 						EndIf
@@ -326,8 +318,6 @@ Function UpdateEvents()
 						
 						If (i>26) Then
 							If e\room\NPC[0] <> Null Then RemoveNPC(e\room\NPC[0])
-							;If e\room\NPC[1] <> Null Then RemoveNPC(e\room\NPC[1])
-							;If e\room\NPC[2] <> Null Then RemoveNPC(e\room\NPC[2])
 							
 							FreeEntity e\room\Objects[0]
 							FreeEntity e\room\Objects[1]
@@ -6982,8 +6972,7 @@ Function UpdateEvents()
 						EndIf
 						e\EventState = 1
 					ElseIf e\EventState = 1
-						e\SoundCHN = LoopSpatialSound(AlarmSFX(0), e\SoundCHN, Camera, e\room\Objects[0], 5.0)
-						;e\SoundCHN = LoopSFX(SFX_Alarm_1, e\SoundCHN, Camera, e\room\Objects[0], 5.0)
+						e\SoundCHN = LoopSFX(SFX_Alarm_1, e\SoundCHN, Camera, e\room\Objects[0], 5.0)
 						
 						If (MilliSecs() Mod 1000)<500 Then
 							ShowEntity e\room\Objects[5] 
@@ -7447,7 +7436,7 @@ Function UpdateEvents()
 					
 					p\Achange = -0.02
 					
-					e\SoundCHN = LoopSpatialSound(AlarmSFX(3),e\SoundCHN,Camera,e\room\Objects[3],5)
+					e\SoundCHN = LoopSFX(SFX_Alarm_3, e\SoundCHN,Camera ,e\room\Objects[3] ,5)
 				EndIf
 				
 			Case "room2scps2"
@@ -7748,7 +7737,7 @@ Function UpdateEvents()
 							e\room\RoomDoors[1]\locked = False
 							UseDoor(e\room\RoomDoors[0])
 							UseDoor(e\room\RoomDoors[1])
-							PlaySound_Strict(AlarmSFX(4))
+							PlaySFX(SFX_Alarm_4)
 						ElseIf EntityDistance(e\room\Objects[0],Collider)>2.4
 							e\EventState3 = 0.0
 						EndIf

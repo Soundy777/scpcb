@@ -6,8 +6,8 @@ Global SFX_Alarm_4%
 Const SFX_ALARM_AMBIANCE_COUNT_UPPERBOUND = 10
 Dim SFX_Alarm_Ambiance(11)
 
-Function PlayRandomAlarmAmbianceSFX()
-    PlaySFX(SFX_Alarm_Ambiance(Rand(0,SFX_ALARM_AMBIANCE_COUNT_UPPERBOUND)))
+Function PlayRandomAlarmAmbianceSFX%()
+    Return PlaySFX(SFX_Alarm_Ambiance(Rand(0,SFX_ALARM_AMBIANCE_COUNT_UPPERBOUND)))
 End Function
 
 Function Register_AlarmSounds()
@@ -28,8 +28,3 @@ Function Register_AlarmSounds()
     SFX_Alarm_Ambiance(9) = Resource_RegisterSound("SFX\Alarm\Alarm2_10.ogg")
     SFX_Alarm_Ambiance(10) = Resource_RegisterSound("SFX\Alarm\Alarm2_11.ogg")
 End Function
-
-;; ToDo:: Determine if LoopSFX works correct as intended
-;LoopSFX(SFX_Alarm_4, 4, Camera, e\room\Objects[0], 5.0)
-;; ToDo:: replace all usages of array "AlarmSFX"
-;; ToDo:: replace the calls to "Alarm2_x" call buried somewhere

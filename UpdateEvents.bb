@@ -298,7 +298,8 @@ Function UpdateEvents()
 					
 					If (e\EventState3<11) Then
 						If (Not ChannelPlaying(e\SoundCHN2)) Then
-							e\SoundCHN2 = PlayRandomAlarmAmbianceSFX()
+							e\SoundCHN2 = PlaySFX(SFX_Alarm_Ambiance(e\EventState3))
+							e\EventState3 = e\EventState3 + 1
 						Else
 							If Int(e\EventState3) = 8 Then CameraShake = 1.0
 						EndIf
